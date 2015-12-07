@@ -19,7 +19,7 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>Lifx.BulbsSimulator_TemporaryKey.pfx</PackageCertificateKeyFile>
     <OutputPath>artifacts\bin\$(Configuration)\Microsoft.IoT.Bulbs</OutputPath>
-    <IntermediateOutputPath>artifacts\obj\$(Configuration)\Microsoft.IoT.Bulbs</IntermediateOutputPath>		
+    <IntermediateOutputPath>artifacts\obj\$(Configuration)\Microsoft.IoT.Bulbs</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>

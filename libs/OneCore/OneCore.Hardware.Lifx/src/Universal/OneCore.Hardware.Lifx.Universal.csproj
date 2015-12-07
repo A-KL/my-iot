@@ -17,7 +17,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputPath>..\..\artifacts\bin\$(Configuration)\OneCore.Hardware.Lifx.Universal</OutputPath>
-    <IntermediateOutputPath>..\..\artifacts\obj\$(Configuration)\OneCore.Hardware.Lifx.Universal</IntermediateOutputPath>	
+    <IntermediateOutputPath>..\..\artifacts\obj\$(Configuration)\OneCore.Hardware.Lifx.Universal</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -119,7 +119,7 @@
     <Content Include="Properties\OneCore.Hardware.Lifx.Universal.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Shared\[Portable]OneCore.Hardware.Lifx.csproj">
+    <ProjectReference Include="..\Shared\[Portable]OneCore.Hardware.Lifx.csproj">
       <Project>{dc8c61b3-f831-47be-83ee-fc1aaebfd6d1}</Project>
       <Name>[Portable]OneCore.Hardware.Lifx</Name>
     </ProjectReference>
