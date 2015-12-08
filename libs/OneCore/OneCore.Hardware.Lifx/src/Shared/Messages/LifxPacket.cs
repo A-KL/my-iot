@@ -1,8 +1,7 @@
-﻿using OneCore.Hardware.Lifx.Core;
-
-namespace OneCore.Hardware.Lifx.Messages
+﻿namespace OneCore.Hardware.Lifx.Messages
 {
     using System;
+    using Core;
 
     public class LifxPacketInfo
     {

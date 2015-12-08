@@ -32,7 +32,7 @@
         {
             if (destination.Length < index + 1)
             {
-                throw new ArgumentOutOfRangeException("value");
+                throw new ArgumentOutOfRangeException(nameof(value));
             }
 
             destination[index] = value;
@@ -44,7 +44,7 @@
 
             if (destination.Length < index + size)
             {
-                throw new ArgumentOutOfRangeException("value");
+                throw new ArgumentOutOfRangeException(nameof(value));
             }
 
             destination[index++] = (byte)(value >> 8);

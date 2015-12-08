@@ -39,7 +39,7 @@
         WiFiFirmwareState = 0x13,
 
         GetPowerState = 0x14,
-        SetPowerState = 0x15,
+        SetPowerState = 0x15, // 0x75
         PowerState = 0x16,
 
         GetBulbLabel = 0x17,
