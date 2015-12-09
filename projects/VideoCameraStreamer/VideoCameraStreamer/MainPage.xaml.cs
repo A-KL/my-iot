@@ -1,25 +1,16 @@
-﻿using System.IO;
-using Windows.Storage;
-using Windows.Storage.Streams;
-
-namespace VideoCameraStreamer
+﻿namespace VideoCameraStreamer
 {
     using System;
-    using System.Runtime.InteropServices;
+    using System.Diagnostics;
+    using System.IO;
     using System.Threading.Tasks;
+
     using Windows.Graphics.Imaging;
     using Windows.Media;
     using Windows.Media.Capture;
     using Windows.Media.MediaProperties;
+    using Windows.Storage.Streams;
     using Windows.UI.Xaml.Controls;
-
-    //[ComImport]
-    //[Guid("5b0d3235-4dba-4d44-865e-8f1d0e4fd04d")]
-    //[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    //unsafe interface IMemoryBufferByteAccess
-    //{
-    //    void GetBuffer(out byte* buffer, out uint capacity);
-    //}
 
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -44,46 +35,64 @@ namespace VideoCameraStreamer
             await mediaCapture.InitializeAsync();
 
             this.VideoSource.Source = mediaCapture;
+            
+            await mediaCapture.StartPreviewAsync();
 
+            await Task.Run(() => TakeFrame(mediaCapture));
+
+
+            //var newFile = await DownloadsFolder.CreateFileAsync("test.jpeg");
+
+            //using (var fileStream = await newFile.OpenStreamForWriteAsync())
+            //{
+            //    await fileStream.WriteAsync(data, 0, data.Length);
+            //}
+        }
+
+        private static async Task TakeFrame(MediaCapture media)
+        {
+            var sw = new Stopwatch();
+            
             // Get information about the preview
-            var previewProperties = mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview) as VideoEncodingProperties;
+            var previewProperties = media.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview) as VideoEncodingProperties;
+
+            if (previewProperties == null)
+            {
+                return;
+            }
 
             // Create the video frame to request a SoftwareBitmap preview frame
             var videoFrame = new VideoFrame(BitmapPixelFormat.Bgra8, (int)previewProperties.Width, (int)previewProperties.Height);
 
-            await mediaCapture.StartPreviewAsync();
-
-            // Capture the preview frame
-            using (var currentFrame = await mediaCapture.GetPreviewFrameAsync(videoFrame))
+            while (true)
             {
-                // Collect the resulting frame
-                SoftwareBitmap previewFrame = currentFrame.SoftwareBitmap;
+                sw.Restart();
 
-                using (var stream = new InMemoryRandomAccessStream())
+                // Capture the preview frame
+                using (var currentFrame = await media.GetPreviewFrameAsync(videoFrame))
                 {
-                    var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, stream);
-                    encoder.SetSoftwareBitmap(previewFrame);
+                    // Collect the resulting frame
+                    var previewFrame = currentFrame.SoftwareBitmap;
 
-                    await encoder.FlushAsync();
-
-                    var readStrem = stream.AsStreamForRead();
-                    var dataLean = readStrem.Length;
-                    var data = new byte[dataLean];
-                    await readStrem.ReadAsync(data, 0, data.Length);
-
-                    StorageFile newFile = await DownloadsFolder.CreateFileAsync("test.jpeg");
-                    using (var fileStream = await newFile.OpenStreamForWriteAsync())
+                    using (var stream = new InMemoryRandomAccessStream())
                     {
-                        await fileStream.WriteAsync(data, 0, data.Length);
+                        var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, stream);
+                        encoder.SetSoftwareBitmap(previewFrame);
+
+                        await encoder.FlushAsync();
+
+                        var readStrem = stream.AsStreamForRead();
+                        var dataLean = readStrem.Length;
+                        var data = new byte[dataLean];
+
+                        await readStrem.ReadAsync(data, 0, data.Length);
                     }
                 }
 
-                
-                // Add a simple green filter effect to the SoftwareBitmap
-                // EditPixels(previewFrame);
-            }
+                sw.Stop();
 
-            
+                Debug.WriteLine("Single frame: {0}Ms {1}Fps", sw.ElapsedMilliseconds, 1000.0 / sw.ElapsedMilliseconds);
+            }
         }
 
         //private unsafe void EditPixels(SoftwareBitmap bitmap)

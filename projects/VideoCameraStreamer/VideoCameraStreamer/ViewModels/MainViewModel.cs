@@ -8,7 +8,7 @@
     /// <summary>
     /// The main view model.
     /// </summary>
-    public class MainViewModel: ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
         /// <summary>
         /// The capture.
