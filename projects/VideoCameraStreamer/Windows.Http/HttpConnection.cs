@@ -2,10 +2,9 @@
 {
     using Extensions;
     using global::System;
-    using global::System.IO;
     using global::System.Net;
-    using global::System.Net.Sockets;
     using global::System.Threading;
+
     using Networking.Sockets;
     using Storage.Streams;
 
@@ -38,6 +37,11 @@
             }
         }
 
+        public bool IsSecure
+        {
+            get { return false; }
+        }
+
         public int Reuses
         {
             get; private set;
@@ -62,11 +66,6 @@
             {
                 return this.streamSocket.Information.RemoteEndPoint();
             }
-        }
-
-        public bool IsSecure
-        {
-            get { return false; }
         }
 
         public ListenerPrefix Prefix
@@ -112,11 +111,14 @@
             //    }
         }
 
-        public void BeginReadRequest()
+        public async void BeginReadRequest()
         {
             try
             {
                this.timer.Change(15000, Timeout.Infinite);
+
+                var firstLine = await this.streamSocket.InputStream.ReadLine();
+
                 //stream.BeginRead(buffer, 0, BufferSize, onread_cb, this);
             }
             catch

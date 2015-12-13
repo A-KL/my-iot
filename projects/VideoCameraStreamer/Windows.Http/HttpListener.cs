@@ -6,18 +6,11 @@ namespace Windows.Http
     using global::System.Collections;
     using global::System.Collections.Concurrent;
     using global::System.Net;
-    using global::System.Threading;
     using global::System.Threading.Tasks;
-    using Networking;
-    using Networking.Sockets;
 
     public sealed class HttpListener : IDisposable
     {
         private readonly ConcurrentQueue<HttpConnection2> queue;
-
-        private readonly StreamSocketListener streamSocketListener;
-
-        private readonly ManualResetEvent queueWaitHandle;
 
         private AuthenticationSchemes auth_schemes;
 
@@ -37,8 +30,6 @@ namespace Windows.Http
         {
             this.connections = Hashtable.Synchronized(new Hashtable());
 
-            this.queueWaitHandle = new ManualResetEvent(false);
-
             this.prefixes = new HttpListenerPrefixCollection(this);
 
             this.queue = new ConcurrentQueue<HttpConnection2>();
@@ -46,9 +37,6 @@ namespace Windows.Http
             this.auth_schemes = AuthenticationSchemes.Anonymous;
 
             this.completionSource = new TaskCompletionSource<HttpListenerContext>();
-
-            this.streamSocketListener = new StreamSocketListener();
-            this.streamSocketListener.ConnectionReceived += this.StreamSocketListener_ConnectionReceived;
         }
 
         public bool IsListening
@@ -87,9 +75,7 @@ namespace Windows.Http
                 return;
             }
 
-            //var hostname = this.Prefixes.First().
-
-            await this.streamSocketListener.BindEndpointAsync(new HostName(""), "123");
+            await EndPointManager.AddListener(this);
 
             this.listening = true;
         }
@@ -187,24 +173,15 @@ namespace Windows.Http
             HttpConnection2 context;
             while (!this.queue.TryDequeue(out context))
             {
-                this.queueWaitHandle.WaitOne();
+                //this.queueWaitHandle.WaitOne();
             }
 
             if (this.queue.Count == 0)
             {
-                this.queueWaitHandle.Reset();
+               // this.queueWaitHandle.Reset();
             }
 
             return context.GetContext().Result;
-        }
-
-        private void StreamSocketListener_ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
-        {
-            var connection = new HttpConnection2(args.Socket);
-
-            this.queue.Enqueue(connection);
-
-            this.queueWaitHandle.Set();
         }
 
         private void Close(bool force)

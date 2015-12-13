@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Windows.Http;
 
 namespace VideoCameraStreamer
 {
@@ -40,8 +41,17 @@ namespace VideoCameraStreamer
             
             await mediaCapture.StartPreviewAsync();
 
-            await Task.Run(() => TakeFrame(mediaCapture));
+           // await Task.Run(() => TakeFrame(mediaCapture));
 
+            var listener = new HttpListener();
+            //listener.Prefixes.Add("http://localhost:8000/");
+            //listener.Prefixes.Add("http://127.0.0.1:8000/");
+            listener.Prefixes.Add("http://192.168.1.4:8000/");
+            //listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
+
+            await listener.Start();
+
+            var context = await listener.GetContextAsync();
 
             //var newFile = await DownloadsFolder.CreateFileAsync("test.jpeg");
 
