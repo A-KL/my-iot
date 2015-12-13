@@ -5,16 +5,21 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoCameraStreamer", "VideoCameraStreamer\VideoCameraStreamer.csproj", "{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows.Http", "Windows.Http\Windows.Http.csproj", "{51EF2C33-F1E7-4EAC-870F-A67B16899260}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|ARM = Release|ARM
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Debug|ARM.ActiveCfg = Debug|ARM
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Debug|ARM.Build.0 = Debug|ARM
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Debug|ARM.Deploy.0 = Debug|ARM
@@ -24,6 +29,7 @@ Global
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Debug|x86.ActiveCfg = Debug|x86
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Debug|x86.Build.0 = Debug|x86
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Debug|x86.Deploy.0 = Debug|x86
+		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Release|Any CPU.ActiveCfg = Release|x86
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Release|ARM.ActiveCfg = Release|ARM
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Release|ARM.Build.0 = Release|ARM
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Release|ARM.Deploy.0 = Release|ARM
@@ -33,6 +39,22 @@ Global
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Release|x86.ActiveCfg = Release|x86
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Release|x86.Build.0 = Release|x86
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Release|x86.Deploy.0 = Release|x86
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Debug|ARM.ActiveCfg = Debug|ARM
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Debug|ARM.Build.0 = Debug|ARM
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Debug|x64.ActiveCfg = Debug|x64
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Debug|x64.Build.0 = Debug|x64
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Debug|x86.ActiveCfg = Debug|x86
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Debug|x86.Build.0 = Debug|x86
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Release|ARM.ActiveCfg = Release|ARM
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Release|ARM.Build.0 = Release|ARM
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Release|x64.ActiveCfg = Release|x64
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Release|x64.Build.0 = Release|x64
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Release|x86.ActiveCfg = Release|x86
+		{51EF2C33-F1E7-4EAC-870F-A67B16899260}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,6 @@
-﻿namespace VideoCameraStreamer
+﻿using System.Net;
+
+namespace VideoCameraStreamer
 {
     using System;
     using System.Diagnostics;
@@ -53,7 +55,6 @@
         {
             var sw = new Stopwatch();
             
-            // Get information about the preview
             var previewProperties = media.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview) as VideoEncodingProperties;
 
             if (previewProperties == null)
@@ -61,12 +62,11 @@
                 return;
             }
 
-            // Create the video frame to request a SoftwareBitmap preview frame
-            var videoFrame = new VideoFrame(BitmapPixelFormat.Bgra8, (int)previewProperties.Width, (int)previewProperties.Height);
-
             while (true)
             {
                 sw.Restart();
+
+                var videoFrame = new VideoFrame(BitmapPixelFormat.Bgra8, (int)previewProperties.Width, (int)previewProperties.Height);
 
                 // Capture the preview frame
                 using (var currentFrame = await media.GetPreviewFrameAsync(videoFrame))
@@ -91,7 +91,7 @@
 
                 sw.Stop();
 
-                Debug.WriteLine("Single frame: {0}Ms {1}Fps", sw.ElapsedMilliseconds, 1000.0 / sw.ElapsedMilliseconds);
+                Debug.WriteLine("Single frame: {0}Ms {1}Fps", sw.ElapsedMilliseconds,  1000.0 / sw.ElapsedMilliseconds);
             }
         }
 
