@@ -4,12 +4,20 @@
     using global::System;
     using global::System.Net;
     using global::System.Threading;
+    using global::System.Threading.Tasks;
 
     using Networking.Sockets;
     using Storage.Streams;
 
+
     public sealed class HttpConnection
     {
+        private enum InputState
+        {
+            RequestLine,
+            Headers
+        }
+
         private StreamSocket streamSocket;
         private EndPointListener epl;
         private HttpListenerContext context;
@@ -17,6 +25,10 @@
 
         private IPEndPoint localEndPoint;
         private HttpListener lastListener;
+
+        private InputState inputState = InputState.RequestLine;
+        private int position;
+
 
         public HttpConnection(StreamSocket sock, EndPointListener epl)
         {
@@ -116,10 +128,7 @@
             try
             {
                this.timer.Change(15000, Timeout.Infinite);
-
-                var firstLine = await this.streamSocket.InputStream.ReadLine();
-
-                //stream.BeginRead(buffer, 0, BufferSize, onread_cb, this);
+               await this.OnReadInternal();
             }
             catch
             {
@@ -135,13 +144,78 @@
             this.Unbind();
         }
 
-        private static void OnRead(IAsyncResult ares)
+        private async Task<bool> ProcessInput(IInputStream stream)
         {
-            var cnc = (HttpConnection)ares.AsyncState;
-            cnc.OnReadInternal(ares);
+            string line;
+
+            try
+            {
+                line = await stream.ReadLine();
+            }
+            catch
+            {
+                this.context.ErrorMessage = "Bad request";
+                this.context.ErrorStatus = 400;
+                return true;
+            }
+
+            do
+            {
+                if (line == null)
+                {
+                    break;
+                }
+
+                if (line == string.Empty)
+                {
+                    if (this.inputState == InputState.RequestLine)
+                    {
+                        continue;
+                    }
+                    return true;
+                }
+
+                if (this.inputState == InputState.RequestLine)
+                {
+                    this.context.Request.SetRequestLine(line);
+                    this.inputState = InputState.Headers;
+                }
+                else
+                {
+                    try
+                    {
+                        this.context.Request.AddHeader(line);
+                    }
+                    catch (Exception e)
+                    {
+                        this.context.ErrorMessage = e.Message;
+                        this.context.ErrorStatus = 400;
+                        return true;
+                    }
+                }
+
+                if (this.context.HaveError)
+                {
+                    return true;
+                }
+
+                try
+                {
+                    line = await stream.ReadLine();
+                }
+                catch
+                {
+                    this.context.ErrorMessage = "Bad request";
+                    this.context.ErrorStatus = 400;
+                    return true;
+                }
+            }
+            while (line != Environment.NewLine);
+
+            return false;
         }
 
-        private void OnReadInternal(IAsyncResult ares)
+        private async Task OnReadInternal()
         {
             this.timer.Change(Timeout.Infinite, Timeout.Infinite);
             int nread = -1;
@@ -178,11 +252,11 @@
                 return;
             }
 
-           // if (ProcessInput(ms))
+            if (await this.ProcessInput(this.streamSocket.InputStream))
             {
                 if (!this.context.HaveError)
                 {
-                   // this.context.Request.FinishInitialization();
+                   this.context.Request.FinishInitialization();
                 }
 
                 if (this.context.HaveError)
@@ -297,23 +371,22 @@
             //    }
 
             //    Socket s = sock;
-            //    sock = null;
-            //    try
-            //    {
-            //        if (s != null)
-            //            s.Shutdown(SocketShutdown.Both);
-            //    }
-            //    catch
-            //    {
-            //    }
-            //    finally
-            //    {
-            //        if (s != null)
-            //            s.Close();
-            //    }
+            //    //sock = null;
+            //    //try
+            //    //{
+            //    //    if (s != null)
+            //    //        s.Shutdown(SocketShutdown.Both);
+            //    //}
+            //    //catch
+            //    //{
+            //    //}
+            //    //finally
+            //    //{
+            //    //    if (s != null)
+            //    //        s.Close();
+            //    //}
             //    Unbind();
             //    RemoveConnection();
-           // }
-        }
+            }        
     }
 }

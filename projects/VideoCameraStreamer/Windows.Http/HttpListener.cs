@@ -1,24 +1,26 @@
-using System.Collections.Generic;
-
 namespace Windows.Http
 {
     using global::System;
     using global::System.Collections;
     using global::System.Collections.Concurrent;
+    using global::System.Collections.Generic;
     using global::System.Net;
+    using global::System.Threading;
     using global::System.Threading.Tasks;
 
     public sealed class HttpListener : IDisposable
     {
-        private readonly ConcurrentQueue<HttpConnection2> queue;
-
         private AuthenticationSchemes auth_schemes;
 
         private HttpListenerPrefixCollection prefixes;
 
         private TaskCompletionSource<HttpListenerContext> completionSource;
 
-        private Dictionary<HttpListenerContext, HttpListenerContext> contextRegistry; 
+        private Dictionary<HttpListenerContext, HttpListenerContext> contextRegistry;
+
+        private readonly ConcurrentQueue<HttpListenerContext> contextQueue;
+
+        private readonly ManualResetEvent queueWaitHandle;
 
         private Hashtable connections;
 
@@ -32,11 +34,13 @@ namespace Windows.Http
 
             this.prefixes = new HttpListenerPrefixCollection(this);
 
-            this.queue = new ConcurrentQueue<HttpConnection2>();
+            this.contextQueue = new ConcurrentQueue<HttpListenerContext>();
 
             this.auth_schemes = AuthenticationSchemes.Anonymous;
 
             this.completionSource = new TaskCompletionSource<HttpListenerContext>();
+
+            this.queueWaitHandle = new ManualResetEvent(false);
         }
 
         public bool IsListening
@@ -140,17 +144,18 @@ namespace Windows.Http
                 throw new InvalidOperationException("Please, call Start before using this method.");
             }
 
-            if (this.queue.Count == 0)
+            if (this.contextQueue.Count == 0)
             {
                 this.completionSource = new TaskCompletionSource<HttpListenerContext>();
-
+                
                 return this.completionSource.Task;
             }
 
-            HttpConnection2 connection;
-            if (this.queue.TryDequeue(out connection))
+            HttpListenerContext context;
+
+            if (this.contextQueue.TryDequeue(out context))
             {
-                return connection.GetContext();
+                return Task.FromResult(context);
             }
 
             return null;
@@ -165,23 +170,23 @@ namespace Windows.Http
                 throw new InvalidOperationException("Please, call Start before using this method.");
             }
 
-            if (this.queue.Count == 0)
+            if (this.contextQueue.Count == 0)
             {
                 return null;
             }
 
-            HttpConnection2 context;
-            while (!this.queue.TryDequeue(out context))
+            HttpListenerContext context;
+            while (!this.contextQueue.TryDequeue(out context))
             {
-                //this.queueWaitHandle.WaitOne();
+                this.queueWaitHandle.WaitOne();
             }
 
-            if (this.queue.Count == 0)
+            if (this.contextQueue.Count == 0)
             {
-               // this.queueWaitHandle.Reset();
+                this.queueWaitHandle.Reset();
             }
 
-            return context.GetContext().Result;
+            return context;
         }
 
         private void Close(bool force)
@@ -193,18 +198,21 @@ namespace Windows.Http
 
         private void Cleanup(bool closeExisting)
         {
-            //lock (registry)
-            //{
-            //    if (closeExisting)
-            //    {
-            //        // Need to copy this since closing will call UnregisterContext
-            //        ICollection keys = registry.Keys;
-            //        var all = new HttpListenerContext[keys.Count];
-            //        keys.CopyTo(all, 0);
-            //        registry.Clear();
-            //        for (int i = all.Length - 1; i >= 0; i--)
-            //            all[i].Connection.Close(true);
-            //    }
+            lock (this.contextRegistry)
+            {
+                if (closeExisting)
+                {
+                    // Need to copy this since closing will call UnregisterContext
+                    ICollection keys = this.contextRegistry.Keys;
+                    var all = new HttpListenerContext[keys.Count];
+                    keys.CopyTo(all, 0);
+                    this.contextRegistry.Clear();
+
+                    for (var i = all.Length - 1; i >= 0; i--)
+                    {
+                        all[i].Connection.Close(true);
+                    }
+                }
 
                 lock (this.connections.SyncRoot)
                 {
@@ -219,13 +227,22 @@ namespace Windows.Http
                     }
                 }
 
-                //lock (ctx_queue)
-                //{
-                //    var ctxs = (HttpListenerContext[])ctx_queue.ToArray(typeof(HttpListenerContext));
-                //    ctx_queue.Clear();
-                //    for (int i = ctxs.Length - 1; i >= 0; i--)
-                //        ctxs[i].Connection.Close(true);
-                //}
+                lock (this.contextQueue)
+                {
+                    var ctxs = this.contextQueue.ToArray();
+
+                    HttpListenerContext context;
+
+                    while (this.contextQueue.Count > 0)
+                    {
+                        this.contextQueue.TryDequeue(out context);
+                    }
+                    
+                    for (var i = ctxs.Length - 1; i >= 0; i--)
+                    {
+                        ctxs[i].Connection.Close(true);
+                    }
+                }
 
                 //lock (wait_queue)
                 //{
@@ -236,7 +253,7 @@ namespace Windows.Http
                 //    }
                 //    wait_queue.Clear();
                 //}
-           // }
+            }
         }
 
         internal void CheckDisposed()
@@ -249,12 +266,12 @@ namespace Windows.Http
 
         internal void AddConnection(HttpConnection cnc)
         {
-            connections[cnc] = cnc;
+            this.connections[cnc] = cnc;
         }
 
         internal void RemoveConnection(HttpConnection cnc)
         {
-            connections.Remove(cnc);
+            this.connections.Remove(cnc);
         }
 
         internal void RegisterContext(HttpListenerContext context)
@@ -263,6 +280,14 @@ namespace Windows.Http
             {
                 this.contextRegistry[context] = context;
             }
+
+            if (this.completionSource != null)
+            {
+                this.completionSource.SetResult(context);
+                return;
+            }
+
+            this.contextQueue.Enqueue(context);
 
             //lock (wait_queue)
             //{
@@ -280,10 +305,7 @@ namespace Windows.Http
             //    }
             //}
 
-            //if (ares != null)
-            //{
-            //    ares.Complete(context);
-            //}
+            this.queueWaitHandle.Set();
         }
 
         internal void UnregisterContext(HttpListenerContext context)
@@ -291,7 +313,7 @@ namespace Windows.Http
             lock (this.contextRegistry)
             {
                 this.contextRegistry.Remove(context);
-            }
+            }            
 
             //lock (ctx_queue)
             //{

@@ -44,7 +44,6 @@ namespace VideoCameraStreamer
            // await Task.Run(() => TakeFrame(mediaCapture));
 
             var listener = new HttpListener();
-            //listener.Prefixes.Add("http://localhost:8000/");
             //listener.Prefixes.Add("http://127.0.0.1:8000/");
             listener.Prefixes.Add("http://192.168.1.4:8000/");
             //listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;

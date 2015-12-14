@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="EndPointListener.cs" />
     <Compile Include="EndPointManager.cs" />
+    <Compile Include="Extensions\UriExtensions.cs" />
     <Compile Include="New\HttpListener2.cs" />
     <Compile Include="Extensions\StreamSocketInformationExtensions.cs" />
     <Compile Include="New\HttpConnection2.cs" />

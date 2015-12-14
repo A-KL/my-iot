@@ -70,14 +70,14 @@ namespace Windows.Http
 
         private void StreamSocketListener_ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
-            var conn = new HttpConnection(args.Socket, this);
+            var connection = new HttpConnection(args.Socket, this);
 
             lock (this.unregistered)
             {
-                this.unregistered[conn] = conn;
+                this.unregistered[connection] = connection;
             }
 
-            conn.BeginReadRequest();
+            connection.BeginReadRequest();
         }
 
         internal void RemoveConnection(HttpConnection conn)
