@@ -33,12 +33,7 @@ namespace Windows.Http
 
         public IAsyncAction Bind()
         {
-
             return this.streamSocketListener.BindServiceNameAsync(this.endpoint.Port.ToString());
-
-            return this.streamSocketListener.BindEndpointAsync(
-                new HostName(this.endpoint.Address.ToString()),
-                this.endpoint.Port.ToString());
         }
 
         public bool BindContext(HttpListenerContext context)

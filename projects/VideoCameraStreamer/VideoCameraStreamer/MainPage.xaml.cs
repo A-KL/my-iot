@@ -1,5 +1,8 @@
 ﻿using System.Net;
 using Windows.Http;
+using Windows.Networking;
+using Windows.Networking.Connectivity;
+using Windows.Networking.Sockets;
 
 namespace VideoCameraStreamer
 {
@@ -29,23 +32,42 @@ namespace VideoCameraStreamer
             this.Init();
         }
 
+        private StreamSocketListener socket;
+
         /// <summary>
         /// The init.
         /// </summary>
         private async void Init()
         {
-            var mediaCapture = new MediaCapture();
-            await mediaCapture.InitializeAsync();
+           // var mediaCapture = new MediaCapture();
+            //await mediaCapture.InitializeAsync();
 
-            this.VideoSource.Source = mediaCapture;
+            //this.VideoSource.Source = mediaCapture;
             
-            await mediaCapture.StartPreviewAsync();
+            //await mediaCapture.StartPreviewAsync();
 
            // await Task.Run(() => TakeFrame(mediaCapture));
 
+            socket = new StreamSocketListener();
+            await socket.BindEndpointAsync(new HostName("192.168.1.117"), 8001.ToString());
+
+            var hosts = NetworkInformation.GetHostNames();
+            foreach (var hostName in hosts)
+            {
+                Debug.WriteLine(hostName);
+            }
+
+            socket.ConnectionReceived += (e, d) =>
+            {
+                var s = d.Socket;
+            };
+
+            return;
+
             var listener = new HttpListener();
-            //listener.Prefixes.Add("http://127.0.0.1:8000/");
-            listener.Prefixes.Add("http://192.168.1.4:8000/");
+            listener.Prefixes.Add("http://127.0.0.1:8006/");
+
+            
             //listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
 
             await listener.Start();
