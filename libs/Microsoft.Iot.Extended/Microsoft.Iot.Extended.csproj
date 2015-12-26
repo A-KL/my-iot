@@ -130,6 +130,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pwm\IPwmChannel.cs" />
     <Compile Include="Pwm\SoftwarePwm.cs" />
+    <Compile Include="Sensors\MPU6050.cs" />
+    <Compile Include="Sensors\SensorData.cs" />
     <Compile Include="Servo.cs" />
     <Compile Include="ShiftRegisterRgbModule.cs" />
     <Content Include="Properties\Microsoft.Iot.Extended.rd.xml" />
