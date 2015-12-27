@@ -53,11 +53,11 @@
 
             // Der Hex Wert stellt das erste Byte da
             // für die Beschleunigungsachse X
-            this.Write(0x3B);
+           // this.Write(0x3B);
 
             // Byte Array übergeben zum beschreiben
-            this.Read(buffer);
-            this.device.WriteRead(buffer);
+            //this.(buffer);
+            this.device.WriteRead(new byte[] { 0x3B }, buffer);
 
             // Ergebnis an das Sensor Objekt, 
             // in dem die Byte Werte umgewandelt werden
