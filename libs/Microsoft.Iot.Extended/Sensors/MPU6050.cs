@@ -57,6 +57,7 @@
 
             // Byte Array übergeben zum beschreiben
             this.Read(buffer);
+            this.device.WriteRead(buffer);
 
             // Ergebnis an das Sensor Objekt, 
             // in dem die Byte Werte umgewandelt werden
@@ -67,11 +68,7 @@
         {
             this.device.Dispose();
         }
-
-        private void Read(params byte[] buffer)
-        {
-            this.device.Read(buffer);
-        }
+        
 
         private void Write(params byte[] data)
         {
