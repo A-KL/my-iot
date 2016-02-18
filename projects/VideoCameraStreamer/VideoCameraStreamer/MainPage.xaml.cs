@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Windows.Http;
+﻿using Windows.Http;
 using Windows.Networking;
 using Windows.Networking.Connectivity;
 using Windows.Networking.Sockets;
@@ -39,16 +38,22 @@ namespace VideoCameraStreamer
         /// </summary>
         private async void Init()
         {
-           // var mediaCapture = new MediaCapture();
-            //await mediaCapture.InitializeAsync();
+            var mediaCapture = new MediaCapture();
+            await mediaCapture.InitializeAsync();
 
-            //this.VideoSource.Source = mediaCapture;
-            
-            //await mediaCapture.StartPreviewAsync();
+            this.VideoSource.Source = mediaCapture;
 
-           // await Task.Run(() => TakeFrame(mediaCapture));
+            await mediaCapture.StartPreviewAsync();
 
+            await Task.Run(() => TakeFrame(mediaCapture));
+
+
+        }
+
+        private async void InitNetwork()
+        {
             socket = new StreamSocketListener();
+
             await socket.BindEndpointAsync(new HostName("192.168.1.117"), 8001.ToString());
 
             var hosts = NetworkInformation.GetHostNames();
@@ -62,17 +67,15 @@ namespace VideoCameraStreamer
                 var s = d.Socket;
             };
 
-            return;
+            //var listener = new HttpListener();
+            //listener.Prefixes.Add("http://127.0.0.1:8006/");
 
-            var listener = new HttpListener();
-            listener.Prefixes.Add("http://127.0.0.1:8006/");
 
-            
             //listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
 
-            await listener.Start();
+            //await listener.Start();
 
-            var context = await listener.GetContextAsync();
+            //var context = await listener.GetContextAsync();
 
             //var newFile = await DownloadsFolder.CreateFileAsync("test.jpeg");
 

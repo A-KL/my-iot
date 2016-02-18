@@ -2,7 +2,7 @@
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
-namespace WebServer.Service
+namespace WebServer.Core
 {
     using Windows.ApplicationModel.AppService;
     using Windows.ApplicationModel.Background;

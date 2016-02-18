@@ -1,4 +1,4 @@
-﻿namespace WebServer.Service
+﻿namespace WebServer.Core
 {
     using System;
     using System.Text;
