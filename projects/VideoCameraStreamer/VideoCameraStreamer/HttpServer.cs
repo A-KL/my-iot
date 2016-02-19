@@ -1,27 +1,10 @@
-﻿using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Text.RegularExpressions;
-using Windows.Http;
-
-namespace VideoCameraStreamer
+﻿namespace VideoCameraStreamer
 {
     using System;
     using System.Threading.Tasks;
     using System.IO;
     using Windows.Networking.Sockets;
     using Windows.Storage.Streams;
-
-
-
-    public class HttpRequestEventArgs : EventArgs
-    {
-        public HttpRequestEventArgs()
-        {
-            
-        }
-
-        public HttpListenerRequest Request { get; private set; }
-    }
 
     public class HttpServer
     {
@@ -33,9 +16,6 @@ namespace VideoCameraStreamer
 
             listener.ConnectionReceived += (s, e) =>
             {
- 
-
-
                 using (IOutputStream output = e.Socket.OutputStream)
                 {
                     using (var writableStream = output.AsStreamForWrite())
@@ -46,14 +26,14 @@ namespace VideoCameraStreamer
             };
         }
 
-        public event EventHandler<HttpRequestEventArgs> RequestReceived;
+        //public event EventHandler<HttpRequestEventArgs> RequestReceived;
 
-        private void OnRequestReceived()
-        {
-            if (this.RequestReceived != null)
-            {
-                this.RequestReceived(this, new HttpRequestEventArgs());
-            }
-        }
+        //private void OnRequestReceived()
+        //{
+        //    if (this.RequestReceived != null)
+        //    {
+        //        this.RequestReceived(this, new HttpRequestEventArgs());
+        //    }
+        //}
     }
 }

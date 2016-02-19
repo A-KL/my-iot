@@ -1,7 +1,8 @@
-﻿using Windows.Http;
-using Windows.Networking;
+﻿using Windows.Networking;
 using Windows.Networking.Connectivity;
 using Windows.Networking.Sockets;
+using Microsoft.Owin.Hosting;
+using VideoCameraStreamer.Owin;
 
 namespace VideoCameraStreamer
 {
@@ -28,7 +29,8 @@ namespace VideoCameraStreamer
         public MainPage()
         {
             this.InitializeComponent();
-            this.Init();
+            //this.Init();
+            this.InitNetwork();
         }
 
         private StreamSocketListener socket;
@@ -52,20 +54,29 @@ namespace VideoCameraStreamer
 
         private async void InitNetwork()
         {
-            socket = new StreamSocketListener();
+            const string baseUrl = "http://localhost:5000/";
 
-            await socket.BindEndpointAsync(new HostName("192.168.1.117"), 8001.ToString());
-
-            var hosts = NetworkInformation.GetHostNames();
-            foreach (var hostName in hosts)
+            using (WebApp.Start<Startup>(url: baseUrl))
             {
-                Debug.WriteLine(hostName);
+                // Create HttpCient and make a request to api/values 
+
             }
 
-            socket.ConnectionReceived += (e, d) =>
-            {
-                var s = d.Socket;
-            };
+
+            //socket = new StreamSocketListener();
+
+            //await socket.BindEndpointAsync(new HostName("192.168.1.117"), 8001.ToString());
+
+            //var hosts = NetworkInformation.GetHostNames();
+            //foreach (var hostName in hosts)
+            //{
+            //    Debug.WriteLine(hostName);
+            //}
+
+            //socket.ConnectionReceived += (e, d) =>
+            //{
+            //    var s = d.Socket;
+            //};
 
             //var listener = new HttpListener();
             //listener.Prefixes.Add("http://127.0.0.1:8006/");
