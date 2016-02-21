@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1B90D3CC-317C-4F53-8B4F-9BFEEE858E30}</ProjectGuid>
+    <ProjectGuid>{14FE3A9A-4476-4D08-B305-B5212F8288AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Owin</RootNamespace>

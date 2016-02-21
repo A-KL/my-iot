@@ -74,8 +74,8 @@
         /// <returns>The host.TraceOutput TextWriter.</returns>
         public virtual TextWriter TraceOutput
         {
-            get { return Get<TextWriter>(OwinConstants.CommonKeys.TraceOutput); }
-            set { Set(OwinConstants.CommonKeys.TraceOutput, value); }
+            get { return this.Get<TextWriter>(OwinConstants.CommonKeys.TraceOutput); }
+            set { this.Set(OwinConstants.CommonKeys.TraceOutput, value); }
         }
 
         /// <summary>
@@ -99,7 +99,7 @@
         /// <returns>This instance.</returns>
         public virtual IOwinContext Set<T>(string key, T value)
         {
-            Environment[key] = value;
+            this.Environment[key] = value;
             return this;
         }
     }

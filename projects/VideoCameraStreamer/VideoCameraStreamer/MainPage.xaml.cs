@@ -1,8 +1,8 @@
-﻿using Windows.Networking;
-using Windows.Networking.Connectivity;
+﻿using System.Net;
+using Griffin.Networking.Protocol.Http;
 using Windows.Networking.Sockets;
-using Microsoft.Owin.Hosting;
-using VideoCameraStreamer.Owin;
+using Griffin.Networking.Messaging;
+using VideoCameraStreamer.Networking;
 
 namespace VideoCameraStreamer
 {
@@ -10,7 +10,6 @@ namespace VideoCameraStreamer
     using System.Diagnostics;
     using System.IO;
     using System.Threading.Tasks;
-
     using Windows.Graphics.Imaging;
     using Windows.Media;
     using Windows.Media.Capture;
@@ -48,20 +47,26 @@ namespace VideoCameraStreamer
             await mediaCapture.StartPreviewAsync();
 
             await Task.Run(() => TakeFrame(mediaCapture));
+        }
 
+        private void InitOwinServer()
+        {
+            //const string baseUrl = "http://localhost:5000/";
 
+            //using (WebApp.Start<Startup>(url: baseUrl))
+            //{
+            //    // Create HttpCient and make a request to api/values 
+
+            //}
         }
 
         private async void InitNetwork()
         {
-            const string baseUrl = "http://localhost:5000/";
+            var server = new MessagingServer(
+                new MyHttpServiceFactory(),
+                new MessagingServerConfiguration(new HttpMessageFactory()));
 
-            using (WebApp.Start<Startup>(url: baseUrl))
-            {
-                // Create HttpCient and make a request to api/values 
-
-            }
-
+            server.Start(new IPEndPoint(new IPAddress( new byte[] { 192, 168, 1, 12}), 8000));
 
             //socket = new StreamSocketListener();
 
@@ -99,7 +104,7 @@ namespace VideoCameraStreamer
         private static async Task TakeFrame(MediaCapture media)
         {
             var sw = new Stopwatch();
-            
+
             var previewProperties = media.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview) as VideoEncodingProperties;
 
             if (previewProperties == null)
@@ -136,7 +141,7 @@ namespace VideoCameraStreamer
 
                 sw.Stop();
 
-                Debug.WriteLine("Single frame: {0}Ms {1}Fps", sw.ElapsedMilliseconds,  1000.0 / sw.ElapsedMilliseconds);
+                Debug.WriteLine("Single frame: {0}Ms {1}Fps", sw.ElapsedMilliseconds, 1000.0 / sw.ElapsedMilliseconds);
             }
         }
 

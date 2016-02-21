@@ -166,13 +166,13 @@
     <EmbeddedResource Include="Properties\Microsoft.Owin.Hosting.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Owin\Owin.csproj">
-      <Project>{1b90d3cc-317c-4f53-8b4f-9bfeee858e30}</Project>
-      <Name>Owin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Microsoft.Owin\Microsoft.Owin.csproj">
       <Project>{a0358c00-b91c-4b77-9d6d-dfd88bad8ccf}</Project>
       <Name>Microsoft.Owin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Owin\Owin.csproj">
+      <Project>{14fe3a9a-4476-4d08-b305-b5212f8288af}</Project>
+      <Name>Owin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

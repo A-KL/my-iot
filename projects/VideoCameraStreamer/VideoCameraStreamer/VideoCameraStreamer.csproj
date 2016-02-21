@@ -106,6 +106,8 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Networking\MyHttpService.cs" />
+    <Compile Include="Networking\MyHttpServiceFactory.cs" />
     <Compile Include="Owin\LoggerMiddleware.cs" />
     <Compile Include="Owin\Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -144,21 +146,13 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\libs\ProjectTanto\Microsoft.Owin.Host.StreamSocket\Microsoft.Owin.Host.StreamSocket.csproj">
-      <Project>{658fcecb-ad8c-4eb3-803f-3fa7b09b2239}</Project>
-      <Name>Microsoft.Owin.Host.StreamSocket</Name>
+    <ProjectReference Include="..\..\..\libs\Griffin.Networking\Source\Core\Griffin.Networking\Griffin.Networking.csproj">
+      <Project>{adbb0496-e4bc-4eef-9ca7-a1507581f7ba}</Project>
+      <Name>Griffin.Networking</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\libs\ProjectTanto\Microsoft.Owin.Hosting\Microsoft.Owin.Hosting.csproj">
-      <Project>{0b4e5654-d6d8-4914-964a-c1b21dcf2775}</Project>
-      <Name>Microsoft.Owin.Hosting</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\libs\ProjectTanto\Microsoft.Owin\Microsoft.Owin.csproj">
-      <Project>{a0358c00-b91c-4b77-9d6d-dfd88bad8ccf}</Project>
-      <Name>Microsoft.Owin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\libs\ProjectTanto\Owin\Owin.csproj">
-      <Project>{1b90d3cc-317c-4f53-8b4f-9bfeee858e30}</Project>
-      <Name>Owin</Name>
+    <ProjectReference Include="..\..\..\libs\Griffin.Networking\Source\Core\Protocols\Http\Griffin.Networking.Protocol.Http\Griffin.Networking.Protocol.Http.csproj">
+      <Project>{4271a51f-07b3-464e-8784-d44e95af0065}</Project>
+      <Name>Griffin.Networking.Protocol.Http</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

@@ -138,7 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Owin\Owin.csproj">
-      <Project>{1b90d3cc-317c-4f53-8b4f-9bfeee858e30}</Project>
+      <Project>{14fe3a9a-4476-4d08-b305-b5212f8288af}</Project>
       <Name>Owin</Name>
     </ProjectReference>
   </ItemGroup>
