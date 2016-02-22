@@ -42,14 +42,14 @@
         {
             foreach (var routeHandler in this.handlers)
             {
-                if (request.Uri.LocalPath.Contains(routeHandler.Key))
+                if (request.Uri.LocalPath.StartsWith(routeHandler.Key))
                 {
                     var result = await routeHandler.Value.ExecuteAsync(routeHandler.Key, request);
 
-                    using (result.Body)
-                    {
+                   // using (result.Body)
+                   // {
                         this.Send(result);
-                    }
+                   // }
                     break;
                 }
             }

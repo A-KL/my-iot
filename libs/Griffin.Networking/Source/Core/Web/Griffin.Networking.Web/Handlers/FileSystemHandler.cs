@@ -11,6 +11,8 @@
     {
         private readonly string filesRootDir;
 
+        private const string DefaultPage = "index.html";
+
         public FileSystemHandler(string root)
         {
             this.filesRootDir = root;
@@ -18,29 +20,39 @@
 
         public async override Task<IResponse> ExecuteAsync(string localPath, IRequest request)
         {
-            var response = request.CreateResponse(HttpStatusCode.OK, "Welcome");
+            try
+            {
+                var response = request.CreateResponse(HttpStatusCode.OK, "Welcome");
 
-            var filePath = GetFilePath(request.Uri, localPath);
+                var filePath = GetFilePath(request.Uri, localPath) ?? DefaultPage;
 
-            var appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+                var appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
 
-            var rooFolder = await appInstalledFolder.GetFolderAsync(this.filesRootDir);
+                var rooFolder = await appInstalledFolder.GetFolderAsync(this.filesRootDir);
+                
+                var fileStream = await rooFolder.OpenStreamForReadAsync(filePath);
+                
+                response.Body = fileStream;
 
-            var fileStream = await rooFolder.OpenStreamForReadAsync("index.html");
+                response.ContentType = HttpContentType.RolveFileExtension(Path.GetExtension(filePath)) ?? string.Empty;
 
-            response.Body = fileStream;
-
-            response.ContentType = HttpContentType.RolveFileExtension(Path.GetExtension(filePath) ?? "html");
-
-            return response;
+                return response;
+            }
+            catch (Exception error)
+            {
+                return request.CreateResponse(HttpStatusCode.NotFound, "No file");
+            }
         }
 
         private static string GetFilePath(Uri uri, string localPath)
         {
-            var host = new Uri(uri.Host);
-            var masterUri = new Uri(host, localPath);
+            var localUri = uri.LocalPath;
+            var index = localUri.IndexOf(localPath) + 1;
+            var relUri = localUri.Substring(index, localUri.Length - index);
 
-            return uri.MakeRelativeUri(masterUri).ToString();
+            var path = relUri.Replace("/", "\\");
+
+            return string.IsNullOrEmpty(path) ? null : path;
         }
     }
 }

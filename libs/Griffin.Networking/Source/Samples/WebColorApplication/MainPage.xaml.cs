@@ -5,7 +5,7 @@ using Griffin.Networking.Messaging;
 using Griffin.Networking.Protocol.Http;
 using Griffin.Networking.Web;
 using Griffin.Networking.Web.Handlers;
-using WebColorApplication.ViewModel;
+using WebColorApplication.ViewModel;    
 
 namespace WebColorApplication
 {
@@ -25,7 +25,7 @@ namespace WebColorApplication
                 new WebServiceFactory(settings),
                 new MessagingServerConfiguration(new HttpMessageFactory()));
 
-            server.Start(new IPEndPoint(new IPAddress(new byte[] { 127, 0, 0, 1 }), 8000));
+            server.Start(new IPEndPoint(new IPAddress(new byte[] { 192, 168, 1, 12 }), 8000));
 
             //SystemNavigationManager.GetForCurrentView().BackRequested += SystemNavigationManagerBackRequested;
 
