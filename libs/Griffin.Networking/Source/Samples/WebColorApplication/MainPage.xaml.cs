@@ -25,7 +25,7 @@ namespace WebColorApplication
                 new WebServiceFactory(settings),
                 new MessagingServerConfiguration(new HttpMessageFactory()));
 
-            server.Start(new IPEndPoint(new IPAddress(new byte[] { 192, 168, 1, 12 }), 8000));
+            server.Start(new IPEndPoint(new IPAddress(new byte[] { 127, 0, 0, 1 }), 8000));
 
             //SystemNavigationManager.GetForCurrentView().BackRequested += SystemNavigationManagerBackRequested;
 

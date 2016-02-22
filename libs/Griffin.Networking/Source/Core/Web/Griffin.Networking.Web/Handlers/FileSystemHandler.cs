@@ -16,11 +16,11 @@
             this.filesRootDir = root;
         }
 
-        public async override Task<IResponse> ExecuteAsync(IRequest request)
+        public async override Task<IResponse> ExecuteAsync(string localPath, IRequest request)
         {
             var response = request.CreateResponse(HttpStatusCode.OK, "Welcome");
 
-            var filePath = GetFilePath(request.Uri);
+            var filePath = GetFilePath(request.Uri, localPath);
 
             var appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
 
@@ -30,14 +30,17 @@
 
             response.Body = fileStream;
 
-            response.ContentType = HttpContentType.RolveFileExtension(Path.GetExtension(filePath));
+            response.ContentType = HttpContentType.RolveFileExtension(Path.GetExtension(filePath) ?? "html");
 
             return response;
         }
 
-        private static string GetFilePath(Uri uri)
+        private static string GetFilePath(Uri uri, string localPath)
         {
-            return "index.html";
+            var host = new Uri(uri.Host);
+            var masterUri = new Uri(host, localPath);
+
+            return uri.MakeRelativeUri(masterUri).ToString();
         }
     }
 }

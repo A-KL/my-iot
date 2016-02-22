@@ -44,7 +44,7 @@
             {
                 if (request.Uri.LocalPath.Contains(routeHandler.Key))
                 {
-                    var result = await routeHandler.Value.ExecuteAsync(request);
+                    var result = await routeHandler.Value.ExecuteAsync(routeHandler.Key, request);
 
                     using (result.Body)
                     {
