@@ -1,4 +1,7 @@
-﻿namespace Griffin.Networking.Web
+﻿using System.Net.Http;
+using Griffin.Networking.Protocol.Http.Implementation;
+
+namespace Griffin.Networking.Web
 {
     using System.Collections.Generic;
     using Buffers;
@@ -28,16 +31,6 @@
             this.handlers = settings.Handlers;
         }
 
-        public void AddMapping(string routePath, RouteHandler handler)
-        {
-            this.handlers.Add(routePath, handler);
-        }
-
-        public override void Dispose()
-        {
-
-        }
-
         public async override void OnRequest(IRequest request)
         {
             foreach (var routeHandler in this.handlers)
@@ -46,27 +39,18 @@
                 {
                     var result = await routeHandler.Value.ExecuteAsync(routeHandler.Key, request);
 
-                   // using (result.Body)
-                   // {
-                        this.Send(result);
-                   // }
+                    // using (result.Body)
+                    // {
+                    this.Send(result);
+                    // }
                     break;
                 }
             }
         }
+
+        public override void Dispose()
+        {
+
+        }
     }
-
-
-    //public class WebApi2 : RouteHandler
-    //{
-    //    public void Register<T>(string path)
-    //    {
-
-    //    }
-
-    //    public override Task<IResponse> Request<IResponse>(IRequest request)
-    //    {
-    //        return null;
-    //    }
-    //}
 }

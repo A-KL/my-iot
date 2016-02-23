@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Reflection;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Navigation;
 using Griffin.Networking.Messaging;
@@ -17,9 +18,12 @@ namespace WebColorApplication
         {
             InitializeComponent();
 
+            var assembly = this.GetType().GetTypeInfo().Assembly;
+
             var settings = new WebServiceSettings();
 
             settings.Handlers.Add("/", new FileSystemHandler("wwwroot"));
+            settings.Handlers.Add("/api", new WebApiHandler(assembly));
 
             var server = new MessagingServer(
                 new WebServiceFactory(settings),

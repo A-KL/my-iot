@@ -107,14 +107,23 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Handlers\WebApiHandler.cs" />
     <Compile Include="HttpContentType.cs" />
-    <Compile Include="HttpResponseMessage.cs" />
+    <Compile Include="System.Web.Http\Controllers\IHttpController.cs" />
+    <Compile Include="System.Web.Http\HttpControllerContext.cs" />
+    <Compile Include="System.Web.Http\HttpRequestMessage.cs" />
+    <Compile Include="System.Web.Http\HttpResponseMessage.cs" />
+    <Compile Include="System.Web.Http\IHttpActionResult.cs" />
+    <Compile Include="System.Web.Http\Results\BadRequestResult.cs" />
+    <Compile Include="System.Web.Http\Results\NegotiatedContentResult.cs" />
+    <Compile Include="System.Web.Http\Results\OkNegotiatedContentResult.cs" />
+    <Compile Include="System.Web.Http\Results\OkResult.cs" />
+    <Compile Include="System.Web.Http\Results\StatusCodeResult.cs" />
     <Compile Include="WebService.cs" />
     <Compile Include="Handlers\FileSystemHandler.cs" />
     <Compile Include="Handlers\RouteHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Handlers\RequestHandler.cs" />
-    <Compile Include="WebApi\ApiController.cs" />
+    <Compile Include="System.Web.Http\ApiController.cs" />
     <Compile Include="WebServiceFactory.cs" />
     <EmbeddedResource Include="Properties\Griffin.Networking.Web.rd.xml" />
   </ItemGroup>
@@ -128,9 +137,7 @@
       <Name>Griffin.Networking.Protocol.Http</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Results\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

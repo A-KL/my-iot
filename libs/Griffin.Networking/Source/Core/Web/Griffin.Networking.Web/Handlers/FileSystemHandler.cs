@@ -18,7 +18,7 @@
             this.filesRootDir = root;
         }
 
-        public async override Task<IResponse> ExecuteAsync(string localPath, IRequest request)
+        public override async Task<IResponse> ExecuteAsync(string localPath, IRequest request)
         {
             try
             {
@@ -29,9 +29,9 @@
                 var appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
 
                 var rooFolder = await appInstalledFolder.GetFolderAsync(this.filesRootDir);
-                
+
                 var fileStream = await rooFolder.OpenStreamForReadAsync(filePath);
-                
+
                 response.Body = fileStream;
 
                 response.ContentType = HttpContentType.RolveFileExtension(Path.GetExtension(filePath)) ?? string.Empty;
@@ -40,7 +40,7 @@
             }
             catch (Exception error)
             {
-                return request.CreateResponse(HttpStatusCode.NotFound, "No file");
+                return request.CreateResponse(HttpStatusCode.NotFound, error.Message);
             }
         }
 
