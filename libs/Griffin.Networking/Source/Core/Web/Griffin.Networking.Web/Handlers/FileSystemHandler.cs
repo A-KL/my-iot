@@ -18,13 +18,18 @@
             this.filesRootDir = root;
         }
 
-        public override async Task<IResponse> ExecuteAsync(string localPath, IRequest request)
+        public override string Route
+        {
+            get { return "/"; }
+        }
+
+        public override async Task<IResponse> ExecuteAsync(IRequest request)
         {
             try
             {
                 var response = request.CreateResponse(HttpStatusCode.OK, "Welcome");
 
-                var filePath = GetFilePath(request.Uri, localPath) ?? DefaultPage;
+                var filePath = GetFilePath(request.Uri, this.Route) ?? DefaultPage;
 
                 var appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
 

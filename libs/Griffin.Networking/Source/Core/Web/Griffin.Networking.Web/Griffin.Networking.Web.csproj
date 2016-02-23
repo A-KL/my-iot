@@ -111,7 +111,7 @@
     <Compile Include="System.Web.Http\RouteAttribute.cs" />
     <Compile Include="System.Web.Http\RoutePrefixAttribute.cs" />
     <Compile Include="System.Web.Http\HttpGetAttribute.cs" />
-    <Compile Include="Handlers\RouteHelper.cs" />
+    <Compile Include="Handlers\RouteAttributeHelper.cs" />
     <Compile Include="Handlers\TemplateRouteBuilder.cs" />
     <Compile Include="Handlers\WebApiHandler.cs" />
     <Compile Include="HttpContentType.cs" />

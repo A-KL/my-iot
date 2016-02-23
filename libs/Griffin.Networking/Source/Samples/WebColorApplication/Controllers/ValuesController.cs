@@ -7,9 +7,15 @@ namespace WebColorApplication.Controller
     public class ValuesController : ApiController
     {
         [HttpGet("")]
-        public IEnumerable<string> Get()
+        public IEnumerable<string> GetAll()
         {
             return new[] { "test", "value" };
         }
+
+        //[HttpPost("")]
+        //public void Save(string[] data)
+        //{
+            
+        //}
     }
 }

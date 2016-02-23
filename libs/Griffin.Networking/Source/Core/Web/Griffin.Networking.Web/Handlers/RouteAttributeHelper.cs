@@ -5,16 +5,14 @@ using System.Web.Http;
 
 namespace Griffin.Networking.Web.Handlers
 {
-    public class RouteHelper
+    public class RouteAttributeHelper
     {
         public static string ResolvePrefix(Type type)
         {
-            var routeFromName = GetRouteFromControllerName(type);
-
             var routeAttribute = type.GetTypeInfo().GetCustomAttribute<RoutePrefixAttribute>();
             if (routeAttribute == null)
             {
-                return routeFromName;
+                return null;
             }
 
             if (TemplateRouteBuilder.HasParamets(routeAttribute.Template))
@@ -23,31 +21,13 @@ namespace Griffin.Networking.Web.Handlers
 
                 if (builder.Parametrs.ContainsKey("controller"))
                 {
-                    builder.Parametrs["controller"] = routeFromName;
+                    builder.Parametrs["controller"] = GetRouteFromControllerName(type);
                 }
 
                 return builder.ToString();
             }
 
             return routeAttribute.Template;
-        }
-
-        public static string Resolve(MethodInfo method)
-        {
-            var routeAttribute = method.GetCustomAttribute<RouteAttribute>();
-
-            //  var route = GetRouteFromControllerName(type);
-
-            if (routeAttribute == null)
-            {
-                // route = GetRouteFromControllerName(type);
-            }
-            else
-            {
-
-            }
-
-            return null;
         }
 
         private static string GetRouteFromControllerName(Type type)

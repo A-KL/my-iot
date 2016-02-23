@@ -22,8 +22,8 @@ namespace WebColorApplication
 
             var settings = new WebServiceSettings();
 
-            settings.Handlers.Add("/", new FileSystemHandler("wwwroot"));
-            settings.Handlers.Add("/api", new WebApiHandler(assembly));
+            //settings.Handlers.Add(new FileSystemHandler("wwwroot"));
+            settings.Handlers.Add(new WebApiHandler(assembly));
 
             var server = new MessagingServer(
                 new WebServiceFactory(settings),

@@ -1,19 +1,17 @@
-﻿using System.Net.Http;
-using Griffin.Networking.Protocol.Http.Implementation;
-
-namespace Griffin.Networking.Web
+﻿namespace Griffin.Networking.Web
 {
     using System.Collections.Generic;
     using Buffers;
     using Handlers;
     using Protocol.Http;
-    using Protocol.Http.Protocol;
+    using Protocol.Http.Protocol;    
+    using Griffin.Networking.Protocol.Http.Implementation;
 
     public class WebServiceSettings
     {
-        private readonly IDictionary<string, RouteHandler> handlers = new Dictionary<string, RouteHandler>();
+        private readonly IList<RouteHandler> handlers = new List<RouteHandler>();
 
-        public IDictionary<string, RouteHandler> Handlers
+        public IList<RouteHandler> Handlers
         {
             get { return this.handlers; }
         }
@@ -23,7 +21,7 @@ namespace Griffin.Networking.Web
     {
         private readonly static BufferSliceStack Stack = new BufferSliceStack(50, 32000);
 
-        private IDictionary<string, RouteHandler> handlers = new Dictionary<string, RouteHandler>();
+        private readonly IList<RouteHandler> handlers = new List<RouteHandler>();
 
         public WebService(WebServiceSettings settings)
             : base(Stack)
@@ -35,9 +33,9 @@ namespace Griffin.Networking.Web
         {
             foreach (var routeHandler in this.handlers)
             {
-                if (request.Uri.LocalPath.StartsWith(routeHandler.Key))
+                if (request.Uri.LocalPath.StartsWith(routeHandler.Route))
                 {
-                    var result = await routeHandler.Value.ExecuteAsync(routeHandler.Key, request);
+                    var result = await routeHandler.ExecuteAsync(request);
 
                     // using (result.Body)
                     // {

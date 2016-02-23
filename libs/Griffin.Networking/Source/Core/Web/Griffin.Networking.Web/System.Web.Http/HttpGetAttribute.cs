@@ -1,11 +1,10 @@
 namespace System.Web.Http
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public class HttpGetAttribute : Attribute
+    public class HttpGetAttribute : RouteAttribute
     {
-        public HttpGetAttribute(string empty)
+        public HttpGetAttribute(string template) : base(template)
         {
-
         }
     }
 }
