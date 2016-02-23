@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Web.Http;
 
@@ -11,15 +9,11 @@ namespace Griffin.Networking.Web.Handlers
 
     public class WebApiHandler : RouteHandler
     {
-        private readonly IList<Type> controllersTypes = new List<Type>();
-        //private readonly IGrouping<Type, string> controllers;
+        private readonly IList<ApiControllerInfo> controllers;
 
-        public WebApiHandler(Assembly controllersAssembly)
+        public WebApiHandler(Assembly assembly)
         {
-            this.controllersTypes = (from assemblyType in controllersAssembly.GetTypes()
-                                     where typeof(ApiController).IsAssignableFrom(assemblyType)
-                                     select assemblyType)
-                                     .ToList();
+            this.controllers = ApiControllerInfo.Lookup<ApiController>(assembly);
         }
 
         public override Task<IResponse> ExecuteAsync(string localPath, IRequest request)
