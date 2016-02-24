@@ -1,26 +1,35 @@
 ﻿namespace Griffin.Networking.Web.Handlers
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
-
     using Protocol.Http.Protocol;
 
     public class FileSystemHandler : RouteHandler
     {
+        #region Private
+
         private readonly string filesRootDir;
 
         private const string DefaultPage = "index.html";
+
+        private const string route = "/";
+
+        #endregion
+
+        #region Public
 
         public FileSystemHandler(string root)
         {
             this.filesRootDir = root;
         }
 
-        public override string Route
+        public override IEnumerable<string> Routes
         {
-            get { return "/"; }
+            get { yield return route; }
         }
 
         public override async Task<IResponse> ExecuteAsync(IRequest request)
@@ -29,7 +38,7 @@
             {
                 var response = request.CreateResponse(HttpStatusCode.OK, "Welcome");
 
-                var filePath = GetFilePath(request.Uri, this.Route) ?? DefaultPage;
+                var filePath = GetFilePath(request.Uri, route) ?? DefaultPage;
 
                 var appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
 
@@ -48,6 +57,8 @@
                 return request.CreateResponse(HttpStatusCode.NotFound, error.Message);
             }
         }
+
+        #endregion
 
         private static string GetFilePath(Uri uri, string localPath)
         {

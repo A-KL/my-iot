@@ -4,8 +4,7 @@
     using Buffers;
     using Handlers;
     using Protocol.Http;
-    using Protocol.Http.Protocol;    
-    using Griffin.Networking.Protocol.Http.Implementation;
+    using Protocol.Http.Protocol;
 
     public class WebServiceSettings
     {
@@ -33,16 +32,20 @@
         {
             foreach (var routeHandler in this.handlers)
             {
-                if (request.Uri.LocalPath.StartsWith(routeHandler.Route))
+                foreach (var route in routeHandler.Routes)
                 {
-                    var result = await routeHandler.ExecuteAsync(request);
+                    if (request.Uri.LocalPath.StartsWith(route))
+                    {
+                        var result = await routeHandler.ExecuteAsync(request);
 
-                    // using (result.Body)
-                    // {
-                    this.Send(result);
-                    // }
-                    break;
+                        // using (result.Body)
+                        // {
+                        this.Send(result);
+                        // }
+                        break;
+                    }
                 }
+
             }
         }
 

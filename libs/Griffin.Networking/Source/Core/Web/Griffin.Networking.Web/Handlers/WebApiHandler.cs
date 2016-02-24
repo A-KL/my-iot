@@ -1,7 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Windows.UI.Xaml;
-
-namespace Griffin.Networking.Web.Handlers
+﻿namespace Griffin.Networking.Web.Handlers
 {
     using System;
     using System.Collections.Generic;
@@ -14,9 +11,9 @@ namespace Griffin.Networking.Web.Handlers
     {
         private readonly WebApiHost host;
 
-        public override string Route
+        public override IEnumerable<string> Routes
         {
-            get { return "/api"; }
+            get { return this.host.Routes; }
         }
 
         //public IEnumerable<string> Routes
@@ -27,24 +24,12 @@ namespace Griffin.Networking.Web.Handlers
         public WebApiHandler(Assembly assembly, IDictionary<string, string> map = null)
         {
             this.host = new WebApiHost(assembly, map);
+            this.host.Init();
         }
 
         public override Task<IResponse> ExecuteAsync(IRequest request)
         {
             var requsetPath = request.Uri.LocalPath;
-
-            foreach (var controllerInfo in this.controllers)
-            {
-                foreach (var attributeRoute in controllerInfo.AttributeRoutes)
-                {
-                    IDictionary<string, string> variables;
-
-                    if (MatchUriToRoute(request.Uri.LocalPath, attributeRoute, out variables))
-                    {
-                        
-                    }
-                }                
-            }
 
             return null;
         }

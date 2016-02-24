@@ -1,36 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web.Http;
-
-namespace Griffin.Networking.Web.Handlers
+﻿namespace Griffin.Networking.Web.Handlers
 {
-    public class ApiControllerMethodInfo
-    {
-        public ApiControllerMethodInfo(MethodInfo info)
-        {
-
-        }
-    }
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Web.Http;
 
     public class ApiControllerInfo
     {
         private Type controllerType;
 
+        private IEnumerable<string> routes;
+
         public IEnumerable<string> AttributeRoutes
         {
             get
             {
-                return GetAttributeRoutes(this.controllerType);
+                return (this.routes ?? (this.routes = GetAttributeRoutes(this.controllerType)));
             }
         }
 
         public ApiControllerInfo(Type controllerType)
         {
             this.controllerType = controllerType;
+        }
 
-            //this.resources = Resolve(this.controllerType);
+        public string Name
+        {
+            get; private set;
         }
 
         public static IList<ApiControllerInfo> Lookup<T>(Assembly assembly)
