@@ -12,24 +12,21 @@ namespace Griffin.Networking.Web.Handlers
 
     public class WebApiHandler : RouteHandler
     {
-        private readonly IList<ApiControllerInfo> controllers;
-        private readonly IDictionary<string, ApiControllerInfo> routesMap;
+        private readonly WebApiHost host;
 
         public override string Route
         {
             get { return "/api"; }
         }
 
-        public IEnumerable<string> Routes
-        {
-            get { return this.routesMap.Keys; }
-        }
+        //public IEnumerable<string> Routes
+        //{
+        //    get { return this.routesMap.Keys; }
+        //}
 
         public WebApiHandler(Assembly assembly, IDictionary<string, string> map = null)
         {
-            this.controllers = ApiControllerInfo.Lookup<ApiController>(assembly);
-
-            //this.routesMap = map ?? GetRoutesFromRoutingAttributes(this.controllers);
+            this.host = new WebApiHost(assembly, map);
         }
 
         public override Task<IResponse> ExecuteAsync(IRequest request)
