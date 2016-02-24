@@ -49,38 +49,7 @@ namespace Griffin.Networking.Web.Handlers
             return null;
         }
 
-        private static bool MatchUriToRoute(string localPath, string route, out IDictionary<string, string> variables)
-        {
-            variables = null;
 
-            var routeUriSegments = route.TrimStart('/').Split('/');
-            var uriSegments = localPath.TrimStart('/').Split('/');
-
-            if (routeUriSegments.Length != uriSegments.Length)
-            {
-                return false;
-            }
-
-            variables = new Dictionary<string, string>();
-
-            for (var i = 0; i < uriSegments.Length; ++i)
-            {
-                if (uriSegments[i].Equals(routeUriSegments[i], StringComparison.OrdinalIgnoreCase))
-                {
-                    continue;
-                }
-
-                var match = Regex.Match(routeUriSegments[i], @"{(\w+)}", RegexOptions.IgnoreCase);
-                if (!match.Success)
-                {
-                    return false;
-                }
-
-                variables.Add(match.Groups[1].Value, uriSegments[i]);
-            }
-
-            return true;
-        }
 
         private static IDictionary<string, ApiControllerInfo> GetRoutesFromRoutingAttributes(IEnumerable<ApiControllerInfo> controllers)
         {
