@@ -3,7 +3,8 @@
     using System.Collections.Generic;
     using System.Reflection;
     using System.Threading.Tasks;
-    using Griffin.Networking.Protocol.Http.Protocol;
+    using Protocol.Http.Protocol;
+    using WebApi;
 
     public class WebApiHandler : RouteHandler
     {
@@ -22,9 +23,7 @@
 
         public override Task<IResponse> ExecuteAsync(IRequest request)
         {
-            var requsetPath = request.Uri.LocalPath;
-
-            this.host.Invoke(requsetPath);
+            this.host.Invoke(request);
 
             return null;
         }

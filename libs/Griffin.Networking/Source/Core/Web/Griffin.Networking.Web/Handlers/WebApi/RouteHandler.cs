@@ -1,8 +1,7 @@
-﻿namespace Griffin.Networking.Web.Handlers
+﻿namespace Griffin.Networking.Web.Handlers.WebApi
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-
     using Protocol.Http.Protocol;
 
     public abstract class RouteHandler

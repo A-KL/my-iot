@@ -1,8 +1,10 @@
-﻿namespace Griffin.Networking.Web.Handlers
+﻿using Griffin.Networking.Protocol.Http.Protocol;
+using Griffin.Networking.Web.Serialization;
+
+namespace Griffin.Networking.Web.Handlers.WebApi
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
     using System.Text.RegularExpressions;
     using System.Web.Http;
@@ -32,11 +34,12 @@
 
     public class WebApiHost : IDisposable
     {
-        private IDictionary<string, ApiControllerInfo> controllers;
+        private readonly IDictionary<string, ApiControllerInfo> controllers = new Dictionary<string, ApiControllerInfo>();
 
         private readonly Assembly assembly;
 
         private IList<string> routes;
+
 
         public IEnumerable<string> Routes
         {
@@ -50,13 +53,16 @@
             if (map != null)
             {
                 this.routes = new List<string>();
+
                 this.routes.AddRange(map.Values);
             }
         }
 
         public void Init()
         {
-            var results = ApiControllerInfo.Lookup<ApiController>(this.assembly);
+            this.controllers.Clear();
+
+            var results = ApiControllerInfo.Lookup<ApiController>(this.assembly, new NamingAttributesResolver(), new ContentTypeFactory());
 
             if (this.routes != null)
             {
@@ -77,26 +83,28 @@
 
         }
 
-        public void Invoke(string localPath)
+        public void Invoke(IRequest request)
         {
             foreach (var route in this.routes)
             {
-                IDictionary<string, string> variables;
-
-                if (!MatchUriToRoute(localPath, route, out variables))
+                IDictionary<string, object> variables ;
+                
+                if (!MatchUriToRoute(request.Uri.LocalPath, route, out variables))
                 {
                     continue;
                 }
 
-                if (this.controllers.ContainsKey(variables["controller"]))
+                if (this.controllers.ContainsKey(variables["controller"].ToString()))
                 {
                     var controllerInfo = this.controllers["controller"];
-                    controllerInfo.Execute();
+                    this.controllers.Remove("controller");
+
+                    controllerInfo.Execute(request, variables);
                 }
             }
         }
 
-        private static bool MatchUriToRoute(string localPath, string route, out IDictionary<string, string> variables)
+        private static bool MatchUriToRoute(string localPath, string route, out IDictionary<string, object> variables)
         {
             variables = null;
 
@@ -108,7 +116,7 @@
                 return false;
             }
 
-            variables = new Dictionary<string, string>();
+            variables = new Dictionary<string, object>();
 
             for (var i = 0; i < uriSegments.Length; ++i)
             {

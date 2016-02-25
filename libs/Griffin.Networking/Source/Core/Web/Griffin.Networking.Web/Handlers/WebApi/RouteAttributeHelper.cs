@@ -1,10 +1,10 @@
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Web.Http;
-
-namespace Griffin.Networking.Web.Handlers
+namespace Griffin.Networking.Web.Handlers.WebApi
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+    using System.Web.Http;
+
     public class RouteAttributeHelper
     {
         public static string ResolvePrefix(Type type)

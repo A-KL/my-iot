@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-namespace Griffin.Networking.Web.Handlers
+namespace Griffin.Networking.Web.Handlers.WebApi
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
     public class TemplateRouteBuilder
     {
         private readonly Regex paramRegex = new Regex(@"{(\w+)}", RegexOptions.IgnoreCase);
@@ -11,11 +11,6 @@ namespace Griffin.Networking.Web.Handlers
         private readonly IDictionary<string, object> parametrs = new Dictionary<string, object>();
 
         private readonly string template;
-
-        public IDictionary<string, object> Parametrs
-        {
-            get { return this.parametrs; }
-        }
 
         public TemplateRouteBuilder(string template)
         {
@@ -27,6 +22,11 @@ namespace Griffin.Networking.Web.Handlers
             }
         }
 
+        public IDictionary<string, object> Parametrs
+        {
+            get { return this.parametrs; }
+        }
+        
         public override string ToString()
         {
             var result = string.Empty;
