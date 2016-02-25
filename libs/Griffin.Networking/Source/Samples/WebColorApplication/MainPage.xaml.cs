@@ -6,7 +6,7 @@ using Griffin.Networking.Messaging;
 using Griffin.Networking.Protocol.Http;
 using Griffin.Networking.Web;
 using Griffin.Networking.Web.Handlers;
-using WebColorApplication.ViewModel;    
+using WebColorApplication.ViewModel;
 
 namespace WebColorApplication
 {

@@ -1,9 +1,7 @@
 ﻿namespace Griffin.Networking.Web.Handlers
 {
-    using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using System.Web.Http;
     using System.Threading.Tasks;
     using Griffin.Networking.Protocol.Http.Protocol;
 
@@ -16,11 +14,6 @@
             get { return this.host.Routes; }
         }
 
-        //public IEnumerable<string> Routes
-        //{
-        //    get { return this.routesMap.Keys; }
-        //}
-
         public WebApiHandler(Assembly assembly, IDictionary<string, string> map = null)
         {
             this.host = new WebApiHost(assembly, map);
@@ -31,10 +24,10 @@
         {
             var requsetPath = request.Uri.LocalPath;
 
+            this.host.Invoke(requsetPath);
+
             return null;
         }
-
-
 
         private static IDictionary<string, ApiControllerInfo> GetRoutesFromRoutingAttributes(IEnumerable<ApiControllerInfo> controllers)
         {

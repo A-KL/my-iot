@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="Handlers\ApiControllerInfo.cs" />
     <Compile Include="Handlers\WebApiHost.cs" />
+    <Compile Include="System.Web.Http\HttpPostAttribute.cs" />
     <Compile Include="System.Web.Http\RouteAttribute.cs" />
     <Compile Include="System.Web.Http\RoutePrefixAttribute.cs" />
     <Compile Include="System.Web.Http\HttpGetAttribute.cs" />

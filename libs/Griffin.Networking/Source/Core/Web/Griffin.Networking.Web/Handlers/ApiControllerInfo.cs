@@ -1,4 +1,7 @@
-﻿namespace Griffin.Networking.Web.Handlers
+﻿using System.Threading.Tasks;
+using Griffin.Networking.Protocol.Http.Protocol;
+
+namespace Griffin.Networking.Web.Handlers
 {
     using System;
     using System.Collections.Generic;
@@ -12,6 +15,19 @@
 
         private IEnumerable<string> routes;
 
+
+        public ApiControllerInfo(Type controllerType)
+        {
+            this.controllerType = controllerType;
+
+            this.Name = GetRouteFromControllerName(this.controllerType);
+        }
+
+        public string Name
+        {
+            get; private set;
+        }
+
         public IEnumerable<string> AttributeRoutes
         {
             get
@@ -20,22 +36,22 @@
             }
         }
 
-        public ApiControllerInfo(Type controllerType)
-        {
-            this.controllerType = controllerType;
-        }
-
-        public string Name
-        {
-            get; private set;
-        }
-
         public static IList<ApiControllerInfo> Lookup<T>(Assembly assembly)
         {
             return (from assemblyType in assembly.GetTypes()
                     where typeof(T).IsAssignableFrom(assemblyType)
                     select new ApiControllerInfo(assemblyType))
                 .ToList();
+        }
+
+        public void Execute(IRequest request, IDictionary<string, string> variables)
+        {
+            using (var controller = (ApiController)Activator.CreateInstance(this.controllerType)) // TODO: add DI here
+            {
+                //controller.Request = request;
+
+
+            }
         }
 
         private static IEnumerable<string> GetAttributeRoutes(Type type)
@@ -62,6 +78,21 @@
             }
 
             return baseUri.TrimEnd('/') + "/" + relativeUri.TrimStart('/');
+        }
+
+        private static string GetRouteFromControllerName(Type type)
+        {
+            string[] exclusions = { "Controller", "ApiController" };
+
+            foreach (var exclude in exclusions.OrderBy(e => e.Length))
+            {
+                if (type.Name.EndsWith(exclude, StringComparison.OrdinalIgnoreCase))
+                {
+                    return type.Name.Replace(exclude, string.Empty).ToLower();
+                }
+            }
+
+            return type.Name;
         }
     }
 }

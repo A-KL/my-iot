@@ -32,7 +32,7 @@
 
     public class WebApiHost : IDisposable
     {
-        private IList<ApiControllerInfo> controllers;
+        private IDictionary<string, ApiControllerInfo> controllers;
 
         private readonly Assembly assembly;
 
@@ -56,7 +56,7 @@
 
         public void Init()
         {
-            this.controllers = ApiControllerInfo.Lookup<ApiController>(this.assembly);
+            var results = ApiControllerInfo.Lookup<ApiController>(this.assembly);
 
             if (this.routes != null)
             {
@@ -65,33 +65,35 @@
 
             this.routes = new List<string>();
 
-            foreach (var controllerInfo in this.controllers)
+            foreach (var controller in results)
             {
-                this.routes.MergeRange(controllerInfo.AttributeRoutes);
+                this.controllers.Add(controller.Name, controller);
+                this.routes.MergeRange(controller.AttributeRoutes);
             }
         }
 
         public void Dispose()
         {
-            
+
         }
 
-        private string GetMatchedRoute(string localPath)
+        public void Invoke(string localPath)
         {
-            foreach (var controllerInfo in this.controllers)
+            foreach (var route in this.routes)
             {
-                foreach (var attributeRoute in controllerInfo.AttributeRoutes)
+                IDictionary<string, string> variables;
+
+                if (!MatchUriToRoute(localPath, route, out variables))
                 {
-                    IDictionary<string, string> variables;
+                    continue;
+                }
 
-                    if (MatchUriToRoute(localPath, attributeRoute, out variables))
-                    {
-
-                    }
+                if (this.controllers.ContainsKey(variables["controller"]))
+                {
+                    var controllerInfo = this.controllers["controller"];
+                    controllerInfo.Execute();
                 }
             }
-
-            return null;
         }
 
         private static bool MatchUriToRoute(string localPath, string route, out IDictionary<string, string> variables)

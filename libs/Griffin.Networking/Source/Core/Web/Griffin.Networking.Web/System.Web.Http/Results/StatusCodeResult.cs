@@ -40,7 +40,7 @@ namespace System.Web.Http.Results
                 return;
             }
 
-            HttpRequestMessage request = this.controller.Request;
+            var request = this.controller.Request;
             if (request == null)
             {
                 throw new InvalidOperationException("SRResources.ApiController_RequestMustNotBeNull");

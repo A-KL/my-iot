@@ -23,7 +23,7 @@
             {
                 return null;
             }
-            return FileToContentMap[ext];            
+            return FileToContentMap[ext];
         }
     }
 }
