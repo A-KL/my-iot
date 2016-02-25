@@ -35,7 +35,7 @@
             {
                 foreach (var route in routeHandler.Routes)
                 {
-                    if (request.Uri.LocalPath.StartsWith(route))
+                   // if (request.Uri.LocalPath.StartsWith(route))
                     {
                         var result = await routeHandler.ExecuteAsync(request);
 

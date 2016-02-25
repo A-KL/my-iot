@@ -87,17 +87,19 @@ namespace Griffin.Networking.Web.Handlers.WebApi
         {
             foreach (var route in this.routes)
             {
-                IDictionary<string, object> variables ;
+                IDictionary<string, object> variables;
                 
                 if (!MatchUriToRoute(request.Uri.LocalPath, route, out variables))
                 {
                     continue;
                 }
 
-                if (this.controllers.ContainsKey(variables["controller"].ToString()))
+                var controllerName = variables["controller"].ToString();
+                variables.Remove("controller");
+
+                if (this.controllers.ContainsKey(controllerName))
                 {
-                    var controllerInfo = this.controllers["controller"];
-                    this.controllers.Remove("controller");
+                    var controllerInfo = this.controllers[controllerName];
 
                     controllerInfo.Execute(request, variables);
                 }
