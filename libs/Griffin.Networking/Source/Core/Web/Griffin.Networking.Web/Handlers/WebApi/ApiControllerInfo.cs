@@ -114,7 +114,7 @@
                             variables.Add(bodyParametr.Name, serializer.Deserialize(request.Body, bodyParametr.GetType()));                            
                         }
 
-                        controllerMethod.Key.Invoke(controller, variables.Values.ToArray());
+                        var result = controllerMethod.Key.Invoke(controller, variables.Values.ToArray());
                     }
                 }
                 catch (Exception error)
