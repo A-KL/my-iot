@@ -5,7 +5,7 @@ using Windows.UI.Xaml.Navigation;
 using Griffin.Networking.Messaging;
 using Griffin.Networking.Protocol.Http;
 using Griffin.Networking.Web;
-using Griffin.Networking.Web.Handlers;
+using Griffin.Networking.Web.Listeners;
 using WebColorApplication.ViewModel;
 
 namespace WebColorApplication
@@ -22,8 +22,9 @@ namespace WebColorApplication
 
             var settings = new WebServiceSettings();
 
-            //settings.Handlers.Add(new FileSystemHandler("wwwroot"));
-            settings.Handlers.Add(new WebApiHandler(assembly));
+            //UseStaticFiles
+            settings.Listeners.Add(new FileSystemListener("/", "wwwroot"));
+            settings.Listeners.Add(new WebApiListener(assembly));
 
             var server = new MessagingServer(
                 new WebServiceFactory(settings),

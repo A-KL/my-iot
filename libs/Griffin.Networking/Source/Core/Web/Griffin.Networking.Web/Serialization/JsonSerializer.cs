@@ -6,6 +6,8 @@
 
     public class HttpJsonSerializer : IHttpSerializer
     {
+        private readonly JsonSerializer serializer = new JsonSerializer();
+
         public void Dispose()
         {
             throw new System.NotImplementedException();
@@ -13,7 +15,19 @@
 
         public string Serialize(object data)
         {
-           return JsonConvert.SerializeObject(data);
+            return JsonConvert.SerializeObject(data);
+        }
+
+        public void Serialize(object data, Stream stream)
+        {
+            using (var writer = new StreamWriter(stream))
+            {
+                using (var jsonWriter = new JsonTextWriter(writer))
+                {
+                    serializer.Serialize(jsonWriter, data);
+                    jsonWriter.Flush();
+                }
+            }
         }
 
         public object Deserialize(Stream stream, Type targetType)

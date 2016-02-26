@@ -1,14 +1,16 @@
-﻿namespace Griffin.Networking.Web.Handlers.WebApi
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net.Http;
-    using System.Reflection;
-    using System.Web.Http;
-    using Protocol.Http.Protocol;
-    using Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Reflection;
+using System.Web.Http;
+using Griffin.Networking.Protocol.Http.Protocol;
+using Griffin.Networking.Web.Serialization;
 
+namespace Griffin.Networking.Web.Listeners.WebApi
+{
     public class NamingConventionResolver : INamingResolver
     {
         public HttpMethod Reslove(MethodInfo method)
@@ -82,7 +84,7 @@
                 .ToList();
         }
 
-        public void Execute(IRequest request, IDictionary<string, object> variables)
+        public IResponse Execute(IRequest request, IDictionary<string, object> variables)
         {
             using (var controller = (ApiController)Activator.CreateInstance(this.controllerType)) // TODO: add DI here
             {
@@ -103,18 +105,33 @@
                         {
                             continue;
                         }
-                        
+
+                        var serializer = this.factory.Create(request);
+
                         // Do we need to create a [FromBody] parameter
                         if (parameters.Length == variables.Count + 1)
                         {
                             var bodyParametr = parameters.Last();
 
-                            var serializer = this.factory.Create(request);
-                            
-                            variables.Add(bodyParametr.Name, serializer.Deserialize(request.Body, bodyParametr.GetType()));                            
+                            variables.Add(bodyParametr.Name, serializer.Deserialize(request.Body, bodyParametr.GetType()));
                         }
 
-                        var result = controllerMethod.Key.Invoke(controller, variables.Values.ToArray());
+                        var returnResult = controllerMethod.Key.Invoke(controller, variables.Values.ToArray());
+
+                        var returnParameter = controllerMethod.Key.ReturnParameter;
+
+                        var response = request.CreateResponse(HttpStatusCode.OK, "OK");
+
+                        if (!returnParameter.GetType().IsAssignableFrom(typeof(IHttpActionResult)))
+                        {
+                            var stream = new MemoryStream();
+
+                            serializer.Serialize(returnResult, stream);
+
+                            response.Body = stream;
+                        }
+
+                        return response;
                     }
                 }
                 catch (Exception error)
@@ -122,6 +139,8 @@
                     throw;
                 }
             }
+
+            return null;
         }
 
         private void PrepareMethodsInfo()

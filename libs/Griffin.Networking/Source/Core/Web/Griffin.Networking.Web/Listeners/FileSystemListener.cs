@@ -1,15 +1,14 @@
-﻿namespace Griffin.Networking.Web.Handlers
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-    using System.Net;
-    using System.Threading.Tasks;
-    using Protocol.Http.Protocol;
-    using WebApi;
+﻿using System;
+using System.IO;
+using System.Net;
+using System.Threading.Tasks;
+using Windows.Storage;
+using Griffin.Networking.Protocol.Http.Protocol;
+using Griffin.Networking.Web.Listeners.WebApi;
 
-    public class FileSystemHandler : RouteHandler
+namespace Griffin.Networking.Web.Listeners
+{
+    public class FileSystemListener : RouteListener
     {
         #region Private
 
@@ -17,20 +16,38 @@
 
         private const string DefaultPage = "index.html";
 
-        private const string route = "/";
+        private readonly string route;
+
+        private readonly StorageFolder appInstalledFolder;
 
         #endregion
 
         #region Public
 
-        public FileSystemHandler(string root)
+        public FileSystemListener(string uriRoot, string dirRoot)
         {
-            this.filesRootDir = root;
+            this.route = uriRoot;
+            this.filesRootDir = dirRoot;
+            this.appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
         }
 
-        public override IEnumerable<string> Routes
+        public override bool IsListeningTo(Uri uri)
         {
-            get { yield return route; }
+            //try
+            //{
+            //    var filePath = GetFilePath(uri, this.route) ?? DefaultPage;
+
+            //    var rooFolder = await appInstalledFolder.GetFolderAsync(this.filesRootDir);
+
+            //    await this.appInstalledFolder.GetFileAsync(fileName);
+            //    return true;
+            //}
+            //catch
+            //{
+            //    return false;
+            //}
+
+            return false;
         }
 
         public override async Task<IResponse> ExecuteAsync(IRequest request)
@@ -40,9 +57,7 @@
                 var response = request.CreateResponse(HttpStatusCode.OK, "Welcome");
 
                 var filePath = GetFilePath(request.Uri, route) ?? DefaultPage;
-
-                var appInstalledFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
-
+                
                 var rooFolder = await appInstalledFolder.GetFolderAsync(this.filesRootDir);
 
                 var fileStream = await rooFolder.OpenStreamForReadAsync(filePath);

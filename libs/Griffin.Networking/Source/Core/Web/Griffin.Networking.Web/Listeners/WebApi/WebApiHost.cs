@@ -1,14 +1,14 @@
-﻿using Griffin.Networking.Protocol.Http.Protocol;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Web.Http;
+using Griffin.Networking.Protocol.Http.Protocol;
+using Griffin.Networking.Web.Handlers.WebApi;
 using Griffin.Networking.Web.Serialization;
 
-namespace Griffin.Networking.Web.Handlers.WebApi
+namespace Griffin.Networking.Web.Listeners.WebApi
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System.Text.RegularExpressions;
-    using System.Web.Http;
-
     public static class IListExtensions
     {
         public static void AddRange<T>(this IList<T> list, IEnumerable<T> items)
@@ -83,12 +83,12 @@ namespace Griffin.Networking.Web.Handlers.WebApi
 
         }
 
-        public void Invoke(IRequest request)
+        public IResponse Invoke(IRequest request)
         {
             foreach (var route in this.routes)
             {
                 IDictionary<string, object> variables;
-                
+
                 if (!MatchUriToRoute(request.Uri.LocalPath, route, out variables))
                 {
                     continue;
@@ -101,9 +101,11 @@ namespace Griffin.Networking.Web.Handlers.WebApi
                 {
                     var controllerInfo = this.controllers[controllerName];
 
-                    controllerInfo.Execute(request, variables);
+                    return controllerInfo.Execute(request, variables);
                 }
             }
+
+            return null;
         }
 
         private static bool MatchUriToRoute(string localPath, string route, out IDictionary<string, object> variables)

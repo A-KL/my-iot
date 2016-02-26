@@ -1,4 +1,6 @@
-﻿namespace Griffin.Networking.Web
+﻿using Griffin.Networking.Web.Listeners.WebApi;
+
+namespace Griffin.Networking.Web
 {
     using System.Collections.Generic;
     using Buffers;
@@ -9,11 +11,11 @@
 
     public class WebServiceSettings
     {
-        private readonly IList<RouteHandler> handlers = new List<RouteHandler>();
+        private readonly IList<RouteListener> listeners = new List<RouteListener>();
 
-        public IList<RouteHandler> Handlers
+        public IList<RouteListener> Listeners
         {
-            get { return this.handlers; }
+            get { return this.listeners; }
         }
     }
 
@@ -21,32 +23,28 @@
     {
         private readonly static BufferSliceStack Stack = new BufferSliceStack(50, 32000);
 
-        private readonly IList<RouteHandler> handlers = new List<RouteHandler>();
+        private readonly IList<RouteListener> handlers = new List<RouteListener>();
 
         public WebService(WebServiceSettings settings)
             : base(Stack)
         {
-            this.handlers = settings.Handlers;
+            this.handlers = settings.Listeners;
         }
 
         public async override void OnRequest(IRequest request)
         {
             foreach (var routeHandler in this.handlers)
             {
-                foreach (var route in routeHandler.Routes)
+                // if (request.Uri.LocalPath.StartsWith(route))
                 {
-                   // if (request.Uri.LocalPath.StartsWith(route))
-                    {
-                        var result = await routeHandler.ExecuteAsync(request);
+                    var result = await routeHandler.ExecuteAsync(request);
 
-                        // using (result.Body)
-                        // {
-                        this.Send(result);
-                        // }
-                        break;
-                    }
+                    // using (result.Body)
+                    // {
+                    this.Send(result);
+                    // }
+                    break;
                 }
-
             }
         }
 

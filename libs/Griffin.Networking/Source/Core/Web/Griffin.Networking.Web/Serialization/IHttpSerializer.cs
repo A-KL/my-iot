@@ -7,6 +7,8 @@ namespace Griffin.Networking.Web.Serialization
     {
         string Serialize(object data);
 
+        void Serialize(object data, Stream stream);
+
         object Deserialize(Stream stream, Type targetType);
     }
 }
