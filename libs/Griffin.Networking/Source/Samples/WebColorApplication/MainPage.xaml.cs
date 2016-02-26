@@ -1,17 +1,19 @@
-﻿using System.Net;
-using System.Reflection;
-using Windows.UI.Core;
-using Windows.UI.Xaml.Navigation;
-using Griffin.Networking.Messaging;
-using Griffin.Networking.Protocol.Http;
-using Griffin.Networking.Web;
-using Griffin.Networking.Web.Listeners;
-using WebColorApplication.ViewModel;
-
-namespace WebColorApplication
+﻿namespace WebColorApplication
 {
+    using System.Net;
+    using System.Reflection;
+    using Windows.UI.Core;
+    using Windows.UI.Xaml.Navigation;
+    using Griffin.Networking.Messaging;
+    using Griffin.Networking.Protocol.Http;
+    using Griffin.Networking.Web;
+    using Griffin.Networking.Web.Listeners;
+    using WebColorApplication.ViewModel;
+
     public sealed partial class MainPage
     {
+        private const string DefaultPage = "index.html";
+
         public MainViewModel Vm => (MainViewModel)DataContext;
 
         public MainPage()
@@ -20,11 +22,14 @@ namespace WebColorApplication
 
             var assembly = this.GetType().GetTypeInfo().Assembly;
 
-            var settings = new WebServiceSettings();
-
+            var settings = new WebServiceSettings
+            {
+                DefaultPath = DefaultPage
+            };
+            
             //UseStaticFiles
             settings.Listeners.Add(new FileSystemListener("/", "wwwroot"));
-            settings.Listeners.Add(new WebApiListener(assembly));
+            settings.Listeners.Add(new WebApiListener(assembly)); // use attribute routing
 
             var server = new MessagingServer(
                 new WebServiceFactory(settings),

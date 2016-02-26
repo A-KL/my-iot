@@ -1,20 +1,20 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
-using Windows.Storage;
-using Griffin.Networking.Protocol.Http.Protocol;
-using Griffin.Networking.Web.Listeners.WebApi;
-
-namespace Griffin.Networking.Web.Listeners
+﻿namespace Griffin.Networking.Web.Listeners
 {
+    using System;
+    using System.IO;
+    using System.Net;
+    using System.Threading.Tasks;
+
+    using Windows.Storage;
+
+    using Griffin.Networking.Protocol.Http.Protocol;
+    using Griffin.Networking.Web.Listeners.WebApi;
+
     public class FileSystemListener : RouteListener
     {
         #region Private
 
         private readonly string filesRootDir;
-
-        private const string DefaultPage = "index.html";
 
         private readonly string route;
 
@@ -33,19 +33,10 @@ namespace Griffin.Networking.Web.Listeners
 
         public override bool IsListeningTo(Uri uri)
         {
-            //try
-            //{
-            //    var filePath = GetFilePath(uri, this.route) ?? DefaultPage;
-
-            //    var rooFolder = await appInstalledFolder.GetFolderAsync(this.filesRootDir);
-
-            //    await this.appInstalledFolder.GetFileAsync(fileName);
-            //    return true;
-            //}
-            //catch
-            //{
-            //    return false;
-            //}
+            if (!string.IsNullOrEmpty(Path.GetExtension(uri.LocalPath)))
+            {
+                return true;
+            }
 
             return false;
         }
@@ -54,10 +45,10 @@ namespace Griffin.Networking.Web.Listeners
         {
             try
             {
-                var response = request.CreateResponse(HttpStatusCode.OK, "Welcome");
+                var response = request.CreateResponse(HttpStatusCode.OK, "File explorer");
 
-                var filePath = GetFilePath(request.Uri, route) ?? DefaultPage;
-                
+                var filePath = GetFilePath(request.Uri, route);
+
                 var rooFolder = await appInstalledFolder.GetFolderAsync(this.filesRootDir);
 
                 var fileStream = await rooFolder.OpenStreamForReadAsync(filePath);

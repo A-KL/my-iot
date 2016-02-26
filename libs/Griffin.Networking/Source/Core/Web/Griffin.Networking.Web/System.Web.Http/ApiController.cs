@@ -41,9 +41,7 @@
         {
             return new OkResult(this);
         }
-
-
-
+        
         /// <summary>
         /// Gets or sets the HttpRequestMessage of the current <see cref="T:System.Web.Http.ApiController"/>.
         /// </summary>

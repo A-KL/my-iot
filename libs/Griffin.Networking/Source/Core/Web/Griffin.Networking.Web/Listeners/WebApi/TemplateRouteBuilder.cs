@@ -1,4 +1,4 @@
-namespace Griffin.Networking.Web.Handlers.WebApi
+namespace Griffin.Networking.Web.Listeners.WebApi
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -8,7 +8,7 @@ namespace Griffin.Networking.Web.Handlers.WebApi
     {
         private readonly Regex paramRegex = new Regex(@"{(\w+)}", RegexOptions.IgnoreCase);
 
-        private readonly IDictionary<string, object> parametrs = new Dictionary<string, object>();
+        private readonly IDictionary<string, object> parameters = new Dictionary<string, object>();
 
         private readonly string template;
 
@@ -18,20 +18,20 @@ namespace Griffin.Networking.Web.Handlers.WebApi
 
             foreach (Match match in this.paramRegex.Matches(this.template))
             {
-                this.parametrs.Add(match.Groups[1].Value, null);
+                this.parameters.Add(match.Groups[1].Value, null);
             }
         }
 
-        public IDictionary<string, object> Parametrs
+        public IDictionary<string, object> Parameters
         {
-            get { return this.parametrs; }
+            get { return this.parameters; }
         }
-        
+
         public override string ToString()
         {
             var result = string.Empty;
 
-            foreach (var parametr in this.parametrs)
+            foreach (var parametr in this.parameters)
             {
                 result = this.template.Replace("{" + parametr.Key + "}", parametr.Value.ToString());
             }

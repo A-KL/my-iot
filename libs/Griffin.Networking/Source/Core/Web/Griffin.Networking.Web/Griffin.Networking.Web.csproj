@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Listeners\WebApi\ApiControllerInfo.cs" />
+    <Compile Include="ListExtensions.cs" />
     <Compile Include="Serialization\ContentTypeFactory.cs" />
     <Compile Include="Serialization\ISerializationFactory.cs" />
     <Compile Include="Serialization\IHttpSerializer.cs" />
@@ -117,7 +118,6 @@
     <Compile Include="System.Web.Http\RouteAttribute.cs" />
     <Compile Include="System.Web.Http\RoutePrefixAttribute.cs" />
     <Compile Include="System.Web.Http\HttpGetAttribute.cs" />
-    <Compile Include="Listeners\WebApi\RouteAttributeHelper.cs" />
     <Compile Include="Listeners\WebApi\TemplateRouteBuilder.cs" />
     <Compile Include="Listeners\WebApiListener.cs" />
     <Compile Include="HttpContentType.cs" />
@@ -137,6 +137,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System.Web.Http\ApiController.cs" />
     <Compile Include="WebServiceFactory.cs" />
+    <Compile Include="WebServiceSettings.cs" />
     <EmbeddedResource Include="Properties\Griffin.Networking.Web.rd.xml" />
   </ItemGroup>
   <ItemGroup>

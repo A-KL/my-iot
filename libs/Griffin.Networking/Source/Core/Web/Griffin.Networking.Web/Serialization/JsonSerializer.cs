@@ -21,23 +21,20 @@
         public void Serialize(object data, Stream stream)
         {
             using (var writer = new StreamWriter(stream))
+            using (var jsonWriter = new JsonTextWriter(writer))
             {
-                using (var jsonWriter = new JsonTextWriter(writer))
-                {
-                    serializer.Serialize(jsonWriter, data);
-                    jsonWriter.Flush();
-                }
+                serializer.Serialize(jsonWriter, data);
+                jsonWriter.Flush();
             }
+
         }
 
         public object Deserialize(Stream stream, Type targetType)
         {
-            var serializer = new JsonSerializer();
-
             using (var sr = new StreamReader(stream))
             using (var jsonTextReader = new JsonTextReader(sr))
             {
-                return serializer.Deserialize(jsonTextReader, targetType);
+                return this.serializer.Deserialize(jsonTextReader, targetType);
             }
         }
     }

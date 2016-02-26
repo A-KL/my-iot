@@ -4,34 +4,10 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Http;
 using Griffin.Networking.Protocol.Http.Protocol;
-using Griffin.Networking.Web.Handlers.WebApi;
 using Griffin.Networking.Web.Serialization;
 
 namespace Griffin.Networking.Web.Listeners.WebApi
 {
-    public static class IListExtensions
-    {
-        public static void AddRange<T>(this IList<T> list, IEnumerable<T> items)
-        {
-            foreach (var item in items)
-            {
-                list.Add(item);
-            }
-        }
-
-        public static void MergeRange<T>(this IList<T> list, IEnumerable<T> items)
-        {
-            foreach (var item in items)
-            {
-                if (list.Contains(item))
-                {
-                    continue;
-                }
-                list.Add(item);
-            }
-        }
-    }
-
     public class WebApiHost : IDisposable
     {
         private readonly IDictionary<string, ApiControllerInfo> controllers = new Dictionary<string, ApiControllerInfo>();

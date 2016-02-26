@@ -4,7 +4,7 @@
 
     public sealed class HttpContentType
     {
-        private readonly static IDictionary<string, string> FileToContentMap = new Dictionary<string, string>
+        private static readonly IDictionary<string, string> FileToContentMap = new Dictionary<string, string>
         {
             { ".html", Html }, { ".jpeg", ImageJpeg }, { ".js", JavaScript }, { ".json", Json }, { ".css", Css }
         };

@@ -213,6 +213,5 @@ namespace Griffin.Networking.Web.Listeners.WebApi
 
             return baseUri.TrimEnd('/') + "/" + relativeUri.TrimStart('/');
         }
-
     }
 }

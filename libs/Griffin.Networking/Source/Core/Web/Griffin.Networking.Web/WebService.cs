@@ -1,41 +1,40 @@
-﻿using Griffin.Networking.Web.Listeners.WebApi;
-
-namespace Griffin.Networking.Web
+﻿namespace Griffin.Networking.Web
 {
+    using System;
     using System.Collections.Generic;
     using Buffers;
-    using Handlers;
-    using Handlers.WebApi;
     using Protocol.Http;
     using Protocol.Http.Protocol;
-
-    public class WebServiceSettings
-    {
-        private readonly IList<RouteListener> listeners = new List<RouteListener>();
-
-        public IList<RouteListener> Listeners
-        {
-            get { return this.listeners; }
-        }
-    }
+    using Griffin.Networking.Web.Listeners.WebApi;
 
     public class WebService : HttpService
     {
-        private readonly static BufferSliceStack Stack = new BufferSliceStack(50, 32000);
+        private static readonly BufferSliceStack Stack = new BufferSliceStack(50, 32000);
 
-        private readonly IList<RouteListener> handlers = new List<RouteListener>();
+        private readonly IList<RouteListener> handlers;
+
+        private readonly WebServiceSettings settings;
 
         public WebService(WebServiceSettings settings)
             : base(Stack)
         {
-            this.handlers = settings.Listeners;
+            this.settings = settings;
+
+            this.handlers = this.settings.Listeners;
         }
 
-        public async override void OnRequest(IRequest request)
+        public override async void OnRequest(IRequest request)
         {
+            var localPath = request.Uri.LocalPath.TrimEnd('/');
+
+            if (string.IsNullOrEmpty(localPath) && !string.IsNullOrEmpty(settings.DefaultPath))
+            {
+                request.Uri = new Uri(request.Uri.AbsolutePath.TrimEnd('/') + "/" + settings.DefaultPath);
+            }
+
             foreach (var routeHandler in this.handlers)
             {
-                // if (request.Uri.LocalPath.StartsWith(route))
+                if (routeHandler.IsListeningTo(request.Uri))
                 {
                     var result = await routeHandler.ExecuteAsync(request);
 
