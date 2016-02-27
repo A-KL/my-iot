@@ -1,20 +1,15 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
-using GalaSoft.MvvmLight.Threading;
-using GalaSoft.MvvmLight.Views;
-using Griffin.Networking.Messaging;
-using Griffin.Networking.Protocol.Http;
-using Griffin.Networking.Web;
-using Griffin.Networking.Web.Handlers;
-using Microsoft.Practices.ServiceLocation;
-using WebColorApplication.Model;
-
-namespace WebColorApplication.ViewModel
+﻿namespace WebColorApplication.ViewModel
 {
+    using System;
+    using System.Threading.Tasks;
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Command;
+    using GalaSoft.MvvmLight.Messaging;
+    using GalaSoft.MvvmLight.Threading;
+    using GalaSoft.MvvmLight.Views;
+    using Microsoft.Practices.ServiceLocation;
+    using Model;
+
     public class MainViewModel : ViewModelBase
     {
         public const string ClockPropertyName = "Clock";

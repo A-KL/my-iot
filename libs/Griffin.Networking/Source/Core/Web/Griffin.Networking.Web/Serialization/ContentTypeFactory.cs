@@ -10,6 +10,7 @@
             switch (request.ContentType)
             {
                 case HttpContentType.Json:
+                case null:
                     return new HttpJsonSerializer();
                 default:
                     throw new Exception("Content type " + request.ContentType + " is not supported");

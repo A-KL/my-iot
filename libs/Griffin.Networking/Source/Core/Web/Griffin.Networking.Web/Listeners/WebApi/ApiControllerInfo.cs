@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Text;
 using System.Web.Http;
 using Griffin.Networking.Protocol.Http.Protocol;
 using Griffin.Networking.Web.Serialization;
@@ -113,7 +114,7 @@ namespace Griffin.Networking.Web.Listeners.WebApi
                         {
                             var bodyParametr = parameters.Last();
 
-                            variables.Add(bodyParametr.Name, serializer.Deserialize(request.Body, bodyParametr.GetType()));
+                            variables.Add(bodyParametr.Name, serializer.Deserialize(request.Body, bodyParametr.ParameterType));
                         }
 
                         var returnResult = controllerMethod.Key.Invoke(controller, variables.Values.ToArray());
@@ -122,21 +123,34 @@ namespace Griffin.Networking.Web.Listeners.WebApi
 
                         var response = request.CreateResponse(HttpStatusCode.OK, "OK");
 
-                        if (!returnParameter.GetType().IsAssignableFrom(typeof(IHttpActionResult)))
+                        if (returnParameter.GetType().IsAssignableFrom(typeof(IHttpActionResult)))
                         {
-                            var stream = new MemoryStream();
-
-                            serializer.Serialize(returnResult, stream);
-
-                            response.Body = stream;
+                            return response;
                         }
+
+                        if (returnParameter.ParameterType == typeof(void))
+                        {
+                            return response;
+                        }
+
+                        var stream = new MemoryStream();
+
+                        var body = serializer.Serialize(returnResult);
+
+                        var bin = Encoding.UTF8.GetBytes(body);
+
+                        stream.WriteAsync(bin, 0, bin.Length);
+                        stream.Position = 0;
+                        response.Body = stream;
+                        response.ContentType = request.ContentType ?? serializer.ContentType;
+                        response.ContentLength = bin.Length;
 
                         return response;
                     }
                 }
                 catch (Exception error)
                 {
-                    throw;
+                    //throw;
                 }
             }
 

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Threading.Tasks;
-using Griffin.Networking.Protocol.Http.Protocol;
-using Griffin.Networking.Web.Listeners.WebApi;
-
-namespace Griffin.Networking.Web.Listeners
+﻿namespace Griffin.Networking.Web.Listeners
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Threading.Tasks;
+    using Protocol.Http.Protocol;
+    using WebApi;
+
     public class WebApiListener : RouteListener
     {
         private readonly WebApiHost host;

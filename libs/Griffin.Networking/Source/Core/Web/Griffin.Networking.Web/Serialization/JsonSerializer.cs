@@ -8,6 +8,11 @@
     {
         private readonly JsonSerializer serializer = new JsonSerializer();
 
+        public string ContentType
+        {
+            get { return HttpContentType.Json; }
+        }
+
         public void Dispose()
         {
             throw new System.NotImplementedException();
@@ -24,7 +29,6 @@
             using (var jsonWriter = new JsonTextWriter(writer))
             {
                 serializer.Serialize(jsonWriter, data);
-                jsonWriter.Flush();
             }
 
         }
