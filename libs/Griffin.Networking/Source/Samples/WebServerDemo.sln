@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebColorApplication", "WebColorApplication\WebColorApplication.csproj", "{EA0C9F2F-9F73-4DF8-B5FC-8E00B875DAA8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServerDemo", "WebServerDemo\WebServerDemo.csproj", "{EA0C9F2F-9F73-4DF8-B5FC-8E00B875DAA8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".libs", ".libs", "{14D26A06-2F19-4A1F-B5AB-72B624333738}"
 EndProject

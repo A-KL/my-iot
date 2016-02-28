@@ -75,7 +75,7 @@
                 {
                     var controllerInfo = this.controllers[controllerName];
 
-                    return Task.FromResult(controllerInfo.Execute(request, variables, resolver));
+                    return controllerInfo.Execute(request, variables, resolver);
                 }
             }
 

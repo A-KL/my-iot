@@ -1,4 +1,6 @@
-﻿namespace WebColorApplication
+﻿using WebServerDemo.Model;
+
+namespace WebServerDemo
 {
     using System.Net;
     using System.Reflection;
@@ -14,8 +16,6 @@
     using Microsoft.Iot.Web;
     using Microsoft.Iot.Web.Api;
     using Microsoft.Iot.Web.FileSystem;
-
-    using WebColorApplication.Model;
 
     public sealed partial class MainPage
     {

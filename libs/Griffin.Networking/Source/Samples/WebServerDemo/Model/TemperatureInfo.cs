@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebColorApplication.Model
+namespace WebServerDemo.Model
 {
     public class TemperatureInfo
     {

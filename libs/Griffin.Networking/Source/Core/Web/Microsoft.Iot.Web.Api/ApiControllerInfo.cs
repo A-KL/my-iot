@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Griffin.Networking.Protocol.Http.Protocol;
 using Microsoft.Iot.Web.Api.Resolver;
@@ -60,7 +61,7 @@ namespace Microsoft.Iot.Web.Api
         }
 
 
-        public IResponse Execute(IRequest request, IDictionary<string, object> variables, IDependencyResolver resolver)
+        public async Task<IResponse> Execute(IRequest request, IDictionary<string, object> variables, IDependencyResolver resolver)
         {
             using (var controller = CreateInstance<ApiController>(this.controllerType, resolver))
             {
@@ -98,6 +99,7 @@ namespace Microsoft.Iot.Web.Api
 
                     if (returnParameter.GetType().IsAssignableFrom(typeof(IHttpActionResult)))
                     {
+                        // TODO: serialize data from IHttpActionResult
                         return response;
                     }
 
@@ -106,13 +108,24 @@ namespace Microsoft.Iot.Web.Api
                         return response;
                     }
 
+                    if (returnParameter.ParameterType == typeof(Task))
+                    {
+                        await (Task)returnResult;
+                        return response;
+                    }
+
+                    if (returnParameter.ParameterType.IsAssignableFrom(typeof(Task)))
+                    {
+                        returnResult = await (dynamic)returnResult;
+                    }
+
                     var stream = new MemoryStream();
 
                     var body = serializer.Serialize(returnResult);
 
                     var bin = Encoding.UTF8.GetBytes(body);
 
-                    stream.WriteAsync(bin, 0, bin.Length);
+                    await stream.WriteAsync(bin, 0, bin.Length);
                     stream.Position = 0;
                     response.Body = stream;
                     response.ContentType = request.ContentType ?? serializer.ContentType;

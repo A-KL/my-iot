@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Navigation;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 
-namespace WebColorApplication
+namespace WebServerDemo
 {
     sealed partial class App
     {

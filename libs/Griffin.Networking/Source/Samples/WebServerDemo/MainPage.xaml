@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-      x:Class="WebColorApplication.MainPage"
+      x:Class="WebServerDemo.MainPage"
       mc:Ignorable="d">
 
     <Grid>
@@ -18,8 +18,8 @@
             </LinearGradientBrush>
         </Grid.Background>
         <StackPanel>
-        <Image Source="../Assets/50BillionThings.png" Stretch="Uniform" Width="100" Margin="10"/>
-        <TextBlock Foreground="White" HorizontalAlignment="Center">IoT Web Server Demo</TextBlock>
+        <Image Source="../Assets/50BillionThings.png" Stretch="Uniform" Width="300" Margin="10"/>
+        <TextBlock Foreground="White" HorizontalAlignment="Center" FontSize="20">IoT Web Server Demo</TextBlock>
         </StackPanel>
     </Grid>
 </Page>

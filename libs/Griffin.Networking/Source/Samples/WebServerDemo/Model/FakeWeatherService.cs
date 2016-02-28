@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace WebColorApplication.Model
+namespace WebServerDemo.Model
 {
     public class FakeWeatherService : IWeatherService
     {

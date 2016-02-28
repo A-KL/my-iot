@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Griffin.Networking.Web.System.Web.Http;
-using WebColorApplication.Model;
+using WebServerDemo.Model;
 
-namespace WebColorApplication.Controllers
+namespace WebServerDemo.Controllers
 {
     [RoutePrefix("api/{controller}")]
     public class TemperatureController : ApiController
@@ -17,7 +18,7 @@ namespace WebColorApplication.Controllers
         }
 
         [HttpGet("")]
-        public IEnumerable<TemperatureInfo> GetFor10Days()
+        public async Task<IEnumerable<TemperatureInfo>> GetFor10Days()
         {
             var period = TimeSpan.FromDays(10);
 

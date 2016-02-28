@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebColorApplication.Model
+namespace WebServerDemo.Model
 {
     public interface IWeatherService
     {
