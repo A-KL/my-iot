@@ -1,13 +1,22 @@
-﻿namespace WebColorApplication
+﻿using WebColorApplication.Model;
+
+namespace WebColorApplication
 {
     using System.Net;
     using System.Reflection;
     using Windows.UI.Core;
     using Windows.UI.Xaml.Navigation;
+
     using Griffin.Networking.Messaging;
     using Griffin.Networking.Protocol.Http;
     using Griffin.Networking.Web;
-    using Griffin.Networking.Web.Listeners;
+
+    using Microsoft.Practices.Unity;
+
+    using Microsoft.Iot.Web;
+    using Microsoft.Iot.Web.Api;
+    using Microsoft.Iot.Web.FileSystem;
+
     using WebColorApplication.ViewModel;
 
     public sealed partial class MainPage
@@ -20,13 +29,20 @@
         {
             InitializeComponent();
 
+            var container = new UnityContainer();
+
+             container.RegisterType<IAdcService, VirtualAdcService>(new HierarchicalLifetimeManager());
+
+
             var assembly = this.GetType().GetTypeInfo().Assembly;
 
-            var settings = new WebServiceSettings
+            var settings = new HttpConfiguration
             {
-                DefaultPath = DefaultPage
+                DefaultPath = DefaultPage,
+                DependencyResolver = new UnityResolver(container)
             };
-            
+
+           
             //UseStaticFiles
             settings.Listeners.Add(new FileSystemListener("/", "wwwroot"));
             settings.Listeners.Add(new WebApiListener(assembly)); // use attribute routing

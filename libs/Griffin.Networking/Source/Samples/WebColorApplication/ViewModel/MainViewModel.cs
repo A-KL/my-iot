@@ -15,7 +15,6 @@
         public const string ClockPropertyName = "Clock";
         public const string WelcomeTitlePropertyName = "WelcomeTitle";
 
-        private readonly IDataService _dataService;
         private readonly INavigationService _navigationService;
         private string _clock = "Starting...";
         private int _counter;
@@ -109,14 +108,8 @@
             }
         }
 
-        public MainViewModel(
-            IDataService dataService,
-            INavigationService navigationService)
+        public MainViewModel(INavigationService navigationService)
         {
-            //_dataService = dataService;
-            //_navigationService = navigationService;
-            //Initialize();
-
 
         }
 
@@ -147,21 +140,6 @@
         public void StopClock()
         {
             _runClock = false;
-        }
-
-        private async Task Initialize()
-        {
-            try
-            {
-                var item = await _dataService.GetData();
-                _originalTitle = item.Title;
-                WelcomeTitle = item.Title;
-            }
-            catch (Exception ex)
-            {
-                // Report error here
-                WelcomeTitle = ex.Message;
-            }
         }
     }
 }

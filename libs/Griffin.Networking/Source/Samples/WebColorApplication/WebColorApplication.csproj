@@ -245,13 +245,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Design\DesignDataService.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\DataItem.cs" />
-    <Compile Include="Model\DataService.cs" />
-    <Compile Include="Model\IDataService.cs" />
+    <Compile Include="Model\IAdcService.cs" />
+    <Compile Include="Model\VirtualAdcService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecondPage.xaml.cs">
       <DependentUpon>SecondPage.xaml</DependentUpon>
@@ -319,9 +317,17 @@
       <Project>{4271a51f-07b3-464e-8784-d44e95af0065}</Project>
       <Name>Griffin.Networking.Protocol.Http</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Core\Web\Griffin.Networking.Web\Griffin.Networking.Web.csproj">
-      <Project>{e18bef7e-a44d-4b78-9a6d-e4b854c99074}</Project>
-      <Name>Griffin.Networking.Web</Name>
+    <ProjectReference Include="..\..\Core\Web\Microsoft.Iot.Web.Api\Microsoft.Iot.Web.Api.csproj">
+      <Project>{23485136-5108-4fb0-a815-645cc9c6eaaa}</Project>
+      <Name>Microsoft.Iot.Web.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Web\Microsoft.Iot.Web.FileSystem\Microsoft.Iot.Web.FileSystem.csproj">
+      <Project>{9c0e24e5-cdbb-4d37-ae01-0cb2ede02f29}</Project>
+      <Name>Microsoft.Iot.Web.FileSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Web\Microsoft.Iot.Web\Microsoft.Iot.Web.csproj">
+      <Project>{0249a320-16a8-4995-8b7e-0fb78756f3cc}</Project>
+      <Name>Microsoft.Iot.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
