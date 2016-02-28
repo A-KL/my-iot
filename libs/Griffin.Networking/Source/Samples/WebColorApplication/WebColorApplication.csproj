@@ -90,6 +90,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="Assets\50BillionThings.png" />
     <Content Include="wwwroot2\index.html" />
     <Content Include="wwwroot2\index_files\bootstrap-select.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -245,18 +246,17 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\TemperatureController.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\IAdcService.cs" />
-    <Compile Include="Model\VirtualAdcService.cs" />
+    <Compile Include="Model\FakeWeatherService.cs" />
+    <Compile Include="Model\IWeatherService.cs" />
+    <Compile Include="Model\TemperatureInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecondPage.xaml.cs">
       <DependentUpon>SecondPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

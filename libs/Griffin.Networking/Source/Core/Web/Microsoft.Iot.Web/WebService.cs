@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using Microsoft.Iot.Web;
 
 namespace Griffin.Networking.Web
 {
     using Buffers;
     using Protocol.Http;
-    using Protocol.Http.Protocol;   
+    using Protocol.Http.Protocol;
 
     public class WebService : HttpService
     {
@@ -30,21 +31,27 @@ namespace Griffin.Networking.Web
 
             if (string.IsNullOrEmpty(localPath) && !string.IsNullOrEmpty(settings.DefaultPath))
             {
-                request.Uri = new Uri(request.Uri.AbsolutePath.TrimEnd('/') + "/" + settings.DefaultPath);
+                request.Uri = new Uri(request.Uri.AbsoluteUri.TrimEnd('/') + "/" + settings.DefaultPath);
             }
 
-            foreach (var routeHandler in this.handlers)
+            try
             {
-                if (routeHandler.IsListeningTo(request.Uri))
-                {
-                    var result = await routeHandler.ExecuteAsync(request, settings.DependencyResolver);
 
-                    // using (result.Body)
-                    // {
-                    this.Send(result);
-                    // }
-                    break;
+                foreach (var routeHandler in this.handlers)
+                {
+                    if (routeHandler.IsListeningTo(request.Uri))
+                    {
+                        var result = await routeHandler.ExecuteAsync(request, settings.DependencyResolver);                        
+                        this.Send(result);
+                        break;
+                    }
                 }
+            }
+            catch (Exception error)
+            {
+                var response = request.CreateResponse(HttpStatusCode.InternalServerError, error.Message);
+
+                this.Send(response);                
             }
         }
 

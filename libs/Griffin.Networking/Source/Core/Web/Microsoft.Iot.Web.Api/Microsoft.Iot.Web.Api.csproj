@@ -114,7 +114,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TemplateRouteBuilder.cs" />
     <Compile Include="UnityResolver.cs" />
-    <Compile Include="WebApiHost.cs" />
     <Compile Include="WebApiListener.cs" />
     <EmbeddedResource Include="Properties\Microsoft.Iot.Web.Api.rd.xml" />
   </ItemGroup>

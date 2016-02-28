@@ -1,6 +1,4 @@
-﻿using WebColorApplication.Model;
-
-namespace WebColorApplication
+﻿namespace WebColorApplication
 {
     using System.Net;
     using System.Reflection;
@@ -17,13 +15,11 @@ namespace WebColorApplication
     using Microsoft.Iot.Web.Api;
     using Microsoft.Iot.Web.FileSystem;
 
-    using WebColorApplication.ViewModel;
+    using WebColorApplication.Model;
 
     public sealed partial class MainPage
     {
         private const string DefaultPage = "index.html";
-
-        public MainViewModel Vm => (MainViewModel)DataContext;
 
         public MainPage()
         {
@@ -31,7 +27,7 @@ namespace WebColorApplication
 
             var container = new UnityContainer();
 
-             container.RegisterType<IAdcService, VirtualAdcService>(new HierarchicalLifetimeManager());
+            container.RegisterType<IWeatherService, FakeWeatherService>(new HierarchicalLifetimeManager());
 
 
             var assembly = this.GetType().GetTypeInfo().Assembly;
@@ -42,7 +38,7 @@ namespace WebColorApplication
                 DependencyResolver = new UnityResolver(container)
             };
 
-           
+
             //UseStaticFiles
             settings.Listeners.Add(new FileSystemListener("/", "wwwroot"));
             settings.Listeners.Add(new WebApiListener(assembly)); // use attribute routing
@@ -52,13 +48,6 @@ namespace WebColorApplication
                 new MessagingServerConfiguration(new HttpMessageFactory()));
 
             server.Start(new IPEndPoint(new IPAddress(new byte[] { 192, 168, 1, 12 }), 8000));
-
-            //SystemNavigationManager.GetForCurrentView().BackRequested += SystemNavigationManagerBackRequested;
-
-            //Loaded += (s, e) =>
-            //{
-            //    Vm.RunClock();
-            //};
         }
 
         private void SystemNavigationManagerBackRequested(object sender, BackRequestedEventArgs e)
@@ -72,7 +61,6 @@ namespace WebColorApplication
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            Vm.StopClock();
             base.OnNavigatingFrom(e);
         }
     }

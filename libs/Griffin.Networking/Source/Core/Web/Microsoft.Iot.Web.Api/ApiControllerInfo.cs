@@ -62,74 +62,90 @@ namespace Microsoft.Iot.Web.Api
 
         public IResponse Execute(IRequest request, IDictionary<string, object> variables, IDependencyResolver resolver)
         {
-            using (var controller = CreateInstance<ApiController>(this.controllerType, resolver)) // TODO: add DI here
+            using (var controller = CreateInstance<ApiController>(this.controllerType, resolver))
             {
-                try
+                foreach (var controllerMethod in this.methodsMap)
                 {
-                    //controller.Request = request;
-
-                    foreach (var controllerMethod in this.methodsMap)
+                    if (request.Method != controllerMethod.Value.Method)
                     {
-                        if (request.Method != controllerMethod.Value.Method)
-                        {
-                            continue;
-                        }
+                        continue;
+                    }
 
-                        var parameters = controllerMethod.Key.GetParameters();
+                    var parameters = controllerMethod.Key.GetParameters();
 
-                        if (!IsCompatible(parameters, variables.Keys))
-                        {
-                            continue;
-                        }
+                    if (!IsCompatible(parameters, variables.Keys))
+                    {
+                        continue;
+                    }
 
-                        var serializer = this.factory.Create(request);
+                    var serializer = this.factory.Create(request);
 
-                        // Do we need to create a [FromBody] parameter
-                        if (parameters.Length == variables.Count + 1)
-                        {
-                            var bodyParametr = parameters.Last();
+                    // Do we need to create a [FromBody] parameter?
+                    if (parameters.Length == variables.Count + 1)
+                    {
+                        var bodyParametr = parameters.Last();
 
-                            variables.Add(bodyParametr.Name, serializer.Deserialize(request.Body, bodyParametr.ParameterType));
-                        }
+                        variables.Add(bodyParametr.Name, serializer.Deserialize(request.Body, bodyParametr.ParameterType));
+                    }
 
-                        var returnResult = controllerMethod.Key.Invoke(controller, variables.Values.ToArray());
+                    variables = ResolveTypes(variables, controllerMethod.Key);
 
-                        var returnParameter = controllerMethod.Key.ReturnParameter;
+                    var returnResult = controllerMethod.Key.Invoke(controller, variables.Values.ToArray());
 
-                        var response = request.CreateResponse(HttpStatusCode.OK, "OK");
+                    var returnParameter = controllerMethod.Key.ReturnParameter;
 
-                        if (returnParameter.GetType().IsAssignableFrom(typeof(IHttpActionResult)))
-                        {
-                            return response;
-                        }
+                    var response = request.CreateResponse(HttpStatusCode.OK, "OK");
 
-                        if (returnParameter.ParameterType == typeof(void))
-                        {
-                            return response;
-                        }
-
-                        var stream = new MemoryStream();
-
-                        var body = serializer.Serialize(returnResult);
-
-                        var bin = Encoding.UTF8.GetBytes(body);
-
-                        stream.WriteAsync(bin, 0, bin.Length);
-                        stream.Position = 0;
-                        response.Body = stream;
-                        response.ContentType = request.ContentType ?? serializer.ContentType;
-                        response.ContentLength = bin.Length;
-
+                    if (returnParameter.GetType().IsAssignableFrom(typeof(IHttpActionResult)))
+                    {
                         return response;
                     }
-                }
-                catch (Exception error)
-                {
-                    //throw;
+
+                    if (returnParameter.ParameterType == typeof(void))
+                    {
+                        return response;
+                    }
+
+                    var stream = new MemoryStream();
+
+                    var body = serializer.Serialize(returnResult);
+
+                    var bin = Encoding.UTF8.GetBytes(body);
+
+                    stream.WriteAsync(bin, 0, bin.Length);
+                    stream.Position = 0;
+                    response.Body = stream;
+                    response.ContentType = request.ContentType ?? serializer.ContentType;
+                    response.ContentLength = bin.Length;
+
+                    return response;
                 }
             }
 
             return null;
+        }
+
+        private static IDictionary<string, object> ResolveTypes(IDictionary<string, object> variables, MethodInfo methodInfo)
+        {
+            var result = new Dictionary<string, object>();
+
+            foreach (var parameterInfo in methodInfo.GetParameters())
+            {
+                object parameterValue = variables[parameterInfo.Name];
+
+                var targetType = parameterInfo.ParameterType;
+
+                var sourceType = parameterValue.GetType();
+
+                if (!targetType.IsAssignableFrom(sourceType))
+                {
+                    parameterValue = Convert.ChangeType(parameterValue, targetType);
+                }
+
+                result.Add(parameterInfo.Name, parameterValue);
+            }
+
+            return result;
         }
 
         private static T CreateInstance<T>(Type type, IDependencyResolver resolver)

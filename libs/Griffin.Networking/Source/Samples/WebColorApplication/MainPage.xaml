@@ -5,86 +5,21 @@
       xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
       xmlns:core="using:Microsoft.Xaml.Interactions.Core"
       x:Class="WebColorApplication.MainPage"
-      mc:Ignorable="d"
-      DataContext="{Binding Main, Source={StaticResource Locator}}">
+      mc:Ignorable="d">
 
     <Grid>
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.906,1.164"
                                  StartPoint="0.244,-0.159">
-                <GradientStop Color="#FFA20000"
+                <GradientStop Color="LightSkyBlue"
                               Offset="0" />
-                <GradientStop Color="#FFCD7C10"
+                <GradientStop Color="Gray"
                               Offset="1" />
             </LinearGradientBrush>
         </Grid.Background>
-
-        <StackPanel Background="#FF1F1F1F"
-                    Width="300"
-                    HorizontalAlignment="Center"
-                    Height="450"
-                    VerticalAlignment="Center">
-            <Button Content="Increment counter"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Margin="0,0,0,20"
-                    FontSize="24"
-                    Command="{Binding IncrementCommand, Mode=OneWay}"
-                    Foreground="White" />
-
-            <TextBlock Text="Navigate to page 2"
-                       HorizontalAlignment="Stretch"
-                       VerticalAlignment="Stretch"
-                       Margin="0,0,0,20"
-                       FontSize="24"
-                       Foreground="White"
-                       TextAlignment="Center">
-            	<interactivity:Interaction.Behaviors>
-            		<core:EventTriggerBehavior EventName="Tapped">
-            			<core:InvokeCommandAction Command="{Binding NavigateCommand, Mode=OneWay}"
-                                                  CommandParameter="{Binding Text, ElementName=NavigationParameterText}" />
-            		</core:EventTriggerBehavior>
-            	</interactivity:Interaction.Behaviors>
-
-            </TextBlock>
-
-            <TextBox x:Name="NavigationParameterText"
-                     Text="Enter any text for nav..."
-                     Margin="0,0,0,20"
-                     FontSize="24"
-                     Foreground="White" />
-
-            <Button Content="Show a dialog"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Margin="0,0,0,20"
-                    FontSize="24"
-                    Command="{Binding ShowDialogCommand, Mode=OneWay}"
-                    Foreground="White" />
-
-            <Button Content="Send message"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    Margin="0,0,0,20"
-                    FontSize="24"
-                    Command="{Binding SendMessageCommand, Mode=OneWay}"
-                    Foreground="White" />
-
-            <TextBlock TextWrapping="Wrap"
-                       Text="{Binding WelcomeTitle}"
-                       FontFamily="Segoe UI Light"
-                       FontSize="24"
-                       HorizontalAlignment="Center"
-                       TextAlignment="Center"
-                       Foreground="White" />
-
-            <TextBlock FontFamily="Segoe UI Light"
-                       FontSize="18.667"
-                       HorizontalAlignment="Center"
-                       TextAlignment="Center"
-                       Foreground="White"
-                       Margin="23.82,20,23.18,0"
-                       Text="{Binding Clock}" />
+        <StackPanel>
+        <Image Source="../Assets/50BillionThings.png" Stretch="Uniform" Width="100" Margin="10"/>
+        <TextBlock Foreground="White" HorizontalAlignment="Center">IoT Web Server Demo</TextBlock>
         </StackPanel>
     </Grid>
 </Page>
