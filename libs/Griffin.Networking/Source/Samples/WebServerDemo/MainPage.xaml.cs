@@ -1,4 +1,6 @@
-﻿using WebServerDemo.Model;
+﻿using System.Linq;
+using Windows.Networking.Connectivity;
+using WebServerDemo.Model;
 
 namespace WebServerDemo
 {
@@ -47,7 +49,7 @@ namespace WebServerDemo
                 new WebServiceFactory(settings),
                 new MessagingServerConfiguration(new HttpMessageFactory()));
 
-            server.Start(new IPEndPoint(new IPAddress(new byte[] { 192, 168, 1, 12 }), 8000));
+            server.Start(new IPEndPoint(IPAddress.Parse(this.GetLocalIp()), 8000));
         }
 
         private void SystemNavigationManagerBackRequested(object sender, BackRequestedEventArgs e)
@@ -59,9 +61,20 @@ namespace WebServerDemo
             }
         }
 
-        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        private string GetLocalIp()
         {
-            base.OnNavigatingFrom(e);
+            var icp = NetworkInformation.GetInternetConnectionProfile();
+
+            if (icp?.NetworkAdapter == null) return null;
+            var hostname =
+                NetworkInformation.GetHostNames()
+                    .SingleOrDefault(
+                        hn =>
+                            hn.IPInformation?.NetworkAdapter != null && hn.IPInformation.NetworkAdapter.NetworkAdapterId
+                            == icp.NetworkAdapter.NetworkAdapterId);
+
+            // the ip address
+            return hostname?.CanonicalName;
         }
     }
 }
