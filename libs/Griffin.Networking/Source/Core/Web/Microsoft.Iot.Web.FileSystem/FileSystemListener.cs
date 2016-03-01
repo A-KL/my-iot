@@ -3,7 +3,6 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
-
 using Windows.Storage;
 
 using Griffin.Networking.Protocol.Http.Protocol;

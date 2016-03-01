@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Net.Http;
 using System.Text;
 using Griffin.Networking.Buffers;
 using Griffin.Networking.Protocol.Http.Implementation;

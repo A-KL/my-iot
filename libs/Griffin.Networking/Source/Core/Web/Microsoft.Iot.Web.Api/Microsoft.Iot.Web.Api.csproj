@@ -112,6 +112,23 @@
     <Compile Include="Resolver\NamingAttributesResolver.cs" />
     <Compile Include="Resolver\NamingConventionResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System.Web.Http\ApiController.cs" />
+    <Compile Include="System.Web.Http\Controllers\IHttpController.cs" />
+    <Compile Include="System.Web.Http\HttpControllerContext.cs" />
+    <Compile Include="System.Web.Http\HttpDeleteAttribute.cs" />
+    <Compile Include="System.Web.Http\HttpGetAttribute.cs" />
+    <Compile Include="System.Web.Http\HttpPostAttribute.cs" />
+    <Compile Include="System.Web.Http\HttpPutAttribute.cs" />
+    <Compile Include="System.Web.Http\HttpRequestMessage.cs" />
+    <Compile Include="System.Web.Http\HttpResponseMessage.cs" />
+    <Compile Include="System.Web.Http\IHttpActionResult.cs" />
+    <Compile Include="System.Web.Http\Results\BadRequestResult.cs" />
+    <Compile Include="System.Web.Http\Results\NegotiatedContentResult.cs" />
+    <Compile Include="System.Web.Http\Results\OkNegotiatedContentResult.cs" />
+    <Compile Include="System.Web.Http\Results\OkResult.cs" />
+    <Compile Include="System.Web.Http\Results\StatusCodeResult.cs" />
+    <Compile Include="System.Web.Http\RouteAttribute.cs" />
+    <Compile Include="System.Web.Http\RoutePrefixAttribute.cs" />
     <Compile Include="TemplateRouteBuilder.cs" />
     <Compile Include="UnityResolver.cs" />
     <Compile Include="WebApiListener.cs" />
@@ -130,6 +147,9 @@
       <Project>{0249a320-16a8-4995-8b7e-0fb78756f3cc}</Project>
       <Name>Microsoft.Iot.Web</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="System.Web.Http\Formatting\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
