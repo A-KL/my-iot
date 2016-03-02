@@ -246,6 +246,10 @@
       <Project>{9c0e24e5-cdbb-4d37-ae01-0cb2ede02f29}</Project>
       <Name>Microsoft.Iot.Web.FileSystem</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\Web\Microsoft.Iot.Web.WebSockets\Microsoft.Iot.Web.WebSockets.csproj">
+      <Project>{5fcfe565-9dc8-436f-9cdf-7ea93ad541b1}</Project>
+      <Name>Microsoft.Iot.Web.WebSockets</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Web\Microsoft.Iot.Web\Microsoft.Iot.Web.csproj">
       <Project>{0249a320-16a8-4995-8b7e-0fb78756f3cc}</Project>
       <Name>Microsoft.Iot.Web</Name>
