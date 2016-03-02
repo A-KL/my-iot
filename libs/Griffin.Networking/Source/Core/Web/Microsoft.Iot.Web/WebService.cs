@@ -42,7 +42,7 @@ namespace Griffin.Networking.Web
                 {
                     if (routeHandler.IsListeningTo(request.Uri))
                     {
-                        var result = await routeHandler.ExecuteAsync(request, settings.DependencyResolver);                        
+                        var result = await routeHandler.ExecuteAsync(request, settings.DependencyResolver);
                         this.Send(result);
                         break;
                     }
@@ -52,7 +52,7 @@ namespace Griffin.Networking.Web
             {
                 var response = request.CreateResponse(HttpStatusCode.InternalServerError, error.Message);
 
-                this.Send(response);                
+                this.Send(response);
             }
         }
 

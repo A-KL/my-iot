@@ -39,7 +39,7 @@
            <h2> <span id="temp" class="label label-info">[Press Update button]</span></h2>
 
             <button id="updateButton" type="button" class="btn btn-primary">Update</button>
-
+            <button id="connectButton" type="button" class="btn btn-primary">Connect</button>
         </div>
         <hr />
         <footer>
@@ -71,7 +71,29 @@
                 }
             });
         });
+		
+        $('#connectButton').click(function () {
 
+            var ws = new WebSocket("ws://192.168.1.12:8000/signalr");
+
+            ws.onopen = function () {
+                alert("About to send data");
+                ws.send("Hello World"); // I WANT TO SEND THIS MESSAGE TO THE SERVER!!!!!!!!
+                alert("Message sent!");
+            };
+
+            ws.onmessage = function (evt) {
+                alert("About to receive data");
+                var received_msg = evt.data;
+                alert("Message received = " + received_msg);
+            };
+
+            ws.onclose = function () {
+                // websocket is closed.
+                alert("Connection is closed...");
+            };
+        }); 
+		
     </script>
 
 </body>
