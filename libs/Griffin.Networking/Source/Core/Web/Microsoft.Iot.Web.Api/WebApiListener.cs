@@ -1,11 +1,12 @@
-﻿namespace Microsoft.Iot.Web.Api
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Web.Http;
+
+namespace Microsoft.Iot.Web.Api
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
-    using System.Web.Http;
     using Griffin.Networking.Protocol.Http.Protocol;
     using Griffin.Networking.Web;
     using Resolver;

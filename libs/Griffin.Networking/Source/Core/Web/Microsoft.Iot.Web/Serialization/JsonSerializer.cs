@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Griffin.Networking.Web;
+using System.Web;
 using Newtonsoft.Json;
 
 namespace Microsoft.Iot.Web.Serialization

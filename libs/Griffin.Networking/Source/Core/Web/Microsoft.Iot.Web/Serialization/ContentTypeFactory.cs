@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Web;
 using Griffin.Networking.Protocol.Http.Protocol;
-using Griffin.Networking.Web;
 
 namespace Microsoft.Iot.Web.Serialization
 {

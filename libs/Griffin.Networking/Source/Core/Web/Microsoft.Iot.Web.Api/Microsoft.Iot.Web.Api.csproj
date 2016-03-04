@@ -119,8 +119,6 @@
     <Compile Include="System.Web.Http\HttpGetAttribute.cs" />
     <Compile Include="System.Web.Http\HttpPostAttribute.cs" />
     <Compile Include="System.Web.Http\HttpPutAttribute.cs" />
-    <Compile Include="System.Web.Http\HttpRequestMessage.cs" />
-    <Compile Include="System.Web.Http\HttpResponseMessage.cs" />
     <Compile Include="System.Web.Http\IHttpActionResult.cs" />
     <Compile Include="System.Web.Http\Results\BadRequestResult.cs" />
     <Compile Include="System.Web.Http\Results\NegotiatedContentResult.cs" />

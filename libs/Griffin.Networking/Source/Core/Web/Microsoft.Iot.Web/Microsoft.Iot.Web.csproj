@@ -107,23 +107,22 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HttpContentType.cs" />
     <Compile Include="ListExtensions.cs" />
-    <Compile Include="MimeMapping.cs" />
+    <Compile Include="System.Web\MimeMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteListener.cs" />
     <Compile Include="Serialization\ContentTypeFactory.cs" />
     <Compile Include="Serialization\IHttpSerializer.cs" />
     <Compile Include="Serialization\ISerializationFactory.cs" />
     <Compile Include="Serialization\JsonSerializer.cs" />
-    <Compile Include="System.Web.Http\HttpRouteCollection.cs" />
-    <Compile Include="System.Web.Http\IDependencyResolver.cs" />
-    <Compile Include="System.Web.Http\Routing\IHttpRoute.cs" />
-    <Compile Include="System.Web.Http\Routing\IHttpRouteData.cs" />
-    <Compile Include="System.Web.Http\Routing\IHttpVirtualPathData.cs" />
+    <Compile Include="System.Web\Http\HttpRouteCollection.cs" />
+    <Compile Include="System.Web\Http\IDependencyResolver.cs" />
+    <Compile Include="System.Web\Http\Routing\IHttpRoute.cs" />
+    <Compile Include="System.Web\Http\Routing\IHttpRouteData.cs" />
+    <Compile Include="System.Web\Http\Routing\IHttpVirtualPathData.cs" />
     <Compile Include="WebService.cs" />
     <Compile Include="WebServiceFactory.cs" />
-    <Compile Include="System.Web.Http\HttpConfiguration.cs" />
+    <Compile Include="System.Web\Http\HttpConfiguration.cs" />
     <EmbeddedResource Include="Properties\Microsoft.Iot.Web.rd.xml" />
   </ItemGroup>
   <ItemGroup>

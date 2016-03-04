@@ -146,6 +146,7 @@
     <Content Include="wwwroot\Scripts\_references.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="wwwroot\video.html" />
     <None Include="project.json" />
     <Content Include="wwwroot\Content\bootstrap-theme.css.map">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -167,6 +168,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\CameraController.cs" />
     <Compile Include="Controllers\TemperatureController.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

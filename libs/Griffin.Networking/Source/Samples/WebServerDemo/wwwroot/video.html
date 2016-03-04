@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+</head>
+<body ng-app="CameraApp">
+    <div ng-controller="MainController">
+        <div>
+            <img src="http://192.168.1.12:8000/api/camera/live" width="480" height="320" alt="">
+        </div>
+        <div>
+            <video id="videoPlayer" width="480" height="320" controls="controls">
+                <source data-ng-src="{{selectedVideoUrl}}" type="video/mp4">
+                <!--  <source src="http://localhost:9000/api/camera/fromvideo/?videoName=Christmas" type="video/mp4">-->
+            </video>
+        </div>
+        <div>
+            <select ng-model="selectedVideo">
+                <option ng-repeat="video in videos" value="{{video}}">{{video}}</option>
+            </select>
+        </div>
+        <div>
+            <button ng-click="start()">Start</button>
+            <button ng-click="stop()">Stop</button>
+        </div>
+    </div>
+</body>
+</html>

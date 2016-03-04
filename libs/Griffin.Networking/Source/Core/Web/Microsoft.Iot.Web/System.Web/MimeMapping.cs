@@ -1,14 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
-namespace Microsoft.Iot.Web
+namespace System.Web
 {
+    //public class MimeMapping
+    //{
+    //    private static readonly IDictionary<string, string> FileToContentMap = new Dictionary<string, string>
+    //    {
+    //        { ".html", Html }, { ".jpeg", ImageJpeg }, { ".js", JavaScript }, { ".json", Json }, { ".css", Css }
+    //    };
+
+    //    public const string Html = "text/html";
+    //    public const string ImageJpeg = "image/jpeg";
+    //    public const string ImagePng = "image/png";
+    //    public const string ImageGif = "image/gif";
+    //    public const string JavaScript = "application/javascript";
+    //    public const string Json = "applicaton/json";
+    //    public const string Css = "text/css";
+
+    //    public static string GetMimeMapping(string fileName)
+    //    {
+    //        return RolveFileExtension(Path.GetExtension(fileName));
+    //    }
+
+    //    public static string RolveFileExtension(string ext)
+    //    {
+    //        if (!FileToContentMap.ContainsKey(ext))
+    //        {
+    //            return null;
+    //        }
+    //        return FileToContentMap[ext];
+    //    }
+    //}
+
+    public class HttpContentType
+    {
+        public const string Json = "applicaton/json";
+    }
+
     public class MimeMapping
     {
         #region Private Variables
 
-        private readonly IDictionary<string, string> mappings =
+        private static readonly IDictionary<string, string> mappings =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 // combination of values from Windows 7 Registry and 
@@ -579,7 +614,12 @@ namespace Microsoft.Iot.Web
 
         #region Public Methods
 
-        public string GetMimeType(string extension)
+        public static string GetMimeMapping(string fileName)
+        {
+            return GetMimeType(Path.GetExtension(fileName));
+        }
+
+        public static string GetMimeType(string extension)
         {
             if (string.IsNullOrEmpty(extension))
             {
@@ -595,7 +635,7 @@ namespace Microsoft.Iot.Web
             return mappings.TryGetValue(extension, out mime) ? mime : "application/octet-stream";
         }
 
-        public string GetExtension(string mimeType)
+        public static string GetExtension(string mimeType)
         {
             if (string.IsNullOrEmpty(mimeType))
             {

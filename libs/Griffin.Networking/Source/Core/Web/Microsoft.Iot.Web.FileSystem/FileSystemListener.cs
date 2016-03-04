@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Windows.Storage;
@@ -55,7 +56,7 @@ namespace Microsoft.Iot.Web.FileSystem
 
                 response.Body = fileStream;
 
-                response.ContentType = HttpContentType.RolveFileExtension(Path.GetExtension(filePath)) ?? string.Empty;
+                response.ContentType = System.Web.MimeMapping.GetMimeMapping(filePath);
 
                 return response;
             }

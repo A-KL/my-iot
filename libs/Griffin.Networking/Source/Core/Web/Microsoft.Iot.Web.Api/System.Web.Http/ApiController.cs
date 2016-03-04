@@ -1,4 +1,7 @@
-﻿namespace System.Web.Http
+﻿using System.Net.Http;
+using Griffin.Networking.Protocol.Http.Protocol;
+
+namespace System.Web.Http
 {
     using System;
     using System.Threading;

@@ -1,4 +1,6 @@
-﻿namespace System.Web.Http.Controllers
+﻿using System.Net.Http;
+
+namespace System.Web.Http.Controllers
 {
     using System.Threading;
     using System.Threading.Tasks;
