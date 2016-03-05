@@ -5,6 +5,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Windows.Security.Cryptography.Core;
+
 using Griffin.Networking.Protocol.Http.Protocol;
 
 namespace Microsoft.Iot.Web.WebSockets
@@ -26,7 +27,7 @@ namespace Microsoft.Iot.Web.WebSockets
 
         public override bool IsListeningTo(Uri uri)
         {
-            return (uri.Segments[0] == "signalr");
+            return (uri.Segments[1] == "signalr");
         }
 
         public override Task<IResponse> ExecuteAsync(IRequest request, IDependencyResolver resolver)
@@ -43,14 +44,14 @@ namespace Microsoft.Iot.Web.WebSockets
                 return Task.FromResult(badRequest);
             }
 
-            var response = request.CreateResponse(HttpStatusCode.OK, "Wrong header value");
+            var response = request.CreateResponse(HttpStatusCode.SwitchingProtocols, "Switching Protocols");
             var key = request.Headers[WebSocketSecKeyHeader].Value;
             var hash = AcceptKey(ref key);
 
             response.AddHeader(ConnectionHeader, "Upgrade");
             response.AddHeader(UpgradeHeader, "websocket");
-            response.AddHeader("Access-Control-Allow-Origin", "*");
-            response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+            //response.AddHeader("Access-Control-Allow-Origin", "*");
+            //response.AddHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
             response.AddHeader(WebSocketSecAcceptHeader, hash);
 
             client.Add(request, response);
