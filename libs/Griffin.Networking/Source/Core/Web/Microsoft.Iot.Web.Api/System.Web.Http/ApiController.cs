@@ -1,14 +1,12 @@
 ﻿using System.Net.Http;
 using Griffin.Networking.Protocol.Http.Protocol;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Http.Controllers;
+using System.Web.Http.Results;
 
 namespace System.Web.Http
 {
-    using System;
-    using System.Threading;
-    using System.Threading.Tasks;
-    using System.Web.Http.Controllers;
-    using System.Web.Http.Results;
-
     public abstract class ApiController : IHttpController, IDisposable
     {
         public void Dispose()
