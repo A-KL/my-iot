@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace System.Net.Http.Formatting.Properties {
+namespace System.Web.Http
+{
     using System;
     using System.Reflection;
     
@@ -40,7 +41,7 @@ namespace System.Net.Http.Formatting.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("System.Net.Http.Formatting.Properties.CommonWebApiResources", typeof(CommonWebApiResources).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.Iot.Web.Properties.CommonWebApiResources", typeof(CommonWebApiResources).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

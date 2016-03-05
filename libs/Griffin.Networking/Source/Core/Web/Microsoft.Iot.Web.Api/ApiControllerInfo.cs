@@ -103,6 +103,12 @@ namespace Microsoft.Iot.Web.Api
                         return response;
                     }
 
+                    if (returnParameter.GetType().IsAssignableFrom(typeof(HttpResponseMessage)))
+                    {
+                        // TODO: serialize data from IHttpActionResult
+                        return response;
+                    }
+
                     if (returnParameter.ParameterType == typeof(void))
                     {
                         return response;

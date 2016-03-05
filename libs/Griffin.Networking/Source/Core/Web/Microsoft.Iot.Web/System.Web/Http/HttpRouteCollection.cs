@@ -9,26 +9,26 @@ namespace System.Web.Http
     [DefaultMember("Item")]
     public class HttpRouteCollection// : ICollection<IHttpRoute>, IEnumerable<IHttpRoute>, IEnumerable, IDisposable
     {
-        //        private static readonly Uri referenceBaseAddress = new Uri("http://localhost");
+                private static readonly Uri referenceBaseAddress = new Uri("http://localhost");
         //        private readonly List<IHttpRoute> collection = new List<IHttpRoute>();
         //        private readonly IDictionary<string, IHttpRoute> dictionary = (IDictionary<string, IHttpRoute>)new Dictionary<string, IHttpRoute>((IEqualityComparer<string>)StringComparer.OrdinalIgnoreCase);
-        //        private readonly string virtualPathRoot;
+                private readonly string virtualPathRoot;
         //        private bool disposed;
 
-        //        /// <summary>
-        //        /// Gets the virtual path root.
-        //        /// </summary>
-        //        /// 
-        //        /// <returns>
-        //        /// The virtual path root.
-        //        /// </returns>
-        //        public virtual string VirtualPathRoot
-        //        {
-        //            get
-        //            {
-        //                return this.virtualPathRoot;
-        //            }
-        //        }
+        /// <summary>
+        /// Gets the virtual path root.
+        /// </summary>
+        /// 
+        /// <returns>
+        /// The virtual path root.
+        /// </returns>
+        public virtual string VirtualPathRoot
+        {
+            get
+            {
+                return this.virtualPathRoot;
+            }
+        }
 
         //        /// <summary>
         //        /// Gets the number of items in the collection.
@@ -100,18 +100,18 @@ namespace System.Web.Http
         //        {
         //        }
 
-        //        /// <summary>
-        //        /// Initializes a new instance of the <see cref="T:System.Web.Http.HttpRouteCollection"/> class.
-        //        /// </summary>
-        //        /// <param name="virtualPathRoot">The virtual path root.</param>
-        //        public HttpRouteCollection(string virtualPathRoot)
-        //        {
-        //            if (virtualPathRoot == null)
-        //            {
-        //                throw Error.ArgumentNull("virtualPathRoot");
-        //            }
-        //            this.virtualPathRoot = "/" + new Uri(HttpRouteCollection.referenceBaseAddress, virtualPathRoot).GetComponents(UriComponents.Path, UriFormat.Unescaped);
-        //        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Web.Http.HttpRouteCollection"/> class.
+        /// </summary>
+        /// <param name="virtualPathRoot">The virtual path root.</param>
+        public HttpRouteCollection(string virtualPathRoot)
+        {
+            if (virtualPathRoot == null)
+            {
+                throw Error.ArgumentNull("virtualPathRoot");
+            }
+            this.virtualPathRoot = "/" + new Uri(HttpRouteCollection.referenceBaseAddress, virtualPathRoot).GetComponents(UriComponents.Path, UriFormat.Unescaped);
+        }
 
         //        /// <summary>
         //        /// Gets the route data for a specified HTTP request.

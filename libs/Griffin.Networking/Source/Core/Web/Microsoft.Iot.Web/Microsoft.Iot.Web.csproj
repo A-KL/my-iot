@@ -107,7 +107,43 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\..\..\System.Net.Http.Formatting\Common\Error.cs">
+      <Link>Common\Error.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\..\..\System.Net.Http.Formatting\Properties\CommonWebApiResources.Designer.cs">
+      <Link>Properties\CommonWebApiResources.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CommonWebApiResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="IRequestExtensions.cs" />
     <Compile Include="ListExtensions.cs" />
+    <Compile Include="System.Collections.Generic\DictionaryExtensions.cs" />
+    <Compile Include="System.Net.Http\HttpRequestMessageExtensions.cs" />
+    <Compile Include="System.Web\Http\ApiController.cs" />
+    <Compile Include="System.Web\Http\Controllers\HttpControllerContext.cs" />
+    <Compile Include="System.Web\Http\Controllers\HttpRequestContext.cs" />
+    <Compile Include="System.Web\Http\Controllers\IHttpController.cs" />
+    <Compile Include="System.Web\Http\Controllers\ServicesContainer.cs" />
+    <Compile Include="System.Web\Http\Dependencies\EmptyResolver.cs" />
+    <Compile Include="System.Web\Http\Hosting\HttpPropertyKeys.cs" />
+    <Compile Include="System.Web\Http\HttpDeleteAttribute.cs" />
+    <Compile Include="System.Web\Http\HttpGetAttribute.cs" />
+    <Compile Include="System.Web\Http\HttpPostAttribute.cs" />
+    <Compile Include="System.Web\Http\HttpPutAttribute.cs" />
+    <Compile Include="System.Web\Http\IHttpActionResult.cs" />
+    <Compile Include="System.Web\Http\ModelBinding\FormDataCollectionExtensions.cs" />
+    <Compile Include="System.Web\Http\ModelBinding\JQueryMvcFormUrlEncodedFormatter.cs" />
+    <Compile Include="System.Web\Http\Results\BadRequestResult.cs" />
+    <Compile Include="System.Web\Http\Results\FormattedContentResult.cs" />
+    <Compile Include="System.Web\Http\Results\NegotiatedContentResult.cs" />
+    <Compile Include="System.Web\Http\Results\OkNegotiatedContentResult.cs" />
+    <Compile Include="System.Web\Http\Results\OkResult.cs" />
+    <Compile Include="System.Web\Http\Results\StatusCodeResult.cs" />
+    <Compile Include="System.Web\Http\RouteAttribute.cs" />
+    <Compile Include="System.Web\Http\RoutePrefixAttribute.cs" />
+    <Compile Include="System.Web\Http\Routing\UrlHelper.cs" />
+    <Compile Include="System.Web\Http\ServicesExtensions.cs" />
     <Compile Include="System.Web\MimeMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteListener.cs" />
@@ -123,9 +159,18 @@
     <Compile Include="WebService.cs" />
     <Compile Include="WebServiceFactory.cs" />
     <Compile Include="System.Web\Http\HttpConfiguration.cs" />
+    <EmbeddedResource Include="..\..\..\..\..\System.Net.Http.Formatting\Properties\CommonWebApiResources.resx">
+      <Link>Properties\CommonWebApiResources.resx</Link>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CommonWebApiResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Microsoft.Iot.Web.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\System.Net.Http.Formatting\System.Net.Http.Formatting.csproj">
+      <Project>{0380B076-D673-47CA-B3D5-BFDD2D43FEDD}</Project>
+      <Name>System.Net.Http.Formatting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Griffin.Networking\Griffin.Networking.csproj">
       <Project>{adbb0496-e4bc-4eef-9ca7-a1507581f7ba}</Project>
       <Name>Griffin.Networking</Name>

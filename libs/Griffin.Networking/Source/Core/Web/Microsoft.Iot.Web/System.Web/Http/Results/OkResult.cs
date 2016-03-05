@@ -7,18 +7,18 @@ namespace System.Web.Http.Results
 {
     public class OkResult : IHttpActionResult
     {
-        private readonly IDependencyProvider dependencies;
+        private readonly StatusCodeResult.IDependencyProvider dependencies;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Web.Http.Results.BadRequestResult"/> class.
         /// </summary>
         /// <param name="controller">The controller from which to obtain the dependencies needed for execution.</param>
         public OkResult(ApiController controller)
-          : this(new ApiControllerDependencyProvider(controller))
+          : this(new StatusCodeResult.ApiControllerDependencyProvider(controller))
         {
         }
 
-        private OkResult(IDependencyProvider dependencies)
+        private OkResult(StatusCodeResult.IDependencyProvider dependencies)
         {
             this.dependencies = dependencies;
         }
