@@ -45,6 +45,11 @@ namespace Griffin.Networking.Protocol.Http.Protocol
         bool IsAjax { get; }
 
         /// <summary>
+        /// Gets if request is an WebSocket connection request.
+        /// </summary>
+        bool IsWebSocketRequest { get; }
+
+        /// <summary>
         /// Gets or sets HTTP method.
         /// </summary>
         string Method { get; set; }

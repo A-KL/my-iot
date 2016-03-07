@@ -19,6 +19,10 @@ namespace Griffin.Networking.Protocol.Http.Implementation
         private readonly ParameterCollection queryString;
         private Uri uri;
 
+        private const string WebSocketSecKeyHeader = "Sec-WebSocket-Key";
+        private const string UpgradeHeader = "Upgrade";
+        private const string ConnectionHeader = "Connection";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="HttpRequest" /> class.
         /// </summary>
@@ -122,6 +126,35 @@ namespace Griffin.Networking.Protocol.Http.Implementation
                     return false;
 
                 return header.Value.Equals("Ajax", StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
+        /// <summary>
+        /// Gets if request is an WebSocket connection request.
+        /// </summary>
+        public bool IsWebSocketRequest
+        {
+            get
+            {
+                var header = this.Headers[WebSocketSecKeyHeader];
+                if (header == null || string.IsNullOrEmpty(header.Value))
+                {
+                    return false;
+                }
+
+                header = this.Headers[ConnectionHeader];
+                if (header == null || string.IsNullOrEmpty(header.Value) || header.Value.Equals("Upgrade", StringComparison.OrdinalIgnoreCase))
+                {
+                    return false;
+                }
+
+                header = this.Headers[UpgradeHeader];
+                if (header == null || string.IsNullOrEmpty(header.Value) || header.Value.Equals("websocket", StringComparison.OrdinalIgnoreCase))
+                {
+                    return false;
+                }
+
+                return true;
             }
         }
 

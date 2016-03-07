@@ -73,6 +73,8 @@ namespace Griffin.Networking.Protocol.Http
         /// <param name="request">HTTP request</param>
         public abstract void OnRequest(IRequest request);
 
+        public virtual void OnWebSocketDataReceived(byte[] data)
+        { }
 
         /// <summary>
         /// An unhandled exception was caught when handling incoming bytes.
