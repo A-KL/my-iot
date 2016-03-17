@@ -91,21 +91,30 @@ namespace Microsoft.Iot.Web.Api
 
                     variables = ResolveTypes(variables, controllerMethod.Key);
 
+                    controller.Request = request.ToHttpRequestMessage();
+
                     var returnResult = controllerMethod.Key.Invoke(controller, variables.Values.ToArray());
 
                     var returnParameter = controllerMethod.Key.ReturnParameter;
 
                     var response = request.CreateResponse(HttpStatusCode.OK, "OK");
 
-                    if (returnParameter.GetType().IsAssignableFrom(typeof(IHttpActionResult)))
+                    if (returnParameter.ParameterType.IsAssignableFrom(typeof(HttpResponseMessage)))
                     {
-                        // TODO: serialize data from IHttpActionResult
-                        return response;
-                    }
+                        var httpResponseMessage = (HttpResponseMessage)returnResult;
 
-                    if (returnParameter.GetType().IsAssignableFrom(typeof(HttpResponseMessage)))
-                    {
-                        // TODO: serialize data from IHttpActionResult
+                        foreach (var header in httpResponseMessage.Headers)
+                        {
+                            response.SetHeader(header.Key, header.Value.FirstOrDefault());
+                        }
+
+                        foreach (var header in httpResponseMessage.Content.Headers)
+                        {
+                            response.SetHeader(header.Key, header.Value.FirstOrDefault());
+                        }
+
+                        //response.Body = await httpResponseMessage.Content.
+
                         return response;
                     }
 
@@ -133,6 +142,7 @@ namespace Microsoft.Iot.Web.Api
 
                     await stream.WriteAsync(bin, 0, bin.Length);
                     stream.Position = 0;
+
                     response.Body = stream;
                     response.ContentType = request.ContentType ?? serializer.ContentType;
                     response.ContentLength = bin.Length;

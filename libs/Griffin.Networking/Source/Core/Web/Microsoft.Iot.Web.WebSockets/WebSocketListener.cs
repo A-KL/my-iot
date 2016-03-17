@@ -32,11 +32,11 @@ namespace Microsoft.Iot.Web.WebSockets
         {
             return true;
         }
-        
+
         public void Dispose()
         {
             throw new NotImplementedException();
-        }        
+        }
     }
 
     public interface IHub : IDisposable
@@ -60,6 +60,14 @@ namespace Microsoft.Iot.Web.WebSockets
         private const string WebSocketSecAcceptHeader = "Sec-WebSocket-Accept";
 
         public IDictionary<string, IHub> Hubs { get; } = new Dictionary<string, IHub>();
+
+        public WebSocketListener(params IHub[] hubs)
+        {
+            foreach (var hub in hubs)
+            {
+                this.Hubs.Add("/" + hub.Path.TrimStart('/'), hub);
+            }
+        }
 
         public override bool IsListeningTo(Uri uri)
         {

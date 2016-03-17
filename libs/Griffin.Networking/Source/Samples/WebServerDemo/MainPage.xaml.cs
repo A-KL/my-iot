@@ -2,6 +2,7 @@
 using System.Web.Http;
 using Windows.Networking.Connectivity;
 using Microsoft.Iot.Web.WebSockets;
+using WebServerDemo.Hubs;
 using WebServerDemo.Model;
 
 namespace WebServerDemo
@@ -45,7 +46,7 @@ namespace WebServerDemo
 
             //UseStaticFiles
             settings.Listeners.Add(new FileSystemListener("/", "wwwroot"));
-            settings.Listeners.Add(new WebSocketListener());
+            settings.Listeners.Add(new WebSocketListener(new TestHub("signalr")));
             settings.Listeners.Add(new WebApiListener(assembly)); // use attribute routing            
 
             var server = new MessagingServer(

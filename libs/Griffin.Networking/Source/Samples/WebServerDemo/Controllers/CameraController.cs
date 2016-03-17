@@ -11,7 +11,7 @@ namespace WebServerDemo.Controllers
     [RoutePrefix("api/{controller}")]
     public class CameraController : ApiController
     {
-        [HttpGet("")]
+        [HttpGet("/live")]
         public HttpResponseMessage GetStream()
         {
             var imageStream = new MJpegSource();

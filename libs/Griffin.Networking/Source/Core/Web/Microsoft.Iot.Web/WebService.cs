@@ -37,7 +37,6 @@ namespace Griffin.Networking.Web
 
             try
             {
-
                 foreach (var routeHandler in this.handlers)
                 {
                     if (routeHandler.IsListeningTo(request.Uri))

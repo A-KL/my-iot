@@ -1,8 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace WebServerDemo.Model
 {
@@ -14,15 +16,21 @@ namespace WebServerDemo.Model
         {
             byte[] newLine = Encoding.UTF8.GetBytes("\r\n");
 
-            foreach (var file in Directory.GetFiles(@"E:\Assembla-SVN\3DProjects\MyProjects\Windows\WebStreamingService\WebStreamingService\bin\Assets\Countdown", "*.jpg"))
+            var filesDirectory = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync(@"Assets\Countdown");
+            
+            foreach (var file in await filesDirectory.GetFilesAsync())
             {
-                var fileInfo = new FileInfo(file);
-                var header = $"--{Boundary}\r\nContent-Type: image/jpeg\r\nContent-Length: {fileInfo.Length}\r\n\r\n";
+                var properties = await file.GetBasicPropertiesAsync();
+
+                var header = $"--{Boundary}\r\nContent-Type: image/jpeg\r\nContent-Length: {properties.Size}\r\n\r\n";
                 var headerData = Encoding.UTF8.GetBytes(header);
 
                 await outputStream.WriteAsync(headerData, 0, headerData.Length);
 
-                await fileInfo.OpenRead().CopyToAsync(outputStream);
+                using (var fileStream = await file.OpenStreamForWriteAsync())
+                {
+                    await fileStream.CopyToAsync(outputStream);
+                }
 
                 await outputStream.WriteAsync(newLine, 0, newLine.Length);
 

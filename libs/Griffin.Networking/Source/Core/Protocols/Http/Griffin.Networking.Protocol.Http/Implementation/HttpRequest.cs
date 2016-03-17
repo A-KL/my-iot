@@ -143,13 +143,13 @@ namespace Griffin.Networking.Protocol.Http.Implementation
                 }
 
                 header = this.Headers[ConnectionHeader];
-                if (header == null || string.IsNullOrEmpty(header.Value) || header.Value.Equals("Upgrade", StringComparison.OrdinalIgnoreCase))
+                if (header == null || string.IsNullOrEmpty(header.Value) || !header.Value.Equals("Upgrade", StringComparison.OrdinalIgnoreCase))
                 {
                     return false;
                 }
 
                 header = this.Headers[UpgradeHeader];
-                if (header == null || string.IsNullOrEmpty(header.Value) || header.Value.Equals("websocket", StringComparison.OrdinalIgnoreCase))
+                if (header == null || string.IsNullOrEmpty(header.Value) || !header.Value.Equals("websocket", StringComparison.OrdinalIgnoreCase))
                 {
                     return false;
                 }
