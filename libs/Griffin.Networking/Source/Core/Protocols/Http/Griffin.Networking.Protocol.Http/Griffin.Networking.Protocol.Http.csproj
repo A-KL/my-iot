@@ -186,12 +186,6 @@
     <Compile Include="Services\IBodyDecoder.cs" />
     <EmbeddedResource Include="Properties\Griffin.Networking.Protocol.Http.rd.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Griffin.Networking\Griffin.Networking.csproj">
-      <Project>{adbb0496-e4bc-4eef-9ca7-a1507581f7ba}</Project>
-      <Name>Griffin.Networking</Name>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
