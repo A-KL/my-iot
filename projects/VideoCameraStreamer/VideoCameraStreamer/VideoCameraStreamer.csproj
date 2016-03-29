@@ -141,11 +141,11 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\libs\Griffin.Networking\Source\Core\Griffin.Networking\Griffin.Networking.csproj">
+    <ProjectReference Include="..\..\..\submodules\Griffin.Networking.NetCore\Source\Core\Griffin.Networking\Griffin.Networking.csproj">
       <Project>{adbb0496-e4bc-4eef-9ca7-a1507581f7ba}</Project>
       <Name>Griffin.Networking</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\libs\Griffin.Networking\Source\Core\Protocols\Http\Griffin.Networking.Protocol.Http\Griffin.Networking.Protocol.Http.csproj">
+    <ProjectReference Include="..\..\..\submodules\Griffin.Networking.NetCore\Source\Core\Protocols\Http\Griffin.Networking.Protocol.Http\Griffin.Networking.Protocol.Http.csproj">
       <Project>{4271a51f-07b3-464e-8784-d44e95af0065}</Project>
       <Name>Griffin.Networking.Protocol.Http</Name>
     </ProjectReference>

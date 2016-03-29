@@ -5,6 +5,12 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoCameraStreamer", "VideoCameraStreamer\VideoCameraStreamer.csproj", "{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "submodules", "submodules", "{0BDCF8E0-0894-4A50-B1B5-095409533C4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Griffin.Networking", "..\..\submodules\Griffin.Networking.NetCore\Source\Core\Griffin.Networking\Griffin.Networking.csproj", "{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Griffin.Networking.Protocol.Http", "..\..\submodules\Griffin.Networking.NetCore\Source\Core\Protocols\Http\Griffin.Networking.Protocol.Http\Griffin.Networking.Protocol.Http.csproj", "{4271A51F-07B3-464E-8784-D44E95AF0065}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,8 +45,44 @@ Global
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Release|x86.ActiveCfg = Release|x86
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Release|x86.Build.0 = Release|x86
 		{7410C398-289A-4CE9-ACD9-3B3168C1ADD7}.Release|x86.Deploy.0 = Release|x86
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Debug|ARM.ActiveCfg = Debug|ARM
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Debug|ARM.Build.0 = Debug|ARM
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Debug|x64.ActiveCfg = Debug|x64
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Debug|x64.Build.0 = Debug|x64
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Debug|x86.ActiveCfg = Debug|x86
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Debug|x86.Build.0 = Debug|x86
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Release|ARM.ActiveCfg = Release|ARM
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Release|ARM.Build.0 = Release|ARM
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Release|x64.ActiveCfg = Release|x64
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Release|x64.Build.0 = Release|x64
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Release|x86.ActiveCfg = Release|x86
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA}.Release|x86.Build.0 = Release|x86
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Debug|ARM.ActiveCfg = Debug|ARM
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Debug|ARM.Build.0 = Debug|ARM
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Debug|x64.ActiveCfg = Debug|x64
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Debug|x64.Build.0 = Debug|x64
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Debug|x86.ActiveCfg = Debug|x86
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Debug|x86.Build.0 = Debug|x86
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Release|ARM.ActiveCfg = Release|ARM
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Release|ARM.Build.0 = Release|ARM
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Release|x64.ActiveCfg = Release|x64
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Release|x64.Build.0 = Release|x64
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Release|x86.ActiveCfg = Release|x86
+		{4271A51F-07B3-464E-8784-D44E95AF0065}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ADBB0496-E4BC-4EEF-9CA7-A1507581F7BA} = {0BDCF8E0-0894-4A50-B1B5-095409533C4E}
+		{4271A51F-07B3-464E-8784-D44E95AF0065} = {0BDCF8E0-0894-4A50-B1B5-095409533C4E}
 	EndGlobalSection
 EndGlobal
