@@ -20,6 +20,7 @@
         <StackPanel>
         <Image Source="../Assets/50BillionThings.png" Stretch="Uniform" Width="300" Margin="10"/>
         <TextBlock Foreground="White" HorizontalAlignment="Center" FontSize="20">IoT Web Server Demo</TextBlock>
+            <TextBlock Name="Label" Foreground="Red" HorizontalAlignment="Center" FontSize="20"/>
         </StackPanel>
     </Grid>
 </Page>

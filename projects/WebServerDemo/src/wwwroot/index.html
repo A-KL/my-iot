@@ -74,7 +74,7 @@
 		
         $('#connectButton').click(function () {
 
-            var ws = new WebSocket("ws://192.168.1.12:8000/signalr");
+            var ws = new WebSocket("ws://192.168.1.12:8001");
 
             ws.onopen = function () {
                 alert("About to send data");
