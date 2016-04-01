@@ -1,3 +1,6 @@
 [submodule "submodules/Griffin.Networking.NetCore"]
 	path = submodules/Griffin.Networking.NetCore
 	url = https://github.com/A-KL/Griffin.Networking.NetCore
+[submodule "submodules/Griffin.Framework.NetCore"]
+	path = submodules/Griffin.Framework.NetCore
+	url = https://github.com/A-KL/Griffin.Framework.NetCore.git
