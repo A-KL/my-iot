@@ -231,6 +231,10 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\libs\System.Net.Http.Formatting\System.Net.Http.Formatting.csproj">
+      <Project>{0380b076-d673-47ca-b3d5-bfdd2d43fedd}</Project>
+      <Name>System.Net.Http.Formatting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\libs\Web\Microsoft.Iot.Web.Api\Microsoft.Iot.Web.Api.csproj">
       <Project>{23485136-5108-4fb0-a815-645cc9c6eaaa}</Project>
       <Name>Microsoft.Iot.Web.Api</Name>
@@ -242,6 +246,10 @@
     <ProjectReference Include="..\..\..\libs\Web\Microsoft.Iot.Web\Microsoft.Iot.Web.csproj">
       <Project>{0249a320-16a8-4995-8b7e-0fb78756f3cc}</Project>
       <Name>Microsoft.Iot.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\submodules\Griffin.Framework.NetCore\src\Griffin.Framework\Griffin.Core\Griffin.Core.csproj">
+      <Project>{7dd315c1-2c05-4811-bd87-c43d8082cfac}</Project>
+      <Name>Griffin.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

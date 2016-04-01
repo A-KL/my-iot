@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Web;
-using Griffin.Networking.Protocol.Http.Protocol;
+using Griffin.Net.Protocols.Http;
 
 namespace Microsoft.Iot.Web.Serialization
 {
     public class ContentTypeFactory : ISerializationFactory
     {
-        public IHttpSerializer Create(IRequest request)
+        public IHttpSerializer Create(IHttpRequest request)
         {
             switch (request.ContentType)
             {

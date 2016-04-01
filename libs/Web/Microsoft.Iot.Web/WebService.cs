@@ -49,9 +49,9 @@ namespace Griffin.Networking.Web
                     }
                 }
             }
-            catch
+            catch (Exception error)
             {
-                var response = request.CreateResponse(HttpStatusCode.InternalServerError);
+                var response = request.CreateResponse(HttpStatusCode.InternalServerError, error.Message);
 
                 channel.Send(response);
             }

@@ -9,15 +9,27 @@ using System.Net.Http.Headers;
 //using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Web.Http;
-using System.Web.Http.Dependencies;
+
 using System.Web.Http.Hosting;
 using System.Web.Http.ModelBinding;
-using System.Web.Http.Properties;
+
 using System.Web.Http.Routing;
-using Griffin.Networking.Protocol.Http.Pipeline.Messages;
 
 namespace System.Net.Http
 {
+    /// <summary>
+    /// An error was caught during processing.
+    /// </summary>
+    public class HttpError
+    {
+        public HttpError(HttpStatusCode statusCode, Exception exception) //: base(exception)
+        {
+            this.StatusCode = statusCode;
+        }
+
+        public HttpStatusCode StatusCode { get; private set; }
+    }
+
     /// <summary>
     /// Provides extension methods for the <see cref="HttpRequestMessage"/> class.
     /// </summary>

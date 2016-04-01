@@ -3,19 +3,17 @@ using System.Reflection;
 
 using Microsoft.Practices.Unity;
 
-using Microsoft.Iot.Web;
 using Microsoft.Iot.Web.Api;
 using Microsoft.Iot.Web.FileSystem;
 
 using System.Linq;
 using System.Web.Http;
 using Windows.Networking.Connectivity;
+using Griffin.Networking.Web;
 using WebServerDemo.Model;
 
 namespace WebServerDemo
 {
-
-
     public sealed partial class MainPage
     {
         private const string DefaultPage = "index.html";
@@ -42,11 +40,9 @@ namespace WebServerDemo
             settings.Listeners.Add(new FileSystemListener("/", "wwwroot"));
             settings.Listeners.Add(new WebApiListener(assembly)); // use attribute routing            
 
-            var server = new MessagingServer(
-                new WebServiceFactory(settings),
-                new MessagingServerConfiguration(new HttpMessageFactory()));
+            var server = new WebService(settings);
 
-            server.Start(new IPEndPoint(IPAddress.Parse(this.GetLocalIp()), 8000));
+            server.Start(IPAddress.Parse(GetLocalIp()), 8000);
         }
 
         private static string GetLocalIp()

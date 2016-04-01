@@ -43,9 +43,7 @@ namespace Microsoft.Iot.Web.FileSystem
         {
             try
             {
-                var response = request.CreateResponse();
-
-                response.StatusCode = (int)HttpStatusCode.OK;
+                var response = request.CreateResponse(HttpStatusCode.OK, "OK");
 
                 var filePath = GetFilePath(request.Uri, this.route);
 

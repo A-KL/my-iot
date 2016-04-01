@@ -107,10 +107,10 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\..\..\System.Net.Http.Formatting\Common\Error.cs">
+    <Compile Include="..\..\System.Net.Http.Formatting\Common\Error.cs">
       <Link>Common\Error.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\..\..\System.Net.Http.Formatting\Properties\CommonWebApiResources.Designer.cs">
+    <Compile Include="..\..\System.Net.Http.Formatting\Properties\CommonWebApiResources.Designer.cs">
       <Link>Properties\CommonWebApiResources.Designer.cs</Link>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -158,8 +158,8 @@
     <Compile Include="System.Web\Http\Routing\IHttpVirtualPathData.cs" />
     <Compile Include="WebService.cs" />
     <Compile Include="System.Web\Http\HttpConfiguration.cs" />
-    <EmbeddedResource Include="..\..\..\..\..\System.Net.Http.Formatting\Properties\CommonWebApiResources.resx">
-      <Link>Properties\CommonWebApiResources.resx</Link>
+     <EmbeddedResource Include="..\..\System.Net.Http.Formatting\Properties\CommonWebApiResources.resx">
+       <Link>Properties\CommonWebApiResources.resx</Link>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CommonWebApiResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
