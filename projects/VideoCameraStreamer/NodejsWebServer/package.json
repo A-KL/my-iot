@@ -1,0 +1,10 @@
+{
+  "name": "NodejsWebServer",
+  "version": "0.0.0",
+  "description": "NodejsWebServer",
+  "main": "server.js",
+  "author": {
+    "name": "aklots",
+    "email": ""
+  }
+}
