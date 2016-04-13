@@ -51,8 +51,6 @@ namespace WebServerDemo
 
             var socket = new WebSocketListener();
             socket.Start(IPAddress.Parse(GetLocalIp()), 8001);
-           // socket.WebSocketClientConnect += Socket_WebSocketClientConnect;
-          //  socket.WebSocketClientConnected += Socket_WebSocketClientConnected;
             socket.WebSocketMessageReceived = this.MessageReceived;
         }
 
