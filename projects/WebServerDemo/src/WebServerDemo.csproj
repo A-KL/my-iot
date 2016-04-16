@@ -173,6 +173,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\FakeWeatherService.cs" />
+    <Compile Include="Model\FilesFrameSource.cs" />
     <Compile Include="Model\IWeatherService.cs" />
     <Compile Include="Model\TemperatureInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
