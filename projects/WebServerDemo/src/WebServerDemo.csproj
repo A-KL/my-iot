@@ -173,7 +173,6 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\FakeWeatherService.cs" />
-    <Compile Include="Model\FilesFrameSource.cs" />
     <Compile Include="Model\IWeatherService.cs" />
     <Compile Include="Model\TemperatureInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -243,6 +242,10 @@
     <ProjectReference Include="..\..\..\libs\Web\Microsoft.Iot.Web.FileSystem\Microsoft.Iot.Web.FileSystem.csproj">
       <Project>{9c0e24e5-cdbb-4d37-ae01-0cb2ede02f29}</Project>
       <Name>Microsoft.Iot.Web.FileSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\libs\Web\Microsoft.Iot.Web.Streaming\Microsoft.Iot.Web.Streaming.csproj">
+      <Project>{0bd28f46-1e5b-4329-842f-ffdd6bd86245}</Project>
+      <Name>Microsoft.Iot.Web.Streaming</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\libs\Web\Microsoft.Iot.Web\Microsoft.Iot.Web.csproj">
       <Project>{0249a320-16a8-4995-8b7e-0fb78756f3cc}</Project>

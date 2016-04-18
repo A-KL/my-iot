@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Windows.Storage;
 using Griffin.Core.Net.Protocols.Http.MJpeg;
 
-namespace WebServerDemo.Model
+namespace Microsoft.Iot.Web.Streaming
 {
     public class FilesFrameSource : IFramesSource
     {

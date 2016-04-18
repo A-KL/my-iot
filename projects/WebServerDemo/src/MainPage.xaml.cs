@@ -19,6 +19,7 @@ using Griffin.Net.Protocols.Http;
 using Griffin.Net.Protocols.Http.MJpeg;
 using Griffin.Net.Protocols.Http.WebSocket;
 using Griffin.Networking.Web;
+using Microsoft.Iot.Web.Streaming;
 using WebServerDemo.Model;
 
 namespace WebServerDemo
