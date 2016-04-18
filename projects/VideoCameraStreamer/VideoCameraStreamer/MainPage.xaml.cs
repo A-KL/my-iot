@@ -1,27 +1,43 @@
-﻿using System.Net;
-using Griffin.Networking.Protocol.Http;
+﻿using System.Linq;
+using System.Net;
+using System.Text;
+using System.Web.Http;
+using Windows.Networking.Connectivity;
 using Windows.Networking.Sockets;
-using Griffin.Networking.Messaging;
-using VideoCameraStreamer.Networking;
+using Griffin.Core.Net.Protocols.Http.MJpeg;
+using Griffin.Net;
+using Griffin.Net.Channels;
+using Griffin.Net.Protocols.Http;
+using Griffin.Net.Protocols.Http.MJpeg;
+using Griffin.Net.Protocols.Http.WebSocket;
+using Griffin.Networking.Web;
+using Microsoft.Iot.Web;
+using Microsoft.Iot.Web.FileSystem;
+using Microsoft.Iot.Web.Streaming;
+using Microsoft.Practices.Unity;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
+using Windows.Graphics.Imaging;
+using Windows.Media;
+using Windows.Media.Capture;
+using Windows.Media.MediaProperties;
+using Windows.Storage.Streams;
+using Windows.UI.Xaml.Controls;
+using VideoCameraStreamer.Models;
 
 namespace VideoCameraStreamer
 {
-    using System;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Threading.Tasks;
-    using Windows.Graphics.Imaging;
-    using Windows.Media;
-    using Windows.Media.Capture;
-    using Windows.Media.MediaProperties;
-    using Windows.Storage.Streams;
-    using Windows.UI.Xaml.Controls;
-
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private const string DefaultPage = "index.html";
+
+        private FilesFrameSource source;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MainPage"/> class.
         /// </summary>
@@ -49,56 +65,19 @@ namespace VideoCameraStreamer
             await Task.Run(() => TakeFrame(mediaCapture));
         }
 
-        private void InitOwinServer()
+        /// <summary>
+        /// The initialize.
+        /// </summary>
+        private async void Initialize()
         {
-            //const string baseUrl = "http://localhost:5000/";
+            var camera = new CameraModule();
 
-            //using (WebApp.Start<Startup>(url: baseUrl))
-            //{
-            //    // Create HttpCient and make a request to api/values 
-
-            //}
-        }
-
-        private async void InitNetwork()
-        {
-            var server = new MessagingServer(
-                new MyHttpServiceFactory(),
-                new MessagingServerConfiguration(new HttpMessageFactory()));
-
-            server.Start(new IPEndPoint(new IPAddress( new byte[] { 192, 168, 1, 12}), 8000));
-
-            //socket = new StreamSocketListener();
-
-            //await socket.BindEndpointAsync(new HostName("192.168.1.117"), 8001.ToString());
-
-            //var hosts = NetworkInformation.GetHostNames();
-            //foreach (var hostName in hosts)
-            //{
-            //    Debug.WriteLine(hostName);
-            //}
-
-            //socket.ConnectionReceived += (e, d) =>
-            //{
-            //    var s = d.Socket;
-            //};
-
-            //var listener = new HttpListener();
-            //listener.Prefixes.Add("http://127.0.0.1:8006/");
+            await camera.InitializeAsync();
 
 
-            //listener.AuthenticationSchemes = AuthenticationSchemes.Anonymous;
+            this.VideoSource.Source = camera.Source;
 
-            //await listener.Start();
-
-            //var context = await listener.GetContextAsync();
-
-            //var newFile = await DownloadsFolder.CreateFileAsync("test.jpeg");
-
-            //using (var fileStream = await newFile.OpenStreamForWriteAsync())
-            //{
-            //    await fileStream.WriteAsync(data, 0, data.Length);
-            //}
+            await camera.Source.StartPreviewAsync();
         }
 
         private static async Task TakeFrame(MediaCapture media)
@@ -186,5 +165,94 @@ namespace VideoCameraStreamer
         //        }
         //    }
         //}
+
+        private void InitNetwork()
+        {
+
+            var imagesFolder =
+                  Windows.ApplicationModel.Package.Current.InstalledLocation
+                  .GetFolderAsync("Images\\Countdown")
+                  .GetAwaiter()
+                  .GetResult();
+
+            this.source = new FilesFrameSource(imagesFolder);
+
+            var container = new UnityContainer();
+
+            // container.RegisterType<IWeatherService, FakeWeatherService>(new HierarchicalLifetimeManager());
+
+
+            //var assembly = this.GetType().GetTypeInfo().Assembly;
+
+            var settings = new HttpConfiguration
+            {
+                DefaultPath = DefaultPage,
+                DependencyResolver = new UnityResolver(container)
+            };
+
+
+            //UseStaticFiles
+            settings.Listeners.Add(new FileSystemListener("/", "wwwroot"));
+            //settings.Listeners.Add(new WebApiListener(assembly)); // use attribute routing            
+
+            // Http
+            var server = new WebService(settings);
+            server.Start(IPAddress.Parse(GetLocalIp()), 8000);
+
+            //WebSockets
+            var socket = new WebSocketListener();
+            socket.Start(IPAddress.Parse(GetLocalIp()), 8001);
+            socket.WebSocketMessageReceived = this.MessageReceived;
+
+            //MJpeg
+            var config = new ChannelTcpListenerConfiguration(
+                    () => new HttpMessageDecoder(),
+                    () => new MJpegEncoder());
+
+            var liveVideoListeren = new HttpListener(config);
+            liveVideoListeren.MessageReceived = this.LiveStreamMessageReceived;
+            liveVideoListeren.Start(IPAddress.Parse(GetLocalIp()), 8002);
+        }
+
+        private void LiveStreamMessageReceived(ITcpChannel channel, object message)
+        {
+            var response = new HttpStreamResponse(HttpStatusCode.OK, "ok", "HTTP/1.1");
+
+            response.StreamSource = this.source;
+
+            channel.Send(response);
+        }
+
+        private void MessageReceived(ITcpChannel channel, object message)
+        {
+            var msg = message as IWebSocketMessage;
+
+            var data = new byte[msg.Payload.Length];
+
+            msg.Payload.Read(data, 0, (int)msg.Payload.Length);
+
+            var text = Encoding.ASCII.GetString(data);
+
+            //this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            //{
+            //    this.Label.Text = text;
+            //});
+        }
+
+        private static string GetLocalIp()
+        {
+            var icp = NetworkInformation.GetInternetConnectionProfile();
+
+            if (icp?.NetworkAdapter == null) return null;
+            var hostname =
+                NetworkInformation.GetHostNames()
+                    .SingleOrDefault(
+                        hn =>
+                            hn.IPInformation?.NetworkAdapter != null && hn.IPInformation.NetworkAdapter.NetworkAdapterId
+                            == icp.NetworkAdapter.NetworkAdapterId);
+
+            // the ip address
+            return hostname?.CanonicalName;
+        }
     }
 }

@@ -156,10 +156,11 @@
     <Compile Include="System.Web\Http\Routing\IHttpRoute.cs" />
     <Compile Include="System.Web\Http\Routing\IHttpRouteData.cs" />
     <Compile Include="System.Web\Http\Routing\IHttpVirtualPathData.cs" />
+    <Compile Include="UnityResolver.cs" />
     <Compile Include="WebService.cs" />
     <Compile Include="System.Web\Http\HttpConfiguration.cs" />
-     <EmbeddedResource Include="..\..\System.Net.Http.Formatting\Properties\CommonWebApiResources.resx">
-       <Link>Properties\CommonWebApiResources.resx</Link>
+    <EmbeddedResource Include="..\..\System.Net.Http.Formatting\Properties\CommonWebApiResources.resx">
+      <Link>Properties\CommonWebApiResources.resx</Link>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CommonWebApiResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
