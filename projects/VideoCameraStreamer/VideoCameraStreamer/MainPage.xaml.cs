@@ -218,7 +218,7 @@ namespace VideoCameraStreamer
         {
             var response = new HttpStreamResponse(HttpStatusCode.OK, "ok", "HTTP/1.1");
 
-            response.StreamSource = this.source;
+            //response.StreamSource = this.source;
 
             channel.Send(response);
         }

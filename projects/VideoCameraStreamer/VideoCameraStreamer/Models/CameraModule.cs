@@ -1,20 +1,17 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CameraModule.cs" company="">
-//   
-// </copyright>
-// <summary>
-//   The camera module.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Contacts;
 using Windows.Devices.Enumeration;
+using Windows.Foundation;
+using Windows.Graphics.Imaging;
+using Windows.Media;
 using Windows.Media.Capture;
+using Windows.Media.MediaProperties;
+using Windows.Storage.Streams;
 
 namespace VideoCameraStreamer.Models
 {
@@ -23,119 +20,109 @@ namespace VideoCameraStreamer.Models
     /// </summary>
     public class CameraModule : IDisposable
     {
-        /// <summary>
-        /// Media Capture object for the USB camera
-        /// </summary>
         private MediaCapture mediaCapture;
 
-        /// <summary>
-        /// The discovery.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="Task"/>.
-        /// </returns>
-        public static async Task<IEnumerable<CameraModule>> Discovery()
-        {
-            var devices = await FindCameraDevice();
+        private DeviceInformation cameraDevice;
 
-            return null;
+        private CameraModule(DeviceInformation info)
+        {
+            this.cameraDevice = info;
         }
 
-        /// <summary>
-        /// Gets the source.
-        /// </summary>
-        public MediaCapture Source
+        public static async Task<IEnumerable<CameraModule>> DiscoverAsync()
         {
-            get { return this.mediaCapture; }
+            var infos = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
+
+            var results = new List<CameraModule>(infos.Count);
+
+            results.AddRange(infos.Select(information => new CameraModule(information)));
+
+            return results;
         }
 
-        /// <summary>
-        /// The start.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="Task"/>.
-        /// </returns>
-        public async Task Start()
+        public MediaCapture Source => this.mediaCapture;
+
+        public IAsyncAction Start()
         {
-            try
-            {
-                await mediaCapture.StartPreviewAsync();
-            }
-            catch
-            {
-                Debug.WriteLine("UsbCamera: Failed to start camera preview stream");
-                throw;
-            }
+            return this.mediaCapture.StartPreviewAsync();
         }
 
-        /// <summary>
-        /// Asynchronously initializes webcam feed
-        /// </summary>
-        /// <returns>
-        /// Task object: True if camera is successfully initialized; false otherwise.
-        /// </returns>
-        public async Task<bool> InitializeAsync()
+        public async Task InitializeAsync()
         {
-            if (mediaCapture != null)
+            var settings = new MediaCaptureInitializationSettings
             {
-                return false;
-            }
+                VideoDeviceId = this.cameraDevice.Id
+            };
 
-            // Attempt to get attached webcam
-            var cameraDevice = await FindCameraDevice();
-
-            if (cameraDevice == null)
-            {
-                // No camera found, report the error and break out of initialization
-                Debug.WriteLine("UsbCamera: No camera found!");
-
-// isInitialized = false;
-                return false;
-            }
-
-            // Creates MediaCapture initialization settings with foudnd webcam device
-           // var settings = new MediaCaptureInitializationSettings { VideoDeviceId = cameraDevice.Id };
             this.mediaCapture = new MediaCapture();
 
-            try
-            {
-                await mediaCapture.InitializeAsync();
-
-// isInitialized = true;
-                return true;
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                Debug.WriteLine("UsbCamera: UnauthorizedAccessException: " + ex + "Ensure webcam capability is added in the manifest.");
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("UsbCamera: Exception when initializing MediaCapture:" + ex);
-                throw;
-            }
+            await this.mediaCapture.InitializeAsync(settings);
         }
 
-        /// <summary>
-        /// The dispose.
-        /// </summary>
+        public IEnumerable<Task<VideoFrame>> TakeFrameAsync()
+        {
+            var previewProperties =
+                this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview) as
+                    VideoEncodingProperties;
+
+            if (previewProperties == null)
+            {
+                yield return Task.FromResult<VideoFrame>(null);
+            }
+
+            var videoFrame = new VideoFrame(
+                BitmapPixelFormat.Bgra8,
+                (int)previewProperties.Width,
+                (int)previewProperties.Height);
+
+            // Capture the preview frame
+            yield return this.mediaCapture.GetPreviewFrameAsync(videoFrame).AsTask();
+        }
+
         public void Dispose()
         {
             this.mediaCapture?.Dispose();
         }
 
-        /// <summary>
-        /// The find camera device.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="Task"/>.
-        /// </returns>
-        private static async Task<DeviceInformation> FindCameraDevice()
-        {
-            // Get available devices for capturing pictures
-            var allVideoDevices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
+        //public async Task TakeFrame()
+        //{
+        //    var previewProperties = this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview) as VideoEncodingProperties;
 
-            return allVideoDevices.Count > 0 ? allVideoDevices[0] : null;
-        }
+        //    if (previewProperties == null)
+        //    {
+        //        return;
+        //    }
+
+        //    while (true)
+        //    {
+        //        var videoFrame = new VideoFrame(BitmapPixelFormat.Bgra8, (int) previewProperties.Width,
+        //            (int) previewProperties.Height);
+
+        //        // Capture the preview frame
+        //        using (var currentFrame = await this.mediaCapture.GetPreviewFrameAsync(videoFrame))
+        //        {
+        //            // Collect the resulting frame
+        //            var previewFrame = currentFrame.SoftwareBitmap;
+
+        //            using (var stream = new InMemoryRandomAccessStream())
+        //            {
+        //                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, stream);
+        //                encoder.SetSoftwareBitmap(previewFrame);
+
+        //                await encoder.FlushAsync();
+
+        //                var readStrem = stream.AsStreamForRead();
+        //                var dataLean = readStrem.Length;
+        //                var data = new byte[dataLean];
+
+        //                await readStrem.ReadAsync(data, 0, data.Length)
+        //                    .ConfigureAwait(false);
+        //            }
+        //        }
+
+        //    }
+        //}
+
+
     }
 }
