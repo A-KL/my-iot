@@ -44,8 +44,11 @@ namespace VideoCameraStreamer
         public MainPage()
         {
             this.InitializeComponent();
+
+            this.InitializeCamera();
+
             //this.Init();
-            this.InitNetwork();
+            //this.InitNetwork();
         }
 
         private StreamSocketListener socket;
@@ -68,13 +71,14 @@ namespace VideoCameraStreamer
         /// <summary>
         /// The initialize.
         /// </summary>
-        private async void Initialize()
+        private async void InitializeCamera()
         {
-            var camera = new CameraModule();
+           var cameras = await CameraModule.DiscoverAsync();
+
+            var camera = cameras[0];
 
             await camera.InitializeAsync();
-
-
+            
             this.VideoSource.Source = camera.Source;
 
             await camera.Source.StartPreviewAsync();

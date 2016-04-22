@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Contacts;
 using Windows.Devices.Enumeration;
 using Windows.Foundation;
 using Windows.Graphics.Imaging;
 using Windows.Media;
 using Windows.Media.Capture;
 using Windows.Media.MediaProperties;
-using Windows.Storage.Streams;
 
 namespace VideoCameraStreamer.Models
 {
@@ -22,14 +18,17 @@ namespace VideoCameraStreamer.Models
     {
         private MediaCapture mediaCapture;
 
-        private DeviceInformation cameraDevice;
+        private readonly DeviceInformation cameraDevice;
+
+        private bool capturing;
 
         private CameraModule(DeviceInformation info)
         {
             this.cameraDevice = info;
+            this.capturing = false;
         }
 
-        public static async Task<IEnumerable<CameraModule>> DiscoverAsync()
+        public static async Task<IList<CameraModule>> DiscoverAsync()
         {
             var infos = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
 
@@ -59,8 +58,14 @@ namespace VideoCameraStreamer.Models
             await this.mediaCapture.InitializeAsync(settings);
         }
 
-        public IEnumerable<Task<VideoFrame>> TakeFrameAsync()
+        public IEnumerable<Task<VideoFrame>> TakeFrame()
         {
+            if (!this.capturing)
+            {
+                this.mediaCapture.StartPreviewAsync().GetAwaiter().GetResult();
+                this.capturing = true;
+            }
+
             var previewProperties =
                 this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview) as
                     VideoEncodingProperties;
@@ -80,7 +85,7 @@ namespace VideoCameraStreamer.Models
         }
 
         public void Dispose()
-        {
+        {            
             this.mediaCapture?.Dispose();
         }
 
@@ -122,7 +127,5 @@ namespace VideoCameraStreamer.Models
 
         //    }
         //}
-
-
     }
 }
