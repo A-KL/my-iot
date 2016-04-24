@@ -8,8 +8,8 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Canvas Width="320" Height="240" Background="Gray">
-            <CaptureElement x:Name="VideoSource" Width="320" Height="240" />
+        <Canvas  Background="Gray">
+            <CaptureElement x:Name="VideoSource" />
         </Canvas>
     </Grid>
 </Page>

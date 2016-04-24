@@ -20,6 +20,8 @@ namespace VideoCameraStreamer.Models
 
         private readonly DeviceInformation cameraDevice;
 
+        private VideoEncodingProperties previewProperties;
+
         private bool capturing;
 
         private CameraModule(DeviceInformation info)
@@ -43,6 +45,7 @@ namespace VideoCameraStreamer.Models
 
         public IAsyncAction Start()
         {
+            this.capturing = true;
             return this.mediaCapture.StartPreviewAsync();
         }
 
@@ -56,33 +59,54 @@ namespace VideoCameraStreamer.Models
             this.mediaCapture = new MediaCapture();
 
             await this.mediaCapture.InitializeAsync(settings);
+
+            this.previewProperties = this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview) as VideoEncodingProperties;
         }
 
-        public IEnumerable<Task<VideoFrame>> TakeFrame()
+        public IAsyncOperation<VideoFrame> ShootFrame()
         {
             if (!this.capturing)
             {
                 this.mediaCapture.StartPreviewAsync().GetAwaiter().GetResult();
                 this.capturing = true;
             }
-
-            var previewProperties =
-                this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview) as
-                    VideoEncodingProperties;
-
-            if (previewProperties == null)
-            {
-                yield return Task.FromResult<VideoFrame>(null);
-            }
-
             var videoFrame = new VideoFrame(
                 BitmapPixelFormat.Bgra8,
                 (int)previewProperties.Width,
                 (int)previewProperties.Height);
 
             // Capture the preview frame
-            yield return this.mediaCapture.GetPreviewFrameAsync(videoFrame).AsTask();
+            return this.mediaCapture.GetPreviewFrameAsync(videoFrame);
         }
+
+        //public IEnumerable<Task<VideoFrame>> Frames
+        //{
+        //    get
+        //    {
+        //        if (!this.capturing)
+        //        {
+        //            this.mediaCapture.StartPreviewAsync().GetAwaiter().GetResult();
+        //            this.capturing = true;
+        //        }
+
+        //        var previewProperties =
+        //            this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview) as
+        //                VideoEncodingProperties;
+
+        //        if (previewProperties == null)
+        //        {
+        //            yield return Task.FromResult<VideoFrame>(null);
+        //        }
+
+        //        var videoFrame = new VideoFrame(
+        //            BitmapPixelFormat.Bgra8,
+        //            (int) previewProperties.Width,
+        //            (int) previewProperties.Height);
+
+        //        // Capture the preview frame
+        //        yield return this.mediaCapture.GetPreviewFrameAsync(videoFrame).AsTask();
+        //    }
+        //}
 
         public void Dispose()
         {            
