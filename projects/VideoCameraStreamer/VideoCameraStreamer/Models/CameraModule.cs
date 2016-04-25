@@ -20,7 +20,7 @@ namespace VideoCameraStreamer.Models
 
         private readonly DeviceInformation cameraDevice;
 
-        private VideoEncodingProperties previewProperties;
+        private VideoFrame videoFrame;
 
         private bool capturing;
 
@@ -60,7 +60,9 @@ namespace VideoCameraStreamer.Models
 
             await this.mediaCapture.InitializeAsync(settings);
 
-            this.previewProperties = this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview) as VideoEncodingProperties;
+            var previewProperties = (VideoEncodingProperties)this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview);
+
+            this.videoFrame = new VideoFrame(BitmapPixelFormat.Bgra8, (int)previewProperties.Width, (int)previewProperties.Height);
         }
 
         public IAsyncOperation<VideoFrame> ShootFrame()
@@ -70,13 +72,9 @@ namespace VideoCameraStreamer.Models
                 this.mediaCapture.StartPreviewAsync().GetAwaiter().GetResult();
                 this.capturing = true;
             }
-            var videoFrame = new VideoFrame(
-                BitmapPixelFormat.Bgra8,
-                (int)previewProperties.Width,
-                (int)previewProperties.Height);
-
+            
             // Capture the preview frame
-            return this.mediaCapture.GetPreviewFrameAsync(videoFrame);
+            return this.mediaCapture.GetPreviewFrameAsync(this.videoFrame);
         }
 
         //public IEnumerable<Task<VideoFrame>> Frames

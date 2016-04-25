@@ -10,7 +10,7 @@
     {
         private readonly CameraModule module;
 
-       // private readonly IRandomAccessStream frameStream;
+        // private readonly IRandomAccessStream frameStream;
 
         //   private readonly BitmapEncoder encoder;
 
@@ -23,27 +23,26 @@
 
         public bool WriteNextFrame(MultipartStream stream)
         {
-            using (var frame = this.module.ShootFrame().GetAwaiter().GetResult())
-            {
+            var frame = this.module.ShootFrame().GetAwaiter().GetResult();
+            
                 if (frame == null)
-                {
-                    return false;
-                }
+            {
+                return false;
+            }
 
-                using (var tempStream = new InMemoryRandomAccessStream())
-                {
-                   // this.frameStream.Seek(0);
+            using (var tempStream = new InMemoryRandomAccessStream())
+            {
+                // this.frameStream.Seek(0);
 
-                    var encoder = BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, tempStream).GetAwaiter().GetResult();
+                var encoder = BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, tempStream).GetAwaiter().GetResult();
 
-                    encoder.SetSoftwareBitmap(frame.SoftwareBitmap);
+                encoder.SetSoftwareBitmap(frame.SoftwareBitmap);
 
-                    encoder.FlushAsync().GetAwaiter().GetResult();
+                encoder.FlushAsync().GetAwaiter().GetResult();
 
-                    //var dataSize = frame.SoftwareBitmap.ConvertTo(BitmapEncoder.JpegEncoderId, this.frameStream).Result;
+                //var dataSize = frame.SoftwareBitmap.ConvertTo(BitmapEncoder.JpegEncoderId, this.frameStream).Result;
 
-                    tempStream.AsStream().CopyTo(stream);
-                }
+                tempStream.AsStream().CopyTo(stream);
             }
 
             return true;
