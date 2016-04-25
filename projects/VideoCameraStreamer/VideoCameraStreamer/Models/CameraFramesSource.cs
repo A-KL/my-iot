@@ -12,39 +12,32 @@
 
         // private readonly IRandomAccessStream frameStream;
 
-        //   private readonly BitmapEncoder encoder;
-
         public CameraFramesSource(CameraModule module)
         {
             this.module = module;
-            //this.frameStream = new InMemoryRandomAccessStream();
-
         }
 
         public bool WriteNextFrame(MultipartStream stream)
         {
-            var frame = this.module.ShootFrame().GetAwaiter().GetResult();
-            
+            using (var frame = this.module.ShootFrame().GetAwaiter().GetResult())
+            {
                 if (frame == null)
-            {
-                return false;
+                {
+                    return false;
+                }
+
+                using (var tempStream = new InMemoryRandomAccessStream())
+                {
+                   var encoder =
+                        BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, tempStream).GetAwaiter().GetResult();
+
+                    encoder.SetSoftwareBitmap(frame.SoftwareBitmap);
+
+                    encoder.FlushAsync().GetAwaiter().GetResult();
+
+                    tempStream.AsStream().CopyTo(stream);
+                }
             }
-
-            using (var tempStream = new InMemoryRandomAccessStream())
-            {
-                // this.frameStream.Seek(0);
-
-                var encoder = BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, tempStream).GetAwaiter().GetResult();
-
-                encoder.SetSoftwareBitmap(frame.SoftwareBitmap);
-
-                encoder.FlushAsync().GetAwaiter().GetResult();
-
-                //var dataSize = frame.SoftwareBitmap.ConvertTo(BitmapEncoder.JpegEncoderId, this.frameStream).Result;
-
-                tempStream.AsStream().CopyTo(stream);
-            }
-
             return true;
         }
     }

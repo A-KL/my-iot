@@ -20,7 +20,7 @@ namespace VideoCameraStreamer.Models
 
         private readonly DeviceInformation cameraDevice;
 
-        private VideoFrame videoFrame;
+        private VideoEncodingProperties previewProperties;
 
         private bool capturing;
 
@@ -60,9 +60,7 @@ namespace VideoCameraStreamer.Models
 
             await this.mediaCapture.InitializeAsync(settings);
 
-            var previewProperties = (VideoEncodingProperties)this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview);
-
-            this.videoFrame = new VideoFrame(BitmapPixelFormat.Bgra8, (int)previewProperties.Width, (int)previewProperties.Height);
+            previewProperties = (VideoEncodingProperties)this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview);            
         }
 
         public IAsyncOperation<VideoFrame> ShootFrame()
@@ -72,82 +70,15 @@ namespace VideoCameraStreamer.Models
                 this.mediaCapture.StartPreviewAsync().GetAwaiter().GetResult();
                 this.capturing = true;
             }
-            
-            // Capture the preview frame
-            return this.mediaCapture.GetPreviewFrameAsync(this.videoFrame);
+
+            var videoFrame = new VideoFrame(BitmapPixelFormat.Bgra8, (int)previewProperties.Width, (int)previewProperties.Height);
+
+            return this.mediaCapture.GetPreviewFrameAsync(videoFrame);
         }
-
-        //public IEnumerable<Task<VideoFrame>> Frames
-        //{
-        //    get
-        //    {
-        //        if (!this.capturing)
-        //        {
-        //            this.mediaCapture.StartPreviewAsync().GetAwaiter().GetResult();
-        //            this.capturing = true;
-        //        }
-
-        //        var previewProperties =
-        //            this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview) as
-        //                VideoEncodingProperties;
-
-        //        if (previewProperties == null)
-        //        {
-        //            yield return Task.FromResult<VideoFrame>(null);
-        //        }
-
-        //        var videoFrame = new VideoFrame(
-        //            BitmapPixelFormat.Bgra8,
-        //            (int) previewProperties.Width,
-        //            (int) previewProperties.Height);
-
-        //        // Capture the preview frame
-        //        yield return this.mediaCapture.GetPreviewFrameAsync(videoFrame).AsTask();
-        //    }
-        //}
 
         public void Dispose()
         {            
             this.mediaCapture?.Dispose();
         }
-
-        //public async Task TakeFrame()
-        //{
-        //    var previewProperties = this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview) as VideoEncodingProperties;
-
-        //    if (previewProperties == null)
-        //    {
-        //        return;
-        //    }
-
-        //    while (true)
-        //    {
-        //        var videoFrame = new VideoFrame(BitmapPixelFormat.Bgra8, (int) previewProperties.Width,
-        //            (int) previewProperties.Height);
-
-        //        // Capture the preview frame
-        //        using (var currentFrame = await this.mediaCapture.GetPreviewFrameAsync(videoFrame))
-        //        {
-        //            // Collect the resulting frame
-        //            var previewFrame = currentFrame.SoftwareBitmap;
-
-        //            using (var stream = new InMemoryRandomAccessStream())
-        //            {
-        //                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, stream);
-        //                encoder.SetSoftwareBitmap(previewFrame);
-
-        //                await encoder.FlushAsync();
-
-        //                var readStrem = stream.AsStreamForRead();
-        //                var dataLean = readStrem.Length;
-        //                var data = new byte[dataLean];
-
-        //                await readStrem.ReadAsync(data, 0, data.Length)
-        //                    .ConfigureAwait(false);
-        //            }
-        //        }
-
-        //    }
-        //}
     }
 }
