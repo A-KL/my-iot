@@ -10,8 +10,6 @@
     {
         private readonly CameraModule module;
 
-        // private readonly IRandomAccessStream frameStream;
-
         public CameraFramesSource(CameraModule module)
         {
             this.module = module;

@@ -41,9 +41,23 @@ namespace VideoCameraStreamer.Models
             return results;
         }
 
+        public VideoEncodingProperties VideoProperties
+        {
+            get { return this.previewProperties; }
+            set
+            {
+                if (null == value)
+                {
+                    return;
+                }
+
+                this.previewProperties = value;
+            }
+        }
+
         public MediaCapture Source => this.mediaCapture;
 
-        public IAsyncAction Start()
+        public IAsyncAction StartAsync()
         {
             this.capturing = true;
             return this.mediaCapture.StartPreviewAsync();
@@ -60,7 +74,14 @@ namespace VideoCameraStreamer.Models
 
             await this.mediaCapture.InitializeAsync(settings);
 
-            previewProperties = (VideoEncodingProperties)this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview);            
+            this.previewProperties = (VideoEncodingProperties)this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview);            
+        }
+
+        public IEnumerable<VideoEncodingProperties> GetAvailableResolutions()
+        {
+            return this.mediaCapture.VideoDeviceController
+                .GetAvailableMediaStreamProperties(MediaStreamType.Photo)
+                .Select(x => x as VideoEncodingProperties);
         }
 
         public IAsyncOperation<VideoFrame> ShootFrame()
@@ -71,7 +92,7 @@ namespace VideoCameraStreamer.Models
                 this.capturing = true;
             }
 
-            var videoFrame = new VideoFrame(BitmapPixelFormat.Bgra8, (int)previewProperties.Width, (int)previewProperties.Height);
+            var videoFrame = new VideoFrame(BitmapPixelFormat.Bgra8, (int)this.VideoProperties.Width, (int)this.VideoProperties.Height);
 
             return this.mediaCapture.GetPreviewFrameAsync(videoFrame);
         }

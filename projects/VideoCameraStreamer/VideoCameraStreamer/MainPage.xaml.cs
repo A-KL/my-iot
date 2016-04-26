@@ -48,9 +48,13 @@ namespace VideoCameraStreamer
 
             await camera.InitializeAsync();
 
+            var res = camera.GetAvailableResolutions().OrderByDescending(x => x.Height * x.Width).FirstOrDefault();
+
+            camera.VideoProperties = res;
+
             this.VideoSource.Source = camera.Source;
 
-            await camera.Start();
+            await camera.StartAsync();
 
             this.source = new CameraFramesSource(camera);
 
