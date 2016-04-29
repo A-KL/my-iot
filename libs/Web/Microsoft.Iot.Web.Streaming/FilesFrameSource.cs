@@ -18,7 +18,7 @@
             this.rootFolder = folder;
         }
 
-        public Task<bool> WriteNextFrame(MultipartStream stream)
+        public Task<bool> WriteNextFrame(Stream stream)
         {
             if (this.files == null)
             {

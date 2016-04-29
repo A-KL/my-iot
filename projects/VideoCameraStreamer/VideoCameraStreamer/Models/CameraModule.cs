@@ -2,8 +2,6 @@
 using System.IO;
 using System.Text;
 using Windows.Foundation;
-using Windows.Storage.Streams;
-
 namespace VideoCameraStreamer.Models
 {
     using System;
@@ -33,8 +31,7 @@ namespace VideoCameraStreamer.Models
         {
             this.cameraDevice = info;
         }
-
-
+        
         public VideoFrame LastVideoFrame
         {
             get { return this.lastVideoFrame; }
@@ -69,27 +66,21 @@ namespace VideoCameraStreamer.Models
             return results;
         }
 
-        public async Task<IRandomAccessStream> ShootFrame()
+        public IAsyncOperation<VideoFrame> ShootFrame()
         {
-           // var videoFrame = new VideoFrame(BitmapPixelFormat.Bgra8, (int)this.VideoProperties.Width, (int)this.VideoProperties.Height);
+           var videoFrame = new VideoFrame(BitmapPixelFormat.Bgra8, (int)this.VideoProperties.Width, (int)this.VideoProperties.Height);
 
-            var stream = new InMemoryRandomAccessStream();
-
-            await this.mediaCapture.CapturePhotoToStreamAsync(ImageEncodingProperties.CreateJpeg(), stream);
-
-            stream.Seek(0);
-
-            return stream;
+            return this.mediaCapture.GetPreviewFrameAsync(videoFrame);
         }
 
-        public async Task Start()
+        public IAsyncAction Start()
         {
             this.tokenSource = new CancellationTokenSource();
 
             //await this.capture.StartAsync();
 
             //this.mediaCapture.StartRecordToStreamAsync()
-            // await this.mediaCapture.StartPreviewAsync();
+            return this.mediaCapture.StartPreviewAsync();
 
             //Task.Run(async () =>
             //{
@@ -132,13 +123,13 @@ namespace VideoCameraStreamer.Models
 
             //this.capture = await this.mediaCapture.PrepareLowLagPhotoCaptureAsync(ImageEncodingProperties.CreateJpeg());
 
-           this.previewProperties = (VideoEncodingProperties)this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.Photo);
+           this.previewProperties = (VideoEncodingProperties)this.mediaCapture.VideoDeviceController.GetMediaStreamProperties(MediaStreamType.VideoPreview);
         }
 
         public IEnumerable<VideoEncodingProperties> GetAvailableResolutions()
         {
             return this.mediaCapture.VideoDeviceController
-                .GetAvailableMediaStreamProperties(MediaStreamType.Photo)
+                .GetAvailableMediaStreamProperties(MediaStreamType.VideoPreview)
                 .Select(x => x as VideoEncodingProperties);
         }
 

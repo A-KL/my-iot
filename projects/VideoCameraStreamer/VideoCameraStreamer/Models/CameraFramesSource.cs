@@ -14,14 +14,19 @@ namespace VideoCameraStreamer.Models
     {
         private readonly CameraModule module;
 
+        private readonly byte[] buffer = new byte[65535];
+
+        private readonly MemoryStream frameBuffer;
+
         private readonly Stopwatch watch = new Stopwatch();
 
         public CameraFramesSource(CameraModule module)
         {
             this.module = module;
+            this.frameBuffer = new MemoryStream(buffer);
         }
 
-        public async Task<bool> WriteNextFrame(MultipartStream stream)
+        public async Task<bool> WriteNextFrame(Stream stream)
         {
             watch.Restart();
 
@@ -35,36 +40,36 @@ namespace VideoCameraStreamer.Models
                 watch.Stop();
 
                 Debug.WriteLine("Frame shooting: " + watch.ElapsedMilliseconds);
-                
+
                 //var frameSize = frame.SoftwareBitmap.PixelWidth * frame.SoftwareBitmap.PixelHeight * 4;
                 //var temb = new Windows.Storage.Streams.Buffer((uint) frameSize);
                 // var buffer = frame.SoftwareBitmap.LockBuffer(BitmapBufferAccessMode.Read);
                 // var data = temb.ToArray();
                 // stream.Write(data, 0, data.Length);
-                
-               // using (var tempStream = new InMemoryRandomAccessStream())
-                {
-                    //watch.Restart();
 
-                    //var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, tempStream);
-                    
-                    //encoder.SetSoftwareBitmap(frame.SoftwareBitmap);
+                this.frameBuffer.SetLength(0);
+                this.frameBuffer.Position = 0;
 
-                    //await encoder.FlushAsync();
+                watch.Restart();
 
-                    //watch.Stop();
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, this.frameBuffer.AsRandomAccessStream());
 
-                    //Debug.WriteLine("Frame Encoding: " + watch.ElapsedMilliseconds);
+                encoder.SetSoftwareBitmap(frame.SoftwareBitmap);
 
-                    watch.Restart();
+                await encoder.FlushAsync();
 
-                    frame.AsStream().CopyTo(stream);
+                //watch.Stop();
 
-                    watch.Stop();
+                //Debug.WriteLine("Frame Encoding: " + watch.ElapsedMilliseconds);
 
-                    Debug.WriteLine("Frame copying: " + watch.ElapsedMilliseconds);
+                //watch.Restart();
+               // this.frameBuffer.SetLength(0);
+                this.frameBuffer.Position = 0;
+                this.frameBuffer.CopyTo(stream);
 
-                }                               
+                //watch.Stop();
+
+                //Debug.WriteLine("Frame copying: " + watch.ElapsedMilliseconds);                                               
             }
 
             return true;

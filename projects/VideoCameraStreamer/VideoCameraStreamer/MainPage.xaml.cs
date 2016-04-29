@@ -59,7 +59,7 @@ namespace VideoCameraStreamer
 
           //  camera.VideoProperties = res;
 
-           //this.VideoSource.Source = camera.Source;
+           this.VideoSource.Source = camera.Source;
 
            await camera.Start();
 
