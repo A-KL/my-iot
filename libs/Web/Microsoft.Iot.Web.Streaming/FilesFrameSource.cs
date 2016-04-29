@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
-
-namespace Microsoft.Iot.Web.Streaming
+﻿namespace Microsoft.Iot.Web.Streaming
 {
     using System.IO;
     using System;
+    using System.Threading.Tasks;
     using System.Collections.Generic;
     using Griffin.Core.Net.Protocols.Http.Multipart;
     using Windows.Storage;
@@ -19,7 +18,7 @@ namespace Microsoft.Iot.Web.Streaming
             this.rootFolder = folder;
         }
 
-        public bool WriteNextFrame(MultipartStream stream)
+        public Task<bool> WriteNextFrame(MultipartStream stream)
         {
             if (this.files == null)
             {
@@ -41,7 +40,10 @@ namespace Microsoft.Iot.Web.Streaming
 
             this.lastFileSentIndex++;
 
-            return this.files.Count > this.lastFileSentIndex;            
+            return Task.FromResult<bool>(this.files.Count > this.lastFileSentIndex);
         }
+
+        public void Dispose()
+        {   }
     }
 }

@@ -12,7 +12,14 @@ using Microsoft.Iot.Web;
 using Microsoft.Iot.Web.FileSystem;
 using Microsoft.Practices.Unity;
 using System;
+using System.IO;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Graphics.Imaging;
+using Windows.Media.MediaProperties;
+using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
 using Griffin.Core.Net.Protocols.Http.Multipart;
 using VideoCameraStreamer.Models;
 
@@ -33,7 +40,7 @@ namespace VideoCameraStreamer
                     .GetAwaiter()
                     .GetResult();
 
-          // this.source = new FilesFrameSource(imagesFolder);
+            // this.source = new FilesFrameSource(imagesFolder);
 
             this.InitializeComponent();
 
@@ -48,15 +55,47 @@ namespace VideoCameraStreamer
 
             await camera.InitializeAsync();
 
-            var res = camera.GetAvailableResolutions().OrderByDescending(x => x.Height * x.Width).FirstOrDefault();
+           // var res = camera.GetAvailableResolutions().OrderByDescending(x => x.Bitrate).FirstOrDefault(x => x.Subtype.Equals("MJPG"));
 
-            camera.VideoProperties = res;
+          //  camera.VideoProperties = res;
 
-            this.VideoSource.Source = camera.Source;
+           //this.VideoSource.Source = camera.Source;
 
-            await camera.StartAsync();
+           await camera.Start();
 
-            this.source = new CameraFramesSource(camera);
+           this.source = new CameraFramesSource(camera);
+            
+            //await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal,
+            // async () =>
+            // {
+            //     var capturefile = await ApplicationData.Current.LocalFolder.CreateFileAsync("photo_" + DateTime.Now.Ticks, CreationCollisionOption.ReplaceExisting);
+
+            //     // await camera.Source.CapturePhotoToStorageFileAsync(ImageEncodingProperties.CreateJpeg(), capturefile);
+
+            //     using (var write = await capturefile.OpenStreamForWriteAsync())
+            //     {
+            //         using (var frame = await camera.ShootFrame())
+            //         {
+
+            //             var bitmap = new WriteableBitmap((int)camera.VideoProperties.Width, (int)camera.VideoProperties.Height);
+            //             frame.Seek(0);
+            //             await bitmap.SetSourceAsync(frame);
+
+            //             this.ImageSource.Source = bitmap;
+
+            //             //var buffer = new Windows.Storage.Streams.Buffer((uint)frame.Size);
+            //             //await frame.ReadAsync(buffer, buffer.Length, InputStreamOptions.None);
+
+            //             //var array = buffer.ToArray();
+
+            //             //await write.WriteAsync(array, 0, array.Length);
+            //             //await write.FlushAsync();
+            //         }
+            //     }
+
+            //    // var img = new BitmapImage(new Uri(capturefile.Path));
+            //    // this.ImageSource.Source = img;
+            // });
 
             this.InitNetwork();
         }
@@ -76,7 +115,7 @@ namespace VideoCameraStreamer
                 DefaultPath = DefaultPage,
                 DependencyResolver = new UnityResolver(container)
             };
-            
+
             //UseStaticFiles
             settings.Listeners.Add(new FileSystemListener("/", "wwwroot"));
             //settings.Listeners.Add(new WebApiListener(assembly)); // use attribute routing            

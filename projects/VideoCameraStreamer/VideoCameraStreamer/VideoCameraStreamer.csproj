@@ -459,6 +459,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\CachedValue.cs" />
     <Compile Include="Models\CameraFramesSource.cs" />
     <Compile Include="Models\CameraModule.cs" />
     <Compile Include="MainPage.xaml.cs">
