@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Griffin.Core", "..\..\submo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Net.Http.Formatting", "..\..\libs\System.Net.Http.Formatting\System.Net.Http.Formatting.csproj", "{0380B076-D673-47CA-B3D5-BFDD2D43FEDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Iot.Web.Streaming", "..\..\libs\Web\Microsoft.Iot.Web.Streaming\Microsoft.Iot.Web.Streaming.csproj", "{0BD28F46-1E5B-4329-842F-FFDD6BD86245}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,22 +133,6 @@ Global
 		{0380B076-D673-47CA-B3D5-BFDD2D43FEDD}.Release|x64.Build.0 = Release|x64
 		{0380B076-D673-47CA-B3D5-BFDD2D43FEDD}.Release|x86.ActiveCfg = Release|x86
 		{0380B076-D673-47CA-B3D5-BFDD2D43FEDD}.Release|x86.Build.0 = Release|x86
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Debug|ARM.ActiveCfg = Debug|ARM
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Debug|ARM.Build.0 = Debug|ARM
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Debug|x64.ActiveCfg = Debug|x64
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Debug|x64.Build.0 = Debug|x64
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Debug|x86.ActiveCfg = Debug|x86
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Debug|x86.Build.0 = Debug|x86
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Release|ARM.ActiveCfg = Release|ARM
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Release|ARM.Build.0 = Release|ARM
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Release|x64.ActiveCfg = Release|x64
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Release|x64.Build.0 = Release|x64
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Release|x86.ActiveCfg = Release|x86
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -162,6 +144,5 @@ Global
 		{9C0E24E5-CDBB-4D37-AE01-0CB2EDE02F29} = {14D26A06-2F19-4A1F-B5AB-72B624333738}
 		{7DD315C1-2C05-4811-BD87-C43D8082CFAC} = {C39192D9-3EAA-4DD8-81CF-94CD527857E1}
 		{0380B076-D673-47CA-B3D5-BFDD2D43FEDD} = {C39192D9-3EAA-4DD8-81CF-94CD527857E1}
-		{0BD28F46-1E5B-4329-842F-FFDD6BD86245} = {14D26A06-2F19-4A1F-B5AB-72B624333738}
 	EndGlobalSection
 EndGlobal

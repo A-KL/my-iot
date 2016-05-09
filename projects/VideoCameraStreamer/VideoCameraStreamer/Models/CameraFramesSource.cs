@@ -18,7 +18,7 @@ namespace VideoCameraStreamer.Models
 
         private readonly MemoryStream frameBuffer;
 
-        private readonly Stopwatch watch = new Stopwatch();
+       // private readonly Stopwatch watch = new Stopwatch();
 
         public CameraFramesSource(CameraModule module)
         {
@@ -28,7 +28,7 @@ namespace VideoCameraStreamer.Models
 
         public async Task<bool> WriteNextFrame(Stream stream)
         {
-            watch.Restart();
+         //   watch.Restart();
 
             using (var frame = await this.module.ShootFrame())
             {
@@ -37,9 +37,9 @@ namespace VideoCameraStreamer.Models
                     return false;
                 }
 
-                watch.Stop();
+               // watch.Stop();
 
-                Debug.WriteLine("Frame shooting: " + watch.ElapsedMilliseconds);
+              //  Debug.WriteLine("Frame shooting: " + watch.ElapsedMilliseconds);
 
                 //var frameSize = frame.SoftwareBitmap.PixelWidth * frame.SoftwareBitmap.PixelHeight * 4;
                 //var temb = new Windows.Storage.Streams.Buffer((uint) frameSize);
@@ -50,7 +50,7 @@ namespace VideoCameraStreamer.Models
                 this.frameBuffer.SetLength(0);
                 this.frameBuffer.Position = 0;
 
-                watch.Restart();
+              //  watch.Restart();
 
                 var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, this.frameBuffer.AsRandomAccessStream());
 

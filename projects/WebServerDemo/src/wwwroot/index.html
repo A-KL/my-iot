@@ -9,6 +9,7 @@
 
     <script src="/Scripts/modernizr-2.8.3.js"></script>
 
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -38,7 +39,7 @@
 
            <h2> <span id="temp" class="label label-info">[Press Update button]</span></h2>
 
-            <button id="updateButton" type="button" class="btn btn-primary">Update</button>
+            <button id="updateButton" type="button" class="btn btn-primary" data-bind="click: UpdateTempCommand">Update</button>
             <button id="connectButton" type="button" class="btn btn-primary">Connect</button>
         </div>
         <hr />
@@ -52,7 +53,10 @@
     <script src="/Scripts/bootstrap.js"></script>
     <script src="/Scripts/respond.js"></script>
 
-    <script type="text/javascript">
+    <script src="/Scripts/knockout-3.4.0.js"></script>
+    <script src="/indexViewModel.js"></script>
+
+    <!--<script type="text/javascript">
         $('#updateButton').click(function () {
             $.ajax({
                 type: "GET",
@@ -74,7 +78,7 @@
 		
         $('#connectButton').click(function () {
 
-            var ws = new WebSocket("ws://192.168.1.12:8001");
+            var ws = new WebSocket("ws://192.168.1.14:8001");
 
             ws.onopen = function () {
                 alert("About to send data");
@@ -94,7 +98,7 @@
             };
         }); 
 		
-    </script>
+    </script>-->
 
 </body>
 </html>

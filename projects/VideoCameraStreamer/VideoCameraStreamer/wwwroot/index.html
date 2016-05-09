@@ -1,11 +1,5 @@
 ﻿<!doctype html>
-<!--[if lt IE 7 ]><html lang="en" class="no-js ie6"> <![endif]-->
-<!--[if IE 7 ]><html lang="en" class="no-js ie7"> <![endif]-->
-<!--[if IE 8 ]><html lang="en" class="no-js ie8"> <![endif]-->
-<!--[if IE 9 ]><html lang="en" class="no-js ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!-->
 <html lang="en" class="no-js">
-<!--<![endif]-->
 <head>
     <meta charset="utf-8">
     <meta name="author" content="ThemeFuse">
@@ -17,6 +11,7 @@
     <script src="js/libs/jquery-1.10.0.js"></script>
     <script src="js/libs/jquery-ui.min.js"></script>
     <script src="js/libs/bootstrap.min.js"></script>
+    <script src="js/libs/knockout-3.4.0.js"></script>
     <!-- Style CSS -->
     <link href="css/bootstrap.css" media="screen" rel="stylesheet">
     <link href="style.css" media="screen" rel="stylesheet">
@@ -39,6 +34,7 @@
     <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/excanvas.min.js"></script><![endif]-->
     <script type="text/javascript" src="js/jquery.flot.js"></script>
     <script type="text/javascript" src="js/jquery.flot.resize.js"></script>
+
     <script type="text/javascript">
         $(function () {
             var graphwidth = $('.widget_graph .inner').width();
@@ -111,8 +107,6 @@
     <script src="js/jquery.slider.bundle.js"></script>
     <script src="js/jquery.slider.js"></script>
     <link rel="stylesheet" href="css/jslider.css">
-    <!-- Visual Text Editor -->
-    <script src="js/nicEdit.js"></script>
     <!-- Volume, Balance -->
     <script type="text/javascript" src="js/knobRot-0.2.2.js"></script>
     <!-- Video Player -->
@@ -122,6 +116,7 @@
     <link href="css/jplayer.css" rel="stylesheet">
     <script src="js/jquery.jplayer.min.js"></script>
     <script src="js/jplayer.playlist.min.js"></script>
+
     <script type="text/javascript">
         //<![CDATA[
         $(document).ready(function () {
@@ -179,12 +174,6 @@
             jQuery('#contact_name').chosen({ width: "100%" });
         });
     </script>
-    <!--[if lt IE 9]><script src="js/respond.min.js"></script><![endif]-->
-    <!--[if gte IE 9]>
-    <style type="text/css">
-        .gradient, .nicEdit-container {filter: none !important;}
-    </style>
-    <![endif]-->
 </head>
 <body>
     <div class="body_wrap">
@@ -353,7 +342,7 @@
                         <!-- Image View -->
                         <div>
                             <div class="inner boxed-velvet">
-                                <img class="img-rounded img-responsive" src="http://192.168.1.16:8002" alt=""/>
+                                <img class="img-rounded img-responsive" src=":8002" alt=""/>
                                 <a href="#" class="btn btn-round hidden"><span>Rec</span></a>
                             </div>
                         </div>

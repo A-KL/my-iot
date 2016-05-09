@@ -5,10 +5,10 @@ using System.Web.Http;
 namespace Griffin.Networking.Web.System.Web.Http
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public class HttpDeleteAttribute : RouteAttribute
+    public class HttpDeleteAttribute : HttpAttribute
     {
-        public HttpDeleteAttribute(string template)
-            : base(template, HttpMethod.Delete)
+        public HttpDeleteAttribute()
+            : base(HttpMethod.Delete)
         {
         }
     }

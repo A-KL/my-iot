@@ -5,10 +5,10 @@ using System.Web.Http;
 namespace Griffin.Networking.Web.System.Web.Http
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public class HttpPutAttribute : RouteAttribute
+    public class HttpPutAttribute : HttpAttribute
     {
-        public HttpPutAttribute(string template)
-            : base(template, HttpMethod.Put)
+        public HttpPutAttribute()
+            : base(HttpMethod.Put)
         {
         }
     }

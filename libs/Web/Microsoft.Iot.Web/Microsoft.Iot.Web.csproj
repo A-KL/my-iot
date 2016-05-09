@@ -127,6 +127,7 @@
     <Compile Include="System.Web\Http\Controllers\ServicesContainer.cs" />
     <Compile Include="System.Web\Http\Dependencies\EmptyResolver.cs" />
     <Compile Include="System.Web\Http\Hosting\HttpPropertyKeys.cs" />
+    <Compile Include="System.Web\Http\HttpAttribute.cs" />
     <Compile Include="System.Web\Http\HttpDeleteAttribute.cs" />
     <Compile Include="System.Web\Http\HttpGetAttribute.cs" />
     <Compile Include="System.Web\Http\HttpPostAttribute.cs" />

@@ -36,7 +36,7 @@ namespace System.Web
 
     public class HttpContentType
     {
-        public const string Json = "applicaton/json";
+        public const string Json = "application/json";
     }
 
     public class MimeMapping

@@ -8,7 +8,7 @@ namespace Microsoft.Iot.Web.Api.Resolver
     {
         public HttpMethod Reslove(MethodInfo method)
         {
-            var attribute = method.GetCustomAttribute<RouteAttribute>();
+            var attribute = method.GetCustomAttribute<HttpAttribute>();
 
             return attribute?.Method;
         }

@@ -1,12 +1,13 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 
 namespace System.Web.Http
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public class HttpPostAttribute : RouteAttribute
+    public class HttpPostAttribute : HttpAttribute
     {
-        public HttpPostAttribute(string template)
-            : base(template, HttpMethod.Post)
+        public HttpPostAttribute()
+            : base(HttpMethod.Post)
         {
         }
     }

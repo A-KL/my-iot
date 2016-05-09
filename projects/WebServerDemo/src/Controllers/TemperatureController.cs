@@ -17,7 +17,7 @@ namespace WebServerDemo.Controllers
             this.service = service;
         }
 
-        [HttpGet("")]
+        [HttpGet, Route("")]
         public async Task<IEnumerable<TemperatureInfo>> GetFor10Days()
         {
             var period = TimeSpan.FromDays(10);
@@ -25,16 +25,22 @@ namespace WebServerDemo.Controllers
             return this.service.GetTemperatureHistory(DateTime.Now - period, period);
         }
 
-        [HttpGet("bysensor/{sensorId}")]
+        [HttpGet, Route("bysensor/{sensorId}")]
         public TemperatureInfo GetBySensorId(int sensorId)
         {
             return this.service.GetCurrentTemperature(sensorId);
         }
 
-        [HttpDelete("bysensor/{sensorId}")]
-        public void Save(int sensorId)
+        [HttpDelete, Route("bysensor/{sensorId}")]
+        public void Clear(int sensorId)
         {
             this.service.ClearSensorData(sensorId);
+        }
+
+        [HttpPost, Route("bysensor/{sensorId}")]
+        public void New(int sensorId, TemperatureInfo info)
+        {
+            
         }
     }
 }

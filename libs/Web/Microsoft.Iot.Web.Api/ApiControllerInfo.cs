@@ -14,7 +14,7 @@ using Microsoft.Iot.Web.Serialization;
 
 namespace Microsoft.Iot.Web.Api
 {
-    public class ApiControllerInfo
+    internal class ApiControllerInfo
     {
         private readonly Type controllerType;
 

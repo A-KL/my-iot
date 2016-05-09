@@ -423,6 +423,9 @@
     <Content Include="wwwroot\js\libs\jquery-ui.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="wwwroot\js\libs\knockout-3.4.0.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="wwwroot\js\libs\modernizr.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
