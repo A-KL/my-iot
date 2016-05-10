@@ -11,7 +11,6 @@
     <script src="js/libs/jquery-1.10.0.js"></script>
     <script src="js/libs/jquery-ui.min.js"></script>
     <script src="js/libs/bootstrap.min.js"></script>
-    <script src="js/libs/knockout-3.4.0.js"></script>
     <!-- Style CSS -->
     <link href="css/bootstrap.css" media="screen" rel="stylesheet">
     <link href="style.css" media="screen" rel="stylesheet">
@@ -373,66 +372,68 @@
                 <!--/ row -->
                 <!-- row -->
                 <div class="row">
-                    <div class="col-sm-5 col-sm-offset-3">
-                        <h6 class="foo">Video Player</h6>
-                        <!-- Video Player -->
-                        <div class="video_player">
-                            <div class="inner">
-                                <video id="my_video_1" class="video-js vjs-default-skin" controls loop
-                                       preload="auto" poster="images/temp/vjs_poster2.png"
-                                       data-setup="{}">
-                                    <source src="http://test.themefuse.com/artiom/galapagos.mp4" type='video/mp4'>
-                                </video>
-                                <script>
-                                    _V_("my_video_1").ready(function () {
-                                        var myPlayer = this;
-                                        var aspectRatio = 192 / 380;
-                                        var width = document.getElementById(myPlayer.id).parentElement.offsetWidth;
-                                        myPlayer.width(width).height(width * aspectRatio);
-
-                                        function resizeVideoJS() {
+                    <div class="container col-md-12" data-bind="foreach: videos">
+                        <div class="col-md-4">
+                            <h6 class="foo"><span data-bind="text: name"></span></h6>
+                            <!-- Video Player -->
+                            <div class="video_player">
+                                <div class="inner">
+                                    <video id="my_video_1" class="video-js vjs-default-skin" controls loop
+                                           preload="auto"
+                                           data-bind="poster: poster" 
+                                           data-setup="{}">
+                                        <source data-bind="src: src" type='video/mp4'>
+                                    </video>
+                                    <script>
+                                        _V_("my_video_1").ready(function () {
+                                            var myPlayer = this;
+                                            var aspectRatio = 192 / 380;
                                             var width = document.getElementById(myPlayer.id).parentElement.offsetWidth;
                                             myPlayer.width(width).height(width * aspectRatio);
-                                        }
 
-                                        resizeVideoJS();
-                                        window.onresize = resizeVideoJS;
-                                    });
-                                </script>
+                                            function resizeVideoJS() {
+                                                var width = document.getElementById(myPlayer.id).parentElement.offsetWidth;
+                                                myPlayer.width(width).height(width * aspectRatio);
+                                            }
+
+                                            resizeVideoJS();
+                                            window.onresize = resizeVideoJS;
+                                        });
+                                    </script>
+                                </div>
                             </div>
+                            <!--/ Video Player -->
                         </div>
-                        <!--/ Video Player -->
                     </div>
-                </div>
-                <!--/ row -->
-                <!-- row -->
-                <div class="row hidden">
-                    <div class="col-sm-5">
-                        <div class="progressbars">
-                            <h6 class="foo">Progress Bars</h6>
-                            <!-- Progress Bar -->
-                            <div id="progressBar1" class="progressbar">
-                                <span class="mark-left">0%</span>
-                                <span class="mark-right">100%</span>
-                                <div class="percent"></div>
-                                <div class="pbar"></div>
-                                <div class="elapsed"></div>
-                                <div class="remained"></div>
-                            </div>
-                            <script type="text/javascript">
-                                $(document).ready(function () {
+                    <!--/ row -->
+                    <!-- row -->
+                    <div class="row hidden">
+                        <div class="col-sm-5">
+                            <div class="progressbars">
+                                <h6 class="foo">Progress Bars</h6>
+                                <!-- Progress Bar -->
+                                <div id="progressBar1" class="progressbar">
+                                    <span class="mark-left">0%</span>
+                                    <span class="mark-right">100%</span>
+                                    <div class="percent"></div>
+                                    <div class="pbar"></div>
+                                    <div class="elapsed"></div>
+                                    <div class="remained"></div>
+                                </div>
+                                <script type="text/javascript">
+                                $(document).ready(function() {
                                     $('#progressBar1').anim_progressbar({
                                         totaltime: 90
                                     });
                                 });
-                            </script>
-                            <!--/ Progress Bar -->
-                            <!-- Range slider -->
-                            <div class="range-slider">
-                                <input id="price_range" type="text" name="price_range" value="270;800">
-                            </div>
-                            <script type="text/javascript">
-                                jQuery(document).ready(function ($) {
+                                </script>
+                                <!--/ Progress Bar -->
+                                <!-- Range slider -->
+                                <div class="range-slider">
+                                    <input id="price_range" type="text" name="price_range" value="270;800">
+                                </div>
+                                <script type="text/javascript">
+                                jQuery(document).ready(function($) {
                                     // Price Range Input
                                     $("#price_range").rangeslider({
                                         from: 50,
@@ -445,23 +446,23 @@
                                         dimension: '$'
                                     });
                                 });
-                            </script>
-                            <!-- Range slider -->
-                            <!-- Progress Bar with download Bar -->
-                            <div id="progressBar2" class="progressbar style2">
-                                <span class="mark-left">0%</span>
-                                <span class="mark-right">100%</span>
-                                <div class="percent"></div>
-                                <div class="pbar">
-                                    <div id="downloadBar" class="downloadbar">
-                                        <div class="pbar"></div>
+                                </script>
+                                <!-- Range slider -->
+                                <!-- Progress Bar with download Bar -->
+                                <div id="progressBar2" class="progressbar style2">
+                                    <span class="mark-left">0%</span>
+                                    <span class="mark-right">100%</span>
+                                    <div class="percent"></div>
+                                    <div class="pbar">
+                                        <div id="downloadBar" class="downloadbar">
+                                            <div class="pbar"></div>
+                                        </div>
                                     </div>
+                                    <div class="elapsed"></div>
+                                    <div class="remained"></div>
                                 </div>
-                                <div class="elapsed"></div>
-                                <div class="remained"></div>
-                            </div>
-                            <script type="text/javascript">
-                                $(document).ready(function () {
+                                <script type="text/javascript">
+                                $(document).ready(function() {
                                     $('#progressBar2').anim_progressbar({
                                         totaltime: 180
                                     });
@@ -469,99 +470,103 @@
                                         totaltime: 120
                                     });
                                 });
-                            </script>
-                            <!--/ Progress Bar with download Bar -->
-                        </div>
-                        <h6 class="foo">Statistics</h6>
-                        <!-- Simple Graph -->
-                        <div class="widget-container widget_graph boxed-velvet">
-                            <div class="inner">
-                                <div id="graph" class="graph"></div>
+                                </script>
+                                <!--/ Progress Bar with download Bar -->
                             </div>
+                            <h6 class="foo">Statistics</h6>
+                            <!-- Simple Graph -->
+                            <div class="widget-container widget_graph boxed-velvet">
+                                <div class="inner">
+                                    <div id="graph" class="graph"></div>
+                                </div>
+                            </div>
+                            <!--/ Simple Graph -->
                         </div>
-                        <!--/ Simple Graph -->
                     </div>
-                </div>
 
-                <!-- row -->
-                <div class="row hidden">
-                    <div class="col-sm-6">
-                        <h6 class="foo">Buttons</h6>
-                        <!-- Buttons -->
-                        <div class="buttons-wrap">
-                            <div class="buttons">
-                                <a href="#" class="btn btn-left"><span>Right</span></a>
-                                <a href="#" class="btn btn-pagination"><span>Download all files</span></a>
-                                <a href="#" class="btn btn-right"><span>&nbsp;Left&nbsp;</span></a>
+                    <!-- row -->
+                    <div class="row hidden">
+                        <div class="col-sm-6">
+                            <h6 class="foo">Buttons</h6>
+                            <!-- Buttons -->
+                            <div class="buttons-wrap">
+                                <div class="buttons">
+                                    <a href="#" class="btn btn-left"><span>Right</span></a>
+                                    <a href="#" class="btn btn-pagination"><span>Download all files</span></a>
+                                    <a href="#" class="btn btn-right"><span>&nbsp;Left&nbsp;</span></a>
+                                </div>
+                                <div class="buttons">
+                                    <a href="#" class="btn btn-left btn-acute"><span>Right</span></a>
+                                    <a href="#" class="btn btn-acute"><span>Download all files</span></a>
+                                    <a href="#" class="btn btn-right btn-acute"><span>&nbsp;Left&nbsp;&nbsp;</span></a>
+                                </div>
+                                <div class="buttons">
+                                    <a href="#" class="btn btn-round"><span>Normal</span></a>
+                                    <a href="#" class="btn btn-round hover"><span>Hover</span></a>
+                                    <a href="#" class="btn btn-round active"><span>Pressed</span></a>
+                                </div>
                             </div>
-                            <div class="buttons">
-                                <a href="#" class="btn btn-left btn-acute"><span>Right</span></a>
-                                <a href="#" class="btn btn-acute"><span>Download all files</span></a>
-                                <a href="#" class="btn btn-right btn-acute"><span>&nbsp;Left&nbsp;&nbsp;</span></a>
-                            </div>
-                            <div class="buttons">
-                                <a href="#" class="btn btn-round"><span>Normal</span></a>
-                                <a href="#" class="btn btn-round hover"><span>Hover</span></a>
-                                <a href="#" class="btn btn-round active"><span>Pressed</span></a>
-                            </div>
+                            <!--/ Buttons -->
                         </div>
-                        <!--/ Buttons -->
-                    </div>
-                    <div class="col-sm-6">
-                        <h6 class="foo">Tabs</h6>
-                        <!-- tabs -->
-                        <div class="tabs_framed styled">
-                            <div class="inner">
-                                <ul class="tabs clearfix active_bookmark1">
-                                    <li class="active"><a href="#events" data-toggle="tab">Events</a></li>
-                                    <li><a href="#reminders" data-toggle="tab"><sup class="note">3</sup>Reminders</a></li>
-                                    <li><a href="#starred" data-toggle="tab">Starred</a></li>
-                                    <li><a href="#archive" data-toggle="tab">Archive</a></li>
-                                </ul>
-                                <div class="tab-content clearfix">
-                                    <div class="tab-pane clearfix fade in active" id="events">
-                                        <div class="tab_image">
-                                            <img src="images/temp/tabimage5.png" alt="" />
+                        <div class="col-sm-6">
+                            <h6 class="foo">Tabs</h6>
+                            <!-- tabs -->
+                            <div class="tabs_framed styled">
+                                <div class="inner">
+                                    <ul class="tabs clearfix active_bookmark1">
+                                        <li class="active"><a href="#events" data-toggle="tab">Events</a></li>
+                                        <li><a href="#reminders" data-toggle="tab"><sup class="note">3</sup>Reminders</a></li>
+                                        <li><a href="#starred" data-toggle="tab">Starred</a></li>
+                                        <li><a href="#archive" data-toggle="tab">Archive</a></li>
+                                    </ul>
+                                    <div class="tab-content clearfix">
+                                        <div class="tab-pane clearfix fade in active" id="events">
+                                            <div class="tab_image">
+                                                <img src="images/temp/tabimage5.png" alt="" />
+                                            </div>
+                                            <h4>10 august 2012</h4>
+                                            <p>He made his film debut with a mirror part in Black to the Future Part II</p>
+                                            <a href="#" class="see-more"><span>Read More</span></a>
                                         </div>
-                                        <h4>10 august 2012</h4>
-                                        <p>He made his film debut with a mirror part in Black to the Future Part II</p>
-                                        <a href="#" class="see-more"><span>Read More</span></a>
-                                    </div>
-                                    <div class="tab-pane clearfix fade" id="reminders">
-                                        <div class="tab_image">
-                                            <img src="images/temp/tabimage6.png" alt="" />
+                                        <div class="tab-pane clearfix fade" id="reminders">
+                                            <div class="tab_image">
+                                                <img src="images/temp/tabimage6.png" alt="" />
+                                            </div>
+                                            <h4>5 November 2012</h4>
+                                            <p>He made his film debut with a mirror part in Black to the Future Part II</p>
+                                            <a href="#" class="see-more"><span>Read More</span></a>
                                         </div>
-                                        <h4>5 November 2012</h4>
-                                        <p>He made his film debut with a mirror part in Black to the Future Part II</p>
-                                        <a href="#" class="see-more"><span>Read More</span></a>
-                                    </div>
-                                    <div class="tab-pane clearfix fade" id="starred">
-                                        <div class="tab_image">
-                                            <img src="images/temp/tabimage7.png" alt="" />
+                                        <div class="tab-pane clearfix fade" id="starred">
+                                            <div class="tab_image">
+                                                <img src="images/temp/tabimage7.png" alt="" />
+                                            </div>
+                                            <h4>11 October 2012</h4>
+                                            <p>He made his film debut with a mirror part in Black to the Future Part II</p>
+                                            <a href="#" class="see-more"><span>Read More</span></a>
                                         </div>
-                                        <h4>11 October 2012</h4>
-                                        <p>He made his film debut with a mirror part in Black to the Future Part II</p>
-                                        <a href="#" class="see-more"><span>Read More</span></a>
-                                    </div>
-                                    <div class="tab-pane clearfix fade" id="archive">
-                                        <div class="tab_image">
-                                            <img src="images/temp/tabimage8.png" alt="" />
+                                        <div class="tab-pane clearfix fade" id="archive">
+                                            <div class="tab_image">
+                                                <img src="images/temp/tabimage8.png" alt="" />
+                                            </div>
+                                            <h4>14 September 2012</h4>
+                                            <p>He made his film debut with a mirror part in Black to the Future Part II</p>
+                                            <a href="#" class="see-more"><span>Read More</span></a>
                                         </div>
-                                        <h4>14 September 2012</h4>
-                                        <p>He made his film debut with a mirror part in Black to the Future Part II</p>
-                                        <a href="#" class="see-more"><span>Read More</span></a>
                                     </div>
                                 </div>
                             </div>
+                            <!--/ tabs -->
                         </div>
-                        <!--/ tabs -->
                     </div>
+                    <!--/ row -->
                 </div>
-                <!--/ row -->
-            </div>
             <!--/ content -->
         </div>
         <!--/ container -->
     </div>
+    <script src="js/libs/knockout-3.4.0.js"></script>
+    <script src="js/libs/knockstrap.min.js"></script>
+    <!-- knokout.js viewmodel -->
+    <script src="js/app.viewmodel.js"></script>
 </body>
 </html>

@@ -360,6 +360,7 @@
     <Content Include="wwwroot\index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="wwwroot\js\app.viewmodel.js" />
     <Content Include="wwwroot\js\cusel-min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -511,10 +512,6 @@
     <ProjectReference Include="..\..\..\libs\Web\Microsoft.Iot.Web.FileSystem\Microsoft.Iot.Web.FileSystem.csproj">
       <Project>{9C0E24E5-CDBB-4D37-AE01-0CB2EDE02F29}</Project>
       <Name>Microsoft.Iot.Web.FileSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\libs\Web\Microsoft.Iot.Web.Streaming\Microsoft.Iot.Web.Streaming.csproj">
-      <Project>{0BD28F46-1E5B-4329-842F-FFDD6BD86245}</Project>
-      <Name>Microsoft.Iot.Web.Streaming</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\libs\Web\Microsoft.Iot.Web\Microsoft.Iot.Web.csproj">
       <Project>{0249A320-16A8-4995-8B7E-0FB78756F3CC}</Project>
