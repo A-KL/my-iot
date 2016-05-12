@@ -2,8 +2,20 @@ var http = require('http');
 var uwp = require('uwp');
 //var addon = require("./MemoryStatusAddon");
 
-uwp.projectNamespace("Windows.Devices");
+// Camera
+uwp.projectNamespace("Windows.Media.Capture");
 
+var settings = Windows.Media.Capture.MediaCaptureInitializationSettings();
+settings.VideoDeviceId = 0;
+
+var mediaCapture = Windows.Media.Capture.MediaCapture();
+mediaCapture.InitializeAsync(settings);
+
+var videoFrame = new Windows.Media.Capture.VideoFrame(BitmapPixelFormat.Bgra8, 640, 480);
+mediaCapture.GetPreviewFrameAsync(videoFrame);
+
+// GPIO
+uwp.projectNamespace("Windows.Devices");
 var gpioController = Windows.Devices.Gpio.GpioController.getDefault();
 
 var pin = gpioController.openPin(6);
@@ -17,7 +29,7 @@ http.createServer(function (req, res)
     if (currentValue == Windows.Devices.Gpio.GpioPinValue.high)
     {
         currentValue = Windows.Devices.Gpio.GpioPinValue.low;
-    } 
+    }
     else
     {
         currentValue = Windows.Devices.Gpio.GpioPinValue.high;
