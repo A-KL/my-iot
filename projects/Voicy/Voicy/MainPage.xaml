@@ -9,6 +9,37 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Pivot x:Name="rootPivot" Title="Equalizer">
+            <PivotItem Header="Pivot Item 1">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
 
+                    <Slider Name="slider0" Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" Maximum="100" Minimum="0" SmallChange="5" Value="50"  ValueChanged="Slider_ValueChanged"/>
+
+                    <Slider Name="slider1" Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" Maximum="100" Minimum="0" SmallChange="5" Value="20" ValueChanged="Slider_ValueChanged"/>
+
+                    <Slider Name="slider2" Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center" Maximum="100" Minimum="0" SmallChange="5" Value="70" ValueChanged="Slider_ValueChanged"/>
+
+                    <Slider Name="slider3" Grid.Column="3" Orientation="Vertical" HorizontalAlignment="Center" Maximum="100" Minimum="0" SmallChange="5" Value="30" ValueChanged="Slider_ValueChanged"/>
+
+                </Grid>
+            </PivotItem>
+            <PivotItem Header="Pivot Item 2">
+                <!--Pivot content goes here-->
+                <TextBlock Text="Content of pivot item 2."/>
+            </PivotItem>
+            <PivotItem Header="Pivot Item 3">
+                <!--Pivot content goes here-->
+                <TextBlock Text="Content of pivot item 3."/>
+            </PivotItem>
+        </Pivot>
     </Grid>
 </Page>
