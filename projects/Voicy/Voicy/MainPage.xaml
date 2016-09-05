@@ -6,26 +6,40 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Loaded="Page_Loaded">
     <Grid>
-        <StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <StackPanel x:Name="eq1SliderContainer" Orientation="Vertical">
-                    <Slider Name="slider0" Orientation="Vertical" HorizontalAlignment="Center" ValueChanged="slider_ValueChanged" Maximum="100" Minimum="0" SmallChange="5" Value="50" Height="190" Margin="20,5"/>
-                    <TextBlock x:Name="eq1SliderLabel" Text="100Hz" HorizontalAlignment="Center" Foreground="#4A4A4A"/>
+
+        <Pivot Title="VOICY">
+            <PivotItem Header="Pitch">
+                <StackPanel Orientation="Vertical">
+                    <ToggleSwitch Name="pitchToggleSwitch" Toggled="PitchToggleSwitch_OnToggled"/>
+                    <Slider Name="pitchSlider" Orientation="Horizontal" ValueChanged="PitchSlider_OnValueChanged" Maximum="2" Minimum="0.5" SmallChange="0.1" StepFrequency="0.1" Value="1" Margin="20,5"/>
+                    <TextBlock Text="{Binding ElementName=pitchSlider, Path=Value}" HorizontalAlignment="Center"/>
                 </StackPanel>
-                <StackPanel x:Name="eq2SliderContainer" Orientation="Vertical">
-                    <Slider Name="slider1" Orientation="Vertical" HorizontalAlignment="Center" ValueChanged="slider_ValueChanged" Maximum="100" Minimum="0" SmallChange="5" Value="20" Height="190" Margin="20,5"/>
-                    <TextBlock x:Name="eq2SliderLabel" Text="900Hz" HorizontalAlignment="Center" Foreground="#4A4A4A"/>
+            </PivotItem>
+            <PivotItem Header="Equalizer">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Vertical">
+                            <Slider Name="slider0" Orientation="Vertical" HorizontalAlignment="Center" ValueChanged="slider_ValueChanged" Maximum="100" Minimum="0" SmallChange="5" Value="50" Height="300" Margin="20,5"/>
+                            <TextBlock x:Name="eq1SliderLabel" Text="100Hz" HorizontalAlignment="Center" Foreground="#4A4A4A"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <Slider Name="slider1" Orientation="Vertical" HorizontalAlignment="Center" ValueChanged="slider_ValueChanged" Maximum="100" Minimum="0" SmallChange="5" Value="20" Height="300" Margin="20,5"/>
+                            <TextBlock x:Name="eq2SliderLabel" Text="900Hz" HorizontalAlignment="Center" Foreground="#4A4A4A"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <Slider Name="slider2" Orientation="Vertical" HorizontalAlignment="Center" ValueChanged="slider_ValueChanged" Maximum="100" Minimum="0" SmallChange="5" Value="70" Height="300" Margin="20,5"/>
+                            <TextBlock x:Name="eq3SliderLabel" Text="5kHz" HorizontalAlignment="Center" Foreground="#4A4A4A"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <Slider Name="slider3" Orientation="Vertical" HorizontalAlignment="Center" ValueChanged="slider_ValueChanged" Maximum="100" Minimum="0" SmallChange="5" Value="30" Height="300" Margin="20,5"/>
+                            <TextBlock x:Name="eq4SliderLabel" Text="12kHz" HorizontalAlignment="Center" Foreground="#4A4A4A"/>
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel x:Name="eq3SliderContainer" Orientation="Vertical">
-                    <Slider Name="slider2" Orientation="Vertical" HorizontalAlignment="Center" ValueChanged="slider_ValueChanged" Maximum="100" Minimum="0" SmallChange="5" Value="70" Height="190" Margin="20,5"/>
-                    <TextBlock x:Name="eq3SliderLabel" Text="5kHz" HorizontalAlignment="Center" Foreground="#4A4A4A"/>
-                </StackPanel>
-                <StackPanel x:Name="eq4SliderContainer" Orientation="Vertical">
-                    <Slider Name="slider3" Orientation="Vertical" HorizontalAlignment="Center" ValueChanged="slider_ValueChanged" Maximum="100" Minimum="0" SmallChange="5" Value="30" Height="190" Margin="20,5"/>
-                    <TextBlock x:Name="eq4SliderLabel" Text="12kHz" HorizontalAlignment="Center" Foreground="#4A4A4A"/>
-                </StackPanel>
-            </StackPanel>
-        </StackPanel>
+            </PivotItem>
+        </Pivot>
+
+
 
         <!--<Pivot Style="{StaticResource TabsStylePivotStyle}">
             <PivotItem Header="Equalizer">

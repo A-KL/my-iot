@@ -20,6 +20,7 @@ namespace Voicy
     {
         private EqualizerEffectDefinition equalizer;
         private ReverbEffectDefinition reverb;
+        private AudioEffectDefinition pitch;
 
         private AudioGraph graph;
         private AudioDeviceInputNode deviceInputNode;
@@ -34,7 +35,7 @@ namespace Voicy
         {
             // Devices
 
-            var outputDevice = await GetDefaultDeviceAsync(DeviceClass.AudioRender);
+            var outputDevice = await this.GetDefaultDeviceAsync(DeviceClass.AudioRender);
             if (outputDevice == null)
             {
                 return;
@@ -42,11 +43,11 @@ namespace Voicy
 
             // Graph
 
-            var settings = new AudioGraphSettings(Windows.Media.Render.AudioRenderCategory.Media);
-            
-            settings.PrimaryRenderDevice = outputDevice;
-
-            settings.EncodingProperties = AudioEncodingProperties.CreatePcm(24000, 1, 16);
+            var settings = new AudioGraphSettings(Windows.Media.Render.AudioRenderCategory.Media)
+            {
+                PrimaryRenderDevice = outputDevice,
+                EncodingProperties = AudioEncodingProperties.CreatePcm(24000, 1, 16)
+            };
             
             var result = await AudioGraph.CreateAsync(settings);
 
@@ -59,7 +60,7 @@ namespace Voicy
 
             // Output
 
-            var outputDeviceResult = await graph.CreateDeviceOutputNodeAsync();
+            var outputDeviceResult = await this.graph.CreateDeviceOutputNodeAsync();
 
             if (outputDeviceResult.Status != AudioDeviceNodeCreationStatus.Success)
             {
@@ -69,52 +70,48 @@ namespace Voicy
             this.deviceOutputNode = outputDeviceResult.DeviceOutputNode;
 
             // Input
-            var inputDeviceResult = await graph.CreateDeviceInputNodeAsync(Windows.Media.Capture.MediaCategory.Other);
+            var inputDeviceResult = await this.graph.CreateDeviceInputNodeAsync(Windows.Media.Capture.MediaCategory.Other);
             if (inputDeviceResult.Status != AudioDeviceNodeCreationStatus.Success)
             {
                 return;
             }
 
             this.deviceInputNode = inputDeviceResult.DeviceInputNode;
-            
+
             this.deviceInputNode.AddOutgoingConnection(this.deviceOutputNode);
 
             // Effects
 
-            // Reverb
-            //this.CreateReverbEffect(graph);
+            this.CreateReverbEffect();
 
-            // outputNode.EffectDefinitions.Add(this.reverb);
+            this.CreateEqEffect();
 
-            // Eualizer
-            //this.CreateEqEffect(graph);
-
-            //outputNode.EffectDefinitions.Add(equalizer);
-
-            // Custom
-            // Create a property set and add a property/value pair
-            PropertySet properties = new PropertySet();
-
-            properties.Add("Value", 0.8f);
-
-            var pitch = new AudioEffectDefinition(typeof(PitchAudioEffect).FullName, properties);
-
-            this.deviceOutputNode.EffectDefinitions.Add(pitch);
+            this.CreatePitchEffect();
 
             // Done
-            graph.Start();
+            this.graph.Start();
+
+            this.pitchToggleSwitch.IsOn = true;
+        }
+
+        private void PitchSlider_OnValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            if (this.pitch == null)
+            {
+                return;                
+            }
+
+            this.pitch.Properties["Value"] = e.NewValue;
         }
 
         private void slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            return;
-
             if (this.equalizer == null)
             {
                 return;
             }
 
-            var slider = sender as Slider;
+            var slider = (Slider)sender;
 
             var value = ConvertRange(slider.Value);
 
@@ -136,11 +133,21 @@ namespace Voicy
             }
         }
 
-        private void CreateEqEffect(AudioGraph graph)
+        private void CreatePitchEffect()
+        {
+            var properties = new PropertySet { { "Value", 0.8f } };
+
+            this.pitch = new AudioEffectDefinition(typeof(PitchAudioEffect).FullName, properties);
+
+            this.deviceOutputNode.EffectDefinitions.Add(this.pitch);
+            this.deviceOutputNode.DisableEffectsByDefinition(this.pitch);
+        }
+
+        private void CreateEqEffect()
         {
             // See the MSDN page for parameter explanations
             // https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.xapofx.fxeq_parameters(v=vs.85).aspx
-            this.equalizer = new EqualizerEffectDefinition(graph);
+            this.equalizer = new EqualizerEffectDefinition(this.graph);
             this.equalizer.Bands[0].FrequencyCenter = 20.0f;
             this.equalizer.Bands[0].Gain = 4.033f;
             this.equalizer.Bands[0].Bandwidth = 1.5f;
@@ -156,20 +163,26 @@ namespace Voicy
             this.equalizer.Bands[3].FrequencyCenter = 20000.0f;
             this.equalizer.Bands[3].Gain = 0.128;
             this.equalizer.Bands[3].Bandwidth = 2.0f;
+
+            this.deviceOutputNode.EffectDefinitions.Add(this.equalizer);
+            this.deviceOutputNode.DisableEffectsByDefinition(this.equalizer);
         }
 
-        private void CreateReverbEffect(AudioGraph graph)
+        private void CreateReverbEffect()
         {
-            // Create reverb effect
-            this.reverb = new ReverbEffectDefinition(graph);
-
             // See the MSDN page for parameter explanations
             // https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.xaudio2.xaudio2fx_reverb_parameters(v=vs.85).aspx
-            this.reverb.WetDryMix = 50;
-            this.reverb.ReflectionsDelay = 120;
-            this.reverb.ReverbDelay = 30;
-            this.reverb.RearDelay = 3;
-            this.reverb.DecayTime = 0.5;
+            this.reverb = new ReverbEffectDefinition(this.graph)
+            {
+                WetDryMix = 50,
+                ReflectionsDelay = 120,
+                ReverbDelay = 30,
+                RearDelay = 3,
+                DecayTime = 0.5
+            };
+
+            this.deviceOutputNode.EffectDefinitions.Add(this.reverb);
+            this.deviceOutputNode.DisableEffectsByDefinition(this.reverb);
         }
 
         private async Task<DeviceInformation> GetDefaultDeviceAsync(DeviceClass deviceClass)
@@ -182,7 +195,7 @@ namespace Voicy
         }
 
         // Mapping the 0-100 scale of the slider to a value between the min and max gain
-        private double ConvertRange(double value)
+        private static double ConvertRange(double value)
         {
             // These are the same values as the ones in xapofx.h
             const double fxeq_min_gain = 0.126;
@@ -190,6 +203,23 @@ namespace Voicy
 
             double scale = (fxeq_max_gain - fxeq_min_gain) / 100;
             return (fxeq_min_gain + ((value) * scale));
+        }
+
+        private void PitchToggleSwitch_OnToggled(object sender, RoutedEventArgs e)
+        {
+            var sw = (ToggleSwitch) sender;
+
+            if (sw == this.pitchToggleSwitch)
+            {
+                if (sw.IsOn)
+                {
+                    this.deviceOutputNode.EnableEffectsByDefinition(this.pitch);
+                }
+                else
+                {
+                    this.deviceOutputNode.DisableEffectsByDefinition(this.pitch);
+                }
+            }
         }
     }
 }

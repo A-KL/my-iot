@@ -8,6 +8,7 @@ using Windows.Media;
 
 namespace AudioEx
 {
+    using Windows.Devices.Gpio;
 
     // Using the COM interface IMemoryBufferByteAccess allows us to access the underlying byte array in an AudioFrame
     [ComImport]
@@ -22,7 +23,7 @@ namespace AudioEx
     {
         public AnalogInputDevice()
         {
-
+            var gpio = GpioController.GetDefault();
         }
 
         public void Dispose()
