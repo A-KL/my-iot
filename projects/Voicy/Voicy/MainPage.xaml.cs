@@ -46,9 +46,11 @@ namespace Voicy
             var settings = new AudioGraphSettings(Windows.Media.Render.AudioRenderCategory.Media)
             {
                 PrimaryRenderDevice = outputDevice,
-                EncodingProperties = AudioEncodingProperties.CreatePcm(24000, 1, 16)
+                QuantumSizeSelectionMode = QuantumSizeSelectionMode.LowestLatency,
+                DesiredRenderDeviceAudioProcessing = Windows.Media.AudioProcessing.Raw,
+                EncodingProperties = AudioEncodingProperties.CreatePcm(16000, 1, 16)
             };
-            
+
             var result = await AudioGraph.CreateAsync(settings);
 
             if (result.Status != AudioGraphCreationStatus.Success)
@@ -70,7 +72,10 @@ namespace Voicy
             this.deviceOutputNode = outputDeviceResult.DeviceOutputNode;
 
             // Input
-            var inputDeviceResult = await this.graph.CreateDeviceInputNodeAsync(Windows.Media.Capture.MediaCategory.Other);
+
+            var mic = await this.GetDefaultDeviceAsync(DeviceClass.AudioCapture);
+
+            var inputDeviceResult = await this.graph.CreateDeviceInputNodeAsync(Windows.Media.Capture.MediaCategory.Speech, graph.EncodingProperties, mic);
             if (inputDeviceResult.Status != AudioDeviceNodeCreationStatus.Success)
             {
                 return;
@@ -82,26 +87,26 @@ namespace Voicy
 
             // Effects
 
-            this.CreateReverbEffect();
+            //this.CreateReverbEffect();
 
-            this.CreateEqEffect();
+            // this.CreateEqEffect();
 
-            this.CreatePitchEffect();
+            //this.CreatePitchEffect();
 
             // Done
             this.graph.Start();
 
-            this.pitchToggleSwitch.IsOn = true;
+           // this.pitchToggleSwitch.IsOn = true;
         }
 
         private void PitchSlider_OnValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             if (this.pitch == null)
             {
-                return;                
+                return;
             }
 
-            this.pitch.Properties["Value"] = e.NewValue;
+            this.pitch.Properties["Value"] = (float)e.NewValue;
         }
 
         private void slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -207,7 +212,12 @@ namespace Voicy
 
         private void PitchToggleSwitch_OnToggled(object sender, RoutedEventArgs e)
         {
-            var sw = (ToggleSwitch) sender;
+            if (this.pitch == null)
+            {
+                return;
+            }
+
+            var sw = (ToggleSwitch)sender;
 
             if (sw == this.pitchToggleSwitch)
             {
