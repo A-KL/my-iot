@@ -1,4 +1,5 @@
 ﻿using AudioEffects;
+using Microsoft.Iot.Extended.Audio.VLSI;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,6 +34,9 @@ namespace Voicy
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            var audio = new Vs1053();
+            await audio.Init();
+            
             // Devices
 
             var outputDevice = await this.GetDefaultDeviceAsync(DeviceClass.AudioRender);

@@ -138,6 +138,10 @@
       <Project>{69cd8e30-2468-4e84-b87a-8d8a3f537111}</Project>
       <Name>AudioEffects</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Microsoft.Iot.Extended.Audio\Microsoft.Iot.Extended.Audio.csproj">
+      <Project>{ad50add5-a991-4fa3-8052-f98518c7111a}</Project>
+      <Name>Microsoft.Iot.Extended.Audio</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
