@@ -1,19 +1,19 @@
-﻿using AudioEffects;
-using Microsoft.Iot.Extended.Audio.VLSI;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Windows.Devices.Enumeration;
-using Windows.Foundation.Collections;
-using Windows.Media.Audio;
-using Windows.Media.Effects;
-using Windows.Media.MediaProperties;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-
-namespace Voicy
+﻿namespace Voicy
 {
+    using AudioEffects;
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Windows.Devices.Enumeration;
+    using Windows.Foundation.Collections;
+    using Windows.Media.Audio;
+    using Windows.Media.Effects;
+    using Windows.Media.MediaProperties;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Controls.Primitives;
+    using ExternalAudio;
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
@@ -33,10 +33,7 @@ namespace Voicy
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
-        {
-            var audio = await Vs1053.CreateAsync();
-            await audio.InitRecordingAsync();
-            
+        {           
             // Devices
 
             var outputDevice = await this.GetDefaultDeviceAsync(DeviceClass.AudioRender);
@@ -46,7 +43,6 @@ namespace Voicy
             }
 
             // Graph
-
             var settings = new AudioGraphSettings(Windows.Media.Render.AudioRenderCategory.Media)
             {
                 PrimaryRenderDevice = outputDevice,
@@ -77,18 +73,27 @@ namespace Voicy
 
             // Input
 
-            var mic = await this.GetDefaultDeviceAsync(DeviceClass.AudioCapture);
-
-            var inputDeviceResult = await this.graph.CreateDeviceInputNodeAsync(Windows.Media.Capture.MediaCategory.Speech, graph.EncodingProperties, mic);
-            if (inputDeviceResult.Status != AudioDeviceNodeCreationStatus.Success)
+            if (true)
             {
-                return;
+                var frameInputDevice = this.graph.CreateExternalAudioDevice();
+
+                frameInputDevice.AddOutgoingConnection(this.deviceOutputNode);
             }
+            else
+            {
+                var inputDeviceResult =
+                    await this.graph.CreateDeviceInputNodeAsync(Windows.Media.Capture.MediaCategory.Speech);
 
-            this.deviceInputNode = inputDeviceResult.DeviceInputNode;
+                if (inputDeviceResult.Status != AudioDeviceNodeCreationStatus.Success)
+                {
+                    return;
+                }
 
-            this.deviceInputNode.AddOutgoingConnection(this.deviceOutputNode);
+                this.deviceInputNode = inputDeviceResult.DeviceInputNode;
 
+                this.deviceInputNode.AddOutgoingConnection(this.deviceOutputNode);
+            }
+            
             // Effects
 
             //this.CreateReverbEffect();
@@ -102,7 +107,7 @@ namespace Voicy
 
            // this.pitchToggleSwitch.IsOn = true;
         }
-
+        
         private void PitchSlider_OnValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             if (this.pitch == null)

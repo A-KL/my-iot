@@ -47,6 +47,7 @@ namespace Microsoft.Iot.Extended.Audio.VLSI
 
             var spiAqs = SpiDevice.GetDeviceSelector(SpiModuleName);
             var devicesInfo = await DeviceInformation.FindAllAsync(spiAqs);
+
             this.commands = await SpiDevice.FromIdAsync(devicesInfo[0].Id, spiCmdSettinds);
             this.data = await SpiDevice.FromIdAsync(devicesInfo[0].Id, spiDataSettings);
         }
@@ -158,7 +159,6 @@ namespace Microsoft.Iot.Extended.Audio.VLSI
                         this.commands.Write(this.cmdBuffer);
                         this.WaitForDataRequest();
                     }
-
                 }
             }
         }
