@@ -46,9 +46,9 @@
             var settings = new AudioGraphSettings(Windows.Media.Render.AudioRenderCategory.Media)
             {
                 PrimaryRenderDevice = outputDevice,
-                QuantumSizeSelectionMode = QuantumSizeSelectionMode.LowestLatency,
+               // QuantumSizeSelectionMode = QuantumSizeSelectionMode.LowestLatency,
                 DesiredRenderDeviceAudioProcessing = Windows.Media.AudioProcessing.Raw,
-                EncodingProperties = AudioEncodingProperties.CreatePcm(16000, 1, 16)
+                EncodingProperties = AudioEncodingProperties.CreatePcm(8000, 1, 16)
             };
 
             var result = await AudioGraph.CreateAsync(settings);
@@ -73,9 +73,11 @@
 
             // Input
 
-            if (true)
+            if (false)
             {
                 var frameInputDevice = this.graph.CreateExternalAudioDevice();
+
+                await frameInputDevice.Init();
 
                 frameInputDevice.AddOutgoingConnection(this.deviceOutputNode);
             }
@@ -100,12 +102,12 @@
 
             // this.CreateEqEffect();
 
-            //this.CreatePitchEffect();
+            this.CreatePitchEffect();
 
             // Done
             this.graph.Start();
 
-           // this.pitchToggleSwitch.IsOn = true;
+            this.pitchToggleSwitch.IsOn = true;
         }
         
         private void PitchSlider_OnValueChanged(object sender, RangeBaseValueChangedEventArgs e)
@@ -203,7 +205,9 @@
         {
             var audioDevices = await DeviceInformation.FindAllAsync(deviceClass);
 
-            var audioDevice = audioDevices.FirstOrDefault(d => d.IsEnabled);
+            var devs = audioDevices.ToList();
+
+            var audioDevice = devs[devs.Count-1];
 
             return audioDevice;
         }

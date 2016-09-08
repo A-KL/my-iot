@@ -109,6 +109,13 @@ namespace Microsoft.Iot.Extended.Audio.VLSI
             return temp;
         }
 
+        protected void CommandRead(byte[] register, byte[] data)
+        {
+            register[0] = (byte)Vs1053_SPI.CMD_READ;
+            
+            this.commands.TransferFullDuplex(register, data);
+        }
+
         protected void WaitForDataRequest()
         {
             while (this.dataRequestPin.Read() == GpioPinValue.Low)

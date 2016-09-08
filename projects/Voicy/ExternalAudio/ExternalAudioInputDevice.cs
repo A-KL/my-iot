@@ -1,7 +1,9 @@
 ﻿namespace ExternalAudio
 {
+    using Microsoft.Iot.Extended.Audio.VLSI;
     using System;
     using System.Runtime.InteropServices;
+    using System.Threading.Tasks;
     using Windows.Foundation;
     using Windows.Media;
     using Windows.Media.Audio;
@@ -21,8 +23,7 @@
     {
         private readonly AudioFrameInputNode inputNode;
 
-        //var audio = await Vs1053.CreateAsync();
-        //await audio.InitRecordingAsync();
+        private Vs1053 spiDevice;
 
         internal ExternalAudioInputDevice(AudioFrameInputNode inputNode)
         {
@@ -33,6 +34,16 @@
             this.inputNode.QuantumStarted += this.FrameInputDevice_QuantumStarted;
 
             this.inputNode.Start();
+        }
+
+        public async Task Init()
+        {
+            this.spiDevice = await Vs1053.CreateAsync();
+
+            await this.spiDevice.InitRecordingAsync();
+
+
+            this.spiDevice.Read();
         }
 
         public void AddOutgoingConnection(IAudioNode node)

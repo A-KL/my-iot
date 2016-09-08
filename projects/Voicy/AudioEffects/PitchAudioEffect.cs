@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -87,6 +88,8 @@ namespace AudioEffects
             this.propertySet = configuration;
         }
 
+        private Stopwatch sw = new Stopwatch();
+
         unsafe public void ProcessFrame(ProcessAudioFrameContext context)
         {
             AudioFrame inputFrame = context.InputFrame;
@@ -110,7 +113,14 @@ namespace AudioEffects
 
                 int dataInFloatLength = (int)inputBuffer.Length / sizeof(float);
 
-                PitchShifter.PitchShift(this.Value, dataInFloatLength, (long)1024, (long)10, this.currentEncodingProperties.SampleRate, inputDataInFloat, outputDataInFloat);
+                sw.Restart();
+
+                PitchShifter.PitchShift(this.Value, dataInFloatLength, (long)128, (long)4, this.currentEncodingProperties.SampleRate, inputDataInFloat, outputDataInFloat);
+
+                sw.Stop();
+
+                Debug.WriteLine(sw.ElapsedMilliseconds);
+
             }
 
         }        

@@ -9,6 +9,8 @@ namespace Microsoft.Iot.Extended.Audio.VLSI
         //private readonly OutputPort redLedPort = new OutputPort(RedLedPin, false);
         // private readonly OutputPort greenLedPort = new OutputPort(GreenLedPin, false);
 
+        private readonly byte[] sampleBuffer = new byte[] { (byte)Vs1053_SPI.CMD_READ, (byte)Vs1053_REGISTERS.SCI_HDAT0 };
+
         private Vs1053()
         { }
 
@@ -30,7 +32,7 @@ namespace Microsoft.Iot.Extended.Audio.VLSI
             this.CommandWrite((byte)Vs1053_REGISTERS.SCI_AICTRL0, 16000);
             this.CommandWrite((byte)Vs1053_REGISTERS.SCI_AICTRL1, 0);
             this.CommandWrite((byte)Vs1053_REGISTERS.SCI_AICTRL2, 4096);
-            this.CommandWrite((byte)Vs1053_REGISTERS.SCI_AICTRL3, 0); // 2 or 3
+            this.CommandWrite((byte)Vs1053_REGISTERS.SCI_AICTRL3, 2); // 2 or 3 0x40
 
             this.CommandWrite((byte)Vs1053_REGISTERS.SCI_CLOCKF, 0xa000);
             this.CommandWrite((byte)Vs1053_REGISTERS.SCI_VOL, volume);  // highest volume -1
@@ -49,6 +51,20 @@ namespace Microsoft.Iot.Extended.Audio.VLSI
             }
 
             return Task.FromResult(true);
+        }
+
+        public void Read()
+        {
+            var samplesAvailable = this.CommandRead((byte)Vs1053_REGISTERS.SCI_HDAT1); // ? samples count
+
+            byte[] data = new byte[2];
+
+            for (int i = 0; i < samplesAvailable; i++)
+            {
+                this.CommandRead(sampleBuffer, data);
+            }
+
+            var samplesCount = this.CommandRead((byte)Vs1053_REGISTERS.SCI_HDAT0);
         }
 
         /// <summary>
