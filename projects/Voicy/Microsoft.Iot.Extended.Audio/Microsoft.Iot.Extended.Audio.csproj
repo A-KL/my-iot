@@ -107,10 +107,11 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="VLSI\AudioDevice.cs" />
+    <Compile Include="VLSI\SpiAudioDevice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VLSI\Vs1053.cs" />
     <Compile Include="VLSI\Vs1053Memory.cs" />
+    <Compile Include="VLSI\VsPatches.cs" />
     <EmbeddedResource Include="Properties\Microsoft.Iot.Extended.Audio.rd.xml" />
   </ItemGroup>
   <ItemGroup>

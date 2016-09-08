@@ -21,6 +21,7 @@ namespace Microsoft.Iot.Extended.Audio.VLSI
         private const int SpiDataChipSelectPinNumber = 1;
 
         private readonly byte[] cmdBuffer = new byte[4];
+        private readonly byte[] recordingBuffer = new byte[1024];
 
         protected async Task InitSpiAsync()
         {
@@ -49,7 +50,7 @@ namespace Microsoft.Iot.Extended.Audio.VLSI
             this.commands = await SpiDevice.FromIdAsync(devicesInfo[0].Id, spiCmdSettinds);
             this.data = await SpiDevice.FromIdAsync(devicesInfo[0].Id, spiDataSettings);
         }
-        
+
         protected void InitGpio()
         {
             this.gpio = GpioController.GetDefault(); /* Get the default GPIO controller on the system */
@@ -66,7 +67,8 @@ namespace Microsoft.Iot.Extended.Audio.VLSI
                 this.dataRequestPin.SetDriveMode(GpioPinDriveMode.Input);
             }
         }
-        
+
+
         protected void CommandWrite(byte register, ushort data)
         {
             this.WaitForDataRequest();
@@ -119,6 +121,45 @@ namespace Microsoft.Iot.Extended.Audio.VLSI
             while (this.dataRequestPin.Read() == GpioPinValue.Low)
             {
                 await Task.Delay(1);
+            }
+        }
+
+        protected void WritePatchFromArray(ushort[] patch)
+        {
+            this.cmdBuffer[0] = (byte)Vs1053_SPI.CMD_WRITE;
+
+            var i = 0;
+
+            while (i < patch.Length)
+            {
+                int value;
+                this.cmdBuffer[1] = (byte)patch[i++];
+                int count = patch[i++];
+                if ((count & 0x8000) != 0)
+                {
+                    count &= 0x7FFF;
+                    value = patch[i++];
+                    this.cmdBuffer[2] = (byte)(value >> 8);
+                    this.cmdBuffer[3] = (byte)value;
+
+                    while (count-- > 0)
+                    {
+                        this.commands.Write(this.cmdBuffer);
+                        this.WaitForDataRequest();
+                    }
+                }
+                else
+                {
+                    while (count-- > 0)
+                    {
+                        value = patch[i++];
+                        this.cmdBuffer[2] = (byte)(value >> 8);
+                        this.cmdBuffer[3] = (byte)value;
+                        this.commands.Write(this.cmdBuffer);
+                        this.WaitForDataRequest();
+                    }
+
+                }
             }
         }
     }

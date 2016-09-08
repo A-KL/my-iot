@@ -6,6 +6,9 @@ namespace Microsoft.Iot.Extended.Audio.VLSI
 
     public class Vs1053 : SpiAudioDevice
     {
+        //private readonly OutputPort redLedPort = new OutputPort(RedLedPin, false);
+        // private readonly OutputPort greenLedPort = new OutputPort(GreenLedPin, false);
+
         private Vs1053()
         { }
 
@@ -35,6 +38,8 @@ namespace Microsoft.Iot.Extended.Audio.VLSI
 
             // this.CommandWrite((byte)Vs1053_REGISTERS.SCI_MODE, (ushort)Vs_SCI_MODE.SM_SDINEW);
             this.CommandWrite((byte)Vs1053_REGISTERS.SCI_MODE, (ushort)(Vs_SCI_MODE.SM_RESET | Vs_SCI_MODE.SM_ADPCM));
+
+            this.WritePatchFromArray(VsPatches.IMA_ADPCM_Encoder_Fix);
 
             var read = this.CommandRead((byte)Vs1053_REGISTERS.SCI_VOL);
 
