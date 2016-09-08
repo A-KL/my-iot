@@ -34,8 +34,8 @@ namespace Voicy
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            var audio = new Vs1053();
-            await audio.Init();
+            var audio = await Vs1053.CreateAsync();
+            await audio.InitRecordingAsync();
             
             // Devices
 
