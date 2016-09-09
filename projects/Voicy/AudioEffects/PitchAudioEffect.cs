@@ -115,7 +115,7 @@ namespace AudioEffects
 
                 sw.Restart();
 
-                PitchShifter.PitchShift(this.Value, dataInFloatLength, (long)128, (long)4, this.currentEncodingProperties.SampleRate, inputDataInFloat, outputDataInFloat);
+                PitchShifter.PitchShift(this.Value, dataInFloatLength, (long)512, (long)10, this.currentEncodingProperties.SampleRate, inputDataInFloat, outputDataInFloat);
 
                 sw.Stop();
 

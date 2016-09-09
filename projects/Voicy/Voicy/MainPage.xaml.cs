@@ -12,7 +12,6 @@
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Controls.Primitives;
-    using ExternalAudio;
 
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -33,7 +32,7 @@
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
-        {           
+        {
             // Devices
 
             var outputDevice = await this.GetDefaultDeviceAsync(DeviceClass.AudioRender);
@@ -46,7 +45,6 @@
             var settings = new AudioGraphSettings(Windows.Media.Render.AudioRenderCategory.Media)
             {
                 PrimaryRenderDevice = outputDevice,
-               // QuantumSizeSelectionMode = QuantumSizeSelectionMode.LowestLatency,
                 DesiredRenderDeviceAudioProcessing = Windows.Media.AudioProcessing.Raw,
                 EncodingProperties = AudioEncodingProperties.CreatePcm(8000, 1, 16)
             };
@@ -73,34 +71,26 @@
 
             // Input
 
-            if (false)
-            {
-                var frameInputDevice = this.graph.CreateExternalAudioDevice();
 
-                await frameInputDevice.Init();
+            //var frameInputDevice = this.graph.CreateExternalAudioDevice();
 
-                frameInputDevice.AddOutgoingConnection(this.deviceOutputNode);
-            }
-            else
-            {
-                var inputDeviceResult =
-                    await this.graph.CreateDeviceInputNodeAsync(Windows.Media.Capture.MediaCategory.Speech);
+            //await frameInputDevice.Init();
 
-                if (inputDeviceResult.Status != AudioDeviceNodeCreationStatus.Success)
-                {
-                    return;
-                }
-
-                this.deviceInputNode = inputDeviceResult.DeviceInputNode;
-
-                this.deviceInputNode.AddOutgoingConnection(this.deviceOutputNode);
-            }
+            //frameInputDevice.AddOutgoingConnection(this.deviceOutputNode);
             
+            var inputDeviceResult =
+                await this.graph.CreateDeviceInputNodeAsync(Windows.Media.Capture.MediaCategory.Speech);
+
+            if (inputDeviceResult.Status != AudioDeviceNodeCreationStatus.Success)
+            {
+                return;
+            }
+
+            this.deviceInputNode = inputDeviceResult.DeviceInputNode;
+
+            this.deviceInputNode.AddOutgoingConnection(this.deviceOutputNode);
+
             // Effects
-
-            //this.CreateReverbEffect();
-
-            // this.CreateEqEffect();
 
             this.CreatePitchEffect();
 
@@ -109,7 +99,7 @@
 
             this.pitchToggleSwitch.IsOn = true;
         }
-        
+
         private void PitchSlider_OnValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             if (this.pitch == null)
@@ -181,7 +171,7 @@
             this.equalizer.Bands[3].Bandwidth = 2.0f;
 
             this.deviceOutputNode.EffectDefinitions.Add(this.equalizer);
-            this.deviceOutputNode.DisableEffectsByDefinition(this.equalizer);
+            // this.deviceOutputNode.DisableEffectsByDefinition(this.equalizer);
         }
 
         private void CreateReverbEffect()
@@ -198,7 +188,7 @@
             };
 
             this.deviceOutputNode.EffectDefinitions.Add(this.reverb);
-            this.deviceOutputNode.DisableEffectsByDefinition(this.reverb);
+            //this.deviceOutputNode.DisableEffectsByDefinition(this.reverb);
         }
 
         private async Task<DeviceInformation> GetDefaultDeviceAsync(DeviceClass deviceClass)
@@ -207,7 +197,7 @@
 
             var devs = audioDevices.ToList();
 
-            var audioDevice = devs[devs.Count-1];
+            var audioDevice = devs[devs.Count - 1];
 
             return audioDevice;
         }

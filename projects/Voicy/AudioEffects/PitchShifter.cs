@@ -54,7 +54,7 @@ namespace AudioEffects
     {
 
         #region Private Static Memebers
-        private static int MAX_FRAME_LENGTH = 16000;
+        private static int MAX_FRAME_LENGTH = 8000;
         private static float[] gInFIFO = new float[MAX_FRAME_LENGTH];
         private static float[] gOutFIFO = new float[MAX_FRAME_LENGTH];
         private static float[] gFFTworksp = new float[2 * MAX_FRAME_LENGTH];
