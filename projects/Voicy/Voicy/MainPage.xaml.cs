@@ -101,6 +101,8 @@
 
             this.CreatePitchEffect();
 
+            this.InitializeEncoder();
+
             // Done
             this.graph.Start();
 
@@ -127,8 +129,6 @@
             // Subscribe to events
             //this.rotary.Click += Rotary_Click;
             this.rotary.Rotated += Rotary_Rotated;
-
-
         }
 
         private void Rotary_Rotated(IRotaryEncoder sender, RotaryEncoderRotatedEventArgs args)
