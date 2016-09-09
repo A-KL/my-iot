@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Windows.Devices.Enumeration;
+    using Windows.Devices.Gpio;
     using Windows.Foundation.Collections;
     using Windows.Media.Audio;
     using Windows.Media.Effects;
@@ -12,6 +13,9 @@
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Controls.Primitives;
+    using Microsoft.IoT.DeviceCore;
+    using Microsoft.IoT.DeviceCore.Input;
+    using Microsoft.IoT.Devices.Input;
 
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -25,6 +29,9 @@
         private AudioGraph graph;
         private AudioDeviceInputNode deviceInputNode;
         private AudioDeviceOutputNode deviceOutputNode;
+
+        private GpioController gpioController;
+        private RotaryEncoder rotary;
 
         public MainPage()
         {
@@ -77,7 +84,7 @@
             //await frameInputDevice.Init();
 
             //frameInputDevice.AddOutgoingConnection(this.deviceOutputNode);
-            
+
             var inputDeviceResult =
                 await this.graph.CreateDeviceInputNodeAsync(Windows.Media.Capture.MediaCategory.Speech);
 
@@ -98,6 +105,59 @@
             this.graph.Start();
 
             this.pitchToggleSwitch.IsOn = true;
+        }
+
+        private void InitializeEncoder()
+        {
+            this.gpioController = GpioController.GetDefault();
+            if (this.gpioController == null)
+            {
+                /// ("GPIO Controller not found!");
+                return;
+            }
+
+            // Create rotary
+            this.rotary = new RotaryEncoder()
+            {
+                // ButtonPin = gpioController.OpenPin(26),
+                ClockPin = this.gpioController.OpenPin(22),
+                DirectionPin = this.gpioController.OpenPin(13),
+            };
+
+            // Subscribe to events
+            //this.rotary.Click += Rotary_Click;
+            this.rotary.Rotated += Rotary_Rotated;
+
+
+        }
+
+        private void Rotary_Rotated(IRotaryEncoder sender, RotaryEncoderRotatedEventArgs args)
+        {
+            if (this.pitch == null)
+            {
+                return;
+            }
+
+            var value = (double)this.pitch.Properties["Value"];
+
+            if (args.Direction == RotationDirection.Clockwise)
+            {
+                if (value + 0.1 > 2.0)
+                {
+                    return;
+                }
+                value += 0.1;
+            }
+            else if (args.Direction == RotationDirection.Counterclockwise)
+            {
+                if (value - 0.1 < 0.5)
+                {
+                    return;
+                }
+                value -= 0.1;
+            }
+            
+            this.pitch.Properties["Value"] = value;
         }
 
         private void PitchSlider_OnValueChanged(object sender, RangeBaseValueChangedEventArgs e)
