@@ -113,13 +113,13 @@ namespace AudioEffects
 
                 int dataInFloatLength = (int)inputBuffer.Length / sizeof(float);
 
-                sw.Restart();
+               // sw.Restart();
 
                 PitchShifter.PitchShift(this.Value, dataInFloatLength, (long)512, (long)10, this.currentEncodingProperties.SampleRate, inputDataInFloat, outputDataInFloat);
 
-                sw.Stop();
+                //sw.Stop();
 
-                Debug.WriteLine(sw.ElapsedMilliseconds);
+                //Debug.WriteLine(sw.ElapsedMilliseconds);
 
             }
 

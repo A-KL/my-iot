@@ -121,9 +121,9 @@
             // Create rotary
             this.rotary = new RotaryEncoder()
             {
-                // ButtonPin = gpioController.OpenPin(26),
-                ClockPin = this.gpioController.OpenPin(22),
-                DirectionPin = this.gpioController.OpenPin(13),
+                ButtonPin = gpioController.OpenPin(13),
+                ClockPin = this.gpioController.OpenPin(26),
+                DirectionPin = this.gpioController.OpenPin(19),
             };
 
             // Subscribe to events
@@ -138,26 +138,30 @@
                 return;
             }
 
-            var value = (double)this.pitch.Properties["Value"];
+            const float step = 0.1f;
+            var value = (float)this.pitch.Properties["Value"];
 
             if (args.Direction == RotationDirection.Clockwise)
             {
-                if (value + 0.1 > 2.0)
+                if (value + step > 2.0f)
                 {
+                    value = 2.0f;
                     return;
                 }
-                value += 0.1;
+                value += step;
             }
-            else if (args.Direction == RotationDirection.Counterclockwise)
+            else
             {
-                if (value - 0.1 < 0.5)
+                if (value - step < 0.5f)
                 {
+                    value = 0.5f;
                     return;
                 }
-                value -= 0.1;
+                value -= step;
             }
             
             this.pitch.Properties["Value"] = value;
+            //System.Diagnostics.Debug.WriteLine(value);
         }
 
         private void PitchSlider_OnValueChanged(object sender, RangeBaseValueChangedEventArgs e)
