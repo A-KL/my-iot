@@ -3,18 +3,32 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:text="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 
-    <Style x:Key="PadButton" TargetType="ToggleButton">
-        <Setter Property="Background" Value="SeaShell" />
+    <Style x:Key="PadButton" TargetType="Button">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Margin" Value="5" />
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
-        <Setter Property="Template" Value="{StaticResource ComboBoxToggleButton}"/>
+        <Setter Property="Template" Value="{StaticResource PadButtonTemplate}"/>
     </Style>
 
-    <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+    <ControlTemplate x:Key="PadButtonTemplate" TargetType="Button">
         <Grid>
-            <Border CornerRadius="5" Background="{TemplateBinding Background}">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <Storyboard>
+                            <ColorAnimation Duration="0" To="WhiteSmoke" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="content" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <Storyboard>
+                            <ColorAnimation Duration="0" To="GreenYellow" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="content" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="PointerOver"/>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            <Border x:Name="content" CornerRadius="5" Background="{TemplateBinding Background}">
                 <ContentPresenter/>
             </Border>
         </Grid>

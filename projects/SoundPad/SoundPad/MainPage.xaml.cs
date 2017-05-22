@@ -1,16 +1,16 @@
-﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
-namespace SoundPad
+﻿namespace SoundPad
 {
     using System;
     using System.Threading.Tasks;
+
     using Windows.Storage;
     using Windows.UI;
     using Windows.UI.Xaml.Media;
+
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Controls.Primitives;
+
 
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -58,7 +58,7 @@ namespace SoundPad
 
         private void OnToggleButtonClick(object sender, RoutedEventArgs e)
         {
-            var button = (ToggleButton) sender;
+            var button = (Button) sender;
 
             var col = Grid.GetColumn(button);
             var row = Grid.GetRow(button);
@@ -74,6 +74,11 @@ namespace SoundPad
 
             sound.Stop();
             sound.Play();
+        }
+
+        private void OnToggleButtonCompleted(object sender, RoutedEventArgs e)
+        {
+    
         }
     }
 }
