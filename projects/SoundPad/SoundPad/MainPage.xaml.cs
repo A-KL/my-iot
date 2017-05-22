@@ -22,6 +22,8 @@ namespace SoundPad
         public MainPage()
         {
             this.InitializeComponent();
+
+            LoadSounds();
         }
 
         private static async Task LoadSounds()
@@ -30,7 +32,8 @@ namespace SoundPad
             {
                 for (var j = 0; j < Sounds.Rank; j++)
                 {
-                    Sounds[i, j] = await LoadSoundFile($"Sound_{i}_{j}.wav");
+                    //Sounds[i, j] = await LoadSoundFile($"Sound_{i}_{j}.wav");
+                    Sounds[i, j] = await LoadSoundFile("Rhythm-machine-loop.wav");
                 }
             }
         }

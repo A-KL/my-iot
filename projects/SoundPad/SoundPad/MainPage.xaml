@@ -24,17 +24,17 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <ToggleButton Checked="OnToggleButtonClick" Grid.Column="0" Grid.Row="0" Style="{StaticResource PadButton}" />
-        <ToggleButton Checked="OnToggleButtonClick" Grid.Column="1" Grid.Row="0" Style="{StaticResource PadButton}" />
-        <ToggleButton Checked="OnToggleButtonClick" Grid.Column="2" Grid.Row="0" Style="{StaticResource PadButton}" />
+        <ToggleButton ManipulationStarted="OnToggleButtonClick" Grid.Column="0" Grid.Row="0" Style="{StaticResource PadButton}" />
+        <ToggleButton ManipulationStarted="OnToggleButtonClick" Grid.Column="1" Grid.Row="0" Style="{StaticResource PadButton}" />
+        <ToggleButton ManipulationStarted="OnToggleButtonClick" Grid.Column="2" Grid.Row="0" Style="{StaticResource PadButton}" />
 
-        <ToggleButton Checked="OnToggleButtonClick" Grid.Column="0" Grid.Row="1" Style="{StaticResource PadButton}" />
-        <ToggleButton Checked="OnToggleButtonClick" Grid.Column="1" Grid.Row="1" Style="{StaticResource PadButton}" />
-        <ToggleButton Checked="OnToggleButtonClick" Grid.Column="2" Grid.Row="1" Style="{StaticResource PadButton}" />
+        <ToggleButton ManipulationStarted="OnToggleButtonClick" Grid.Column="0" Grid.Row="1" Style="{StaticResource PadButton}" />
+        <ToggleButton ManipulationStarted="OnToggleButtonClick" Grid.Column="1" Grid.Row="1" Style="{StaticResource PadButton}" />
+        <ToggleButton ManipulationStarted="OnToggleButtonClick" Grid.Column="2" Grid.Row="1" Style="{StaticResource PadButton}" />
 
-        <ToggleButton Checked="OnToggleButtonClick" Grid.Column="0" Grid.Row="2" Style="{StaticResource PadButton}" />
-        <ToggleButton Checked="OnToggleButtonClick" Grid.Column="1" Grid.Row="2" Style="{StaticResource PadButton}" />
-        <ToggleButton Checked="OnToggleButtonClick" Grid.Column="2" Grid.Row="2" Style="{StaticResource PadButton}" />
+        <ToggleButton ManipulationStarted="OnToggleButtonClick" Grid.Column="0" Grid.Row="2" Style="{StaticResource PadButton}" />
+        <ToggleButton ManipulationStarted="OnToggleButtonClick" Grid.Column="1" Grid.Row="2" Style="{StaticResource PadButton}" />
+        <ToggleButton ManipulationStarted="OnToggleButtonClick" Grid.Column="2" Grid.Row="2" Style="{StaticResource PadButton}" />
 
     </Grid>
 </Page>
