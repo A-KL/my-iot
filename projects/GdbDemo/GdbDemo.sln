@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GdbDemo", "GdbDemo\GdbDemo.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SosDemo", "SosDemo\SosDemo.vcxproj", "{30FCA852-C1E9-4062-96C1-3178952E0ED0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "full", "full", "{48493D2A-BD7C-4793-83A5-B38B8D287D33}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -44,5 +46,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{30FCA852-C1E9-4062-96C1-3178952E0ED0} = {48493D2A-BD7C-4793-83A5-B38B8D287D33}
 	EndGlobalSection
 EndGlobal

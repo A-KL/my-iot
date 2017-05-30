@@ -1,7 +1,9 @@
 #include <cstdio>
 #include "bcm2835.h"
 
-#define UNIT_DURATION_MS		100 //ms
+#define RPI_V2_GPIO_P1_40		21
+
+#define UNIT_DURATION_MS		150 //ms
 
 #define DOT_DURATION_MS			UNIT_DURATION_MS * 1
 #define DASH_DURATION_MS		UNIT_DURATION_MS * 3
@@ -12,14 +14,15 @@
 #define NEW_WORD_SPACE_MS		UNIT_DURATION_MS * 7
 
 
-#define SOS_LIGHT_PIN		RPI_V2_GPIO_P1_21
+#define SOS_LIGHT_PIN			RPI_V2_GPIO_P1_40
 
 
 void Dot()
 {
 	bcm2835_gpio_write(SOS_LIGHT_PIN, HIGH);
 	delay(DOT_DURATION_MS);
-	bcm2835_gpio_write(SOS_LIGHT_PIN, LOW);}
+	bcm2835_gpio_write(SOS_LIGHT_PIN, LOW);
+}
 
 void Dash()
 {
@@ -32,12 +35,17 @@ int main()
 {
 	printf("hello from SosDemo!\n");
 
-	bcm2835_init();
+	if (!bcm2835_init())
+	{
+		printf("Failed to initialize bcm2835\n");
+		return 0;
+	}
+	
 	bcm2835_gpio_fsel(SOS_LIGHT_PIN, BCM2835_GPIO_FSEL_OUTP);
 
 	printf("Starting SOS sequence...\n");
 
-	// while(true)
+	while(true)
 	{
 		// S
 		printf("S(...)");		
