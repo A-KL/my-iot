@@ -20,7 +20,7 @@ namespace Microsoft.Iot.Web
 
             foreach (var header in message.Headers)
             {
-                request.Headers.Add(header.Key, header.Value);
+                request.Headers.TryAddWithoutValidation(header.Key, header.Value);
             }
 
             if (message.Form.Count > 0)
